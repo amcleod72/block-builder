@@ -1,0 +1,14 @@
+{
+  "name": "block-builder",
+  "version": "1.0.0",
+  "description": "Data-driven content block creation for Marketing Cloud email.",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "AFDigital",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}

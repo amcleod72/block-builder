@@ -1,0 +1,100 @@
+$('document').ready(function() {
+    var sdk = new window.sfdc.BlockSDK();
+    var crmIdField,chkContact,chkOpportunity;
+
+    let modelAmp = `<!--%%[
+    IF _messagecontext == 'SEND' AND IndexOf(list_,'_HTML') > 1 THEN
+        /* Define the field to use to associate the send with a CRM object */
+        SET @WhatId = AttributeValue('%%WhatId%%')
+        /* Scrape VAWP to get HTML for DE Log */
+        SET @HTMLContent = HttpGet(view_email_url)
+
+        IF LENGTH(@HTMLContent) > 32000 THEN
+            SET @header = Concat('<span align="center"><h1><a href="',view_email_url,'" target="_blank">View Entire Message Online</a></h1></span>')
+            SET @HTMLContent = Concat(@header,Substring(@HTMLContent,1,31000))
+        ENDIF
+
+        /* Update Salesforce CRM */
+        SET @SFEmailID = CreateSalesforceObject("EmailMessage",8,"HTMLBODY",@HTMLContent, "SUBJECT",emailname_,"FROMNAME",replyname,"FROMADDRESS",replyemailaddress,"TOADDRESS",emailaddr,"INCOMING",0,"STATUS",3,"RELATEDTOID",@WhatId)
+        SET @RelationID = CreateSalesforceObject("EmailMessageRelation",4,"EmailMessageId",@SFEmailID,"RelationAddress",emailaddr,"RelationId",_subscriberkey,"RelationType","ToAddress")
+    ENDIF
+    ]%%-->`;
+
+    sdk.getData(function(data) {
+        crmIdField = data.crmIdField;
+        chkContact = data.chkContact;
+        chkOpportunity = data.chkOpportunity;
+
+        if(!chkContact){
+            showMessage('error');
+        }
+        fillSettings();
+    });
+
+    $('#chkContact').change(function() {
+        $("#opportunityToggleContainer").toggle();
+    });
+
+    $('#chkOpportunity').change(function() {
+        $(".idContainer").toggle();
+    });
+
+
+    function debounce(func, wait, immediate) {
+        var timeout;
+        return function() {
+            var context = this,
+                args = arguments;
+            var later = function() {
+                timeout = null;
+                if (!immediate) func.apply(context, args);
+            };
+            var callNow = immediate && !timeout;
+            clearTimeout(timeout);
+            timeout = setTimeout(later, wait);
+            if (callNow) func.apply(context, args);
+        };
+    }
+
+    function fillSettings() {
+        document.getElementById('crm-id-field').value = crmIdField;
+    }
+
+    function showMessage(type){
+        if (type === 'error'){
+            sdk.setSuperContent('<div style="font-family: Helvetica, Sans-Serif; font-size: 20px; line-height: 50px; text-align: center; height: 50px; text-align: center; background-color: red; color:white; min-width:100%;">Log to Sales Cloud - Please Configure</div>');
+        } else {
+            sdk.setSuperContent('<div style="font-family: Helvetica, Sans-Serif; font-size: 20px; line-height: 50px; text-align: center; height: 50px; text-align: center; background-color: green; color:white; min-width:100%;">Log to Sales Cloud - Configured</div>');
+        }
+    }
+
+    function updateMe() {
+        chkContact = $("#chkContact").prop('checked');
+        chkOpportunity = $("#chkOpportunity").prop('checked');
+        crmIdField = $('#crm-id-field').val();
+
+        if(!chkContact){
+            sdk.setContent("");
+            showMessage('error');
+            return;
+        }
+
+        if(chkOpportunity && !crmIdField){
+            sdk.setContent("");
+            showMessage('error');
+            return;
+        }
+
+        // Generate required AMPScript
+        var amp = modelAmp.replace(/%%WhatId%%/img,chkOpportunity ? crmIdField : 'foo');
+        sdk.setContent(amp);
+        showMessage('success');
+        sdk.setData({
+            crmIdField: crmIdField
+        });
+    }
+
+    document.getElementById('workspace').addEventListener("input", function() {
+        debounce(updateMe, 500)();
+    });
+});
