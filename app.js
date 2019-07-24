@@ -8,7 +8,7 @@ var Cookies         = require('cookies');
 var jwt             = require('jsonwebtoken');
 var request         = require('request');
 var axios           = require('axios');
-var sfmc            = require('/lib/sfmc');
+var sfmc            = require('lib/sfmc');
 
 var APIKeys ={
     clientId        : process.env.clientId,
