@@ -55,7 +55,7 @@ app.use('/login', function(req, res){
                     .then(function (response) {
                         console.log('Response',response);
                         //res.status(200).send('<script>window.parent.document.tokenCallback("' + response.data.accessToken + '");</script>');
-                        res.status(200).send('<script>console.log("Parent",window.parent[0]);</script>');
+                        res.status(200).send('<script>console.log("Parent",window.parent[0].window);</script>');
                     })
                     .catch(function (error) {
                         console.log(error);
