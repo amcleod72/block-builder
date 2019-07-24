@@ -79,7 +79,7 @@ app.post('/login', function(req, res){
 
 app.get('/roots', async function(req, res){
     var cookies = new Cookies(req, res, { keys: APIKeys.appSignature });
-    var token = cookies.get('sfmc_token');
+    var token = JSON.parse(cookies.get('sfmc_token'));
 
     console.log('CookieToken',token);
 
