@@ -75,6 +75,7 @@ function getToken(clientId,clientSecret,refreshToken,accessType){
             "refreshToken": refreshToken,
             "accessType": accessType
         };
+        console.log('payload',payload);
 
         var restoptions = {
             "url":        "https://auth.exacttargetapis.com/v1/requestToken",
