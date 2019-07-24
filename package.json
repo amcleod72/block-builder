@@ -10,6 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "express": "^4.17.1",
-    "express-logging": "^1.1.1"
+    "express-logging": "^1.1.1",
+    "logops": "^2.1.0"
   }
 }
