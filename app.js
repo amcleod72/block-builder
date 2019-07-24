@@ -43,21 +43,18 @@ function tokenFromJWT (req,res,next){
                 return res.status(401).send();
             } else {
                 console.log('jwtData',jwtData);
-                /*
+
                 let fetchData = async() => {
-                    let accessToken = await global.api.getToken(APIKeys.clientId,APIKeys.clientSecret,jwtData.request.rest.refreshToken,'offline');
+                    let accessToken = await getToken(APIKeys.clientId,APIKeys.clientSecret,jwtData.request.rest.refreshToken,'offline');
 
                     if (accessToken){
-                        jwtData.request.rest = accessToken;
-                        req.session.jwt = jwtData;
-                        //console.log("jwt from post",req.session.jwt);
+                        return res.status(200).send({'accessToken':accessToken});
                         next();
                     } else {
                         return res.status(401).send();
                     }
                 }
                 fetchData();
-                */
             }
         });
     } else {
@@ -66,6 +63,43 @@ function tokenFromJWT (req,res,next){
     }
 
     next();
+}
+
+function getToken(clientId,clientSecret,refreshToken,accessType){
+    // Return new promise
+    return new Promise(function(resolve, reject) {
+        var payload =   {
+            "clientId": clientId,
+            "clientSecret": clientSecret,
+            "refreshToken": refreshToken,
+            "accessType": accessType
+        };
+
+        var restoptions = {
+            "url":        "https://auth.exacttargetapis.com/v1/requestToken",
+            "method":     "POST",
+            "headers":    {
+                "content-type":"application/json"
+            },
+            "body": JSON.stringify(payload)
+        };
+
+    	// Do async job
+        request.post(restoptions, function(err, response, body) {
+            if (err) {
+                console.log(JSON.stringify(err));
+                reject(err);
+            } else {
+                //console.log("Access Token",body);
+                var resp = JSON.parse(body);
+                if (resp.accessToken){
+                    resolve(resp);
+                } else {
+                    reject(new Error('Failed to get access token from SFMC'));
+                }
+            }
+        })
+    });
 }
 
 http.createServer(app).listen(app.get('port'), function(){
