@@ -9,10 +9,6 @@ app.use(express.static(path.join(__dirname, 'Public')));
 app.set('port', process.env.PORT || 4000);
 
 app.use(audit({
-    logger: logger, // Existing bunyan logger
-    excludeURLs: [‘health’, ‘metrics’], // Exclude paths which enclude 'health' & 'metrics'
-    request: {},
-    response: {}
 }));
 
 http.createServer(app).listen(app.get('port'), function(){
