@@ -46,7 +46,7 @@ function tokenFromJWT (req,res,next){
                 console.log('jwtData',jwtData);
 
                 let fetchData = async() => {
-                    let accessToken = await getToken(jwdData.request.rest.authEndpoint, APIKeys.clientId,APIKeys.clientSecret,jwtData.request.rest.refreshToken,'offline');
+                    let accessToken = await getToken(jwtData.request.rest.authEndpoint, APIKeys.clientId,APIKeys.clientSecret,jwtData.request.rest.refreshToken,'offline');
 
                     if (accessToken){
                         return res.status(200).send({'accessToken':accessToken});
