@@ -54,7 +54,7 @@ app.use('/login', function(req, res){
                     })
                     .then(function (response) {
                         console.log('Response',response);
-                        res.status(200).send({'accessToken':response});
+                        res.status(200).send({'accessToken':response.data});
                     })
                     .catch(function (error) {
                         console.log(error);
