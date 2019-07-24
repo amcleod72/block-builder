@@ -57,7 +57,7 @@ app.use('/login', function(req, res){
                         response.data.apiEndpointBase = jwtData.request.rest.apiEndpointBase;
                         response.data.authEndpoint = jwtData.request.rest.authEndpoint;
 
-                        res.status(200).send('<script>window.parent.$(tokenCallback(' + JSON.stringify(response.data) + '));</script>');
+                        res.status(200).send('<script>window.parent.tokenCallback(' + JSON.stringify(response.data) + ');</script>');
                         //res.status(200).send('<script>console.log("Parent",window.parent);</script>');
                     })
                     .catch(function (error) {
