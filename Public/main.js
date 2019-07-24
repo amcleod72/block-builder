@@ -1,7 +1,3 @@
-function tokenCallback(token) {
-    ((console&&console.log)||alert)("token = " + token);
-}
-
 $('document').ready(function() {
     var sdk = new window.sfdc.BlockSDK();
     var crmIdField,chkContact,chkOpportunity;
@@ -104,5 +100,7 @@ $('document').ready(function() {
         debounce(updateMe, 500)();
     });
 
-
+    function tokenCallback(token) {
+        ((console&&console.log)||alert)("token = " + token);
+    }
 });
