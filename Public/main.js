@@ -99,4 +99,8 @@ $('document').ready(function() {
     document.getElementById('workspace').addEventListener("input", function() {
         debounce(updateMe, 500)();
     });
+
+    function tokenCallback(token) {
+        ((console&&console.log)||alert)("token = " + token);
+    }
 });
