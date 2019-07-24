@@ -22,14 +22,8 @@ app.use(bodyParser.raw({type: 'application/jwt'}));
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(cookieParser());
 
-app.use('/login', tokenFromJWT, function(req, res){
+app.use('/login', function(req, res){
     console.log('Login hit');
-    return res.status(200).send();
-    //res.render('index',{data:req.session.jwt.request.user});
-});
-
-// Simple custom middleware
-function tokenFromJWT (req,res,next){
     console.log('Body',req.body);
 
     let jwtToken;
@@ -45,27 +39,36 @@ function tokenFromJWT (req,res,next){
             } else {
                 console.log('jwtData',jwtData);
 
-                let fetchData = async() => {
-                    let accessToken = await getToken(jwtData.request.rest.authEndpoint, APIKeys.clientId,APIKeys.clientSecret,jwtData.request.rest.refreshToken,'offline');
-
-                    if (accessToken){
-                        console.log('accessToken',accessToken);
-                        return res.status(200).send({'accessToken':accessToken});
-                        next();
-                    } else {
-                        return res.status(401).send();
-                    }
+                try {
+                    await axios({
+                        method: 'POST',
+                        headers: { 'content-type': 'application/json' },
+                        url: jwtData.request.rest.authEndpoint,
+                        data: {
+                            "clientId": clientId,
+                            "clientSecret": clientSecret,
+                            "refreshToken": refreshToken,
+                            "accessType": accessType
+                        }
+                    })
+                    .then(function (response) {
+                        res.status(200).send({'accessToken':response});
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                        res.status(401).send({'message':'Not Authorized'});
+                    });;
+                } catch (error) {
+                    res.status(500).send({'message':'Internal Server Error'});
+                    console.log(error);
                 }
-                fetchData();
             }
         });
     } else {
         console.log("No jwt supplied");
         return res.status(401).send();
     }
-
-    next();
-}
+});
 
 function getToken(endpoint,clientId,clientSecret,refreshToken,accessType){
     // Return new promise
