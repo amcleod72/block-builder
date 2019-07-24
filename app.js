@@ -83,7 +83,20 @@ app.get('/roots', async function(req, res){
 
     console.log('CookieToken',token);
 
-    //fields = await api.retrieve(options);
+    let fOpts = {
+        "ObjectType":"DataFolder",
+        "Token":token.accessToken,
+        "Endpoint":token.soapEndpoint,
+        "Filter":{
+            "Property":"ParentId",
+            "SimpleOperator":"equals",
+            "Value":"0"
+        }
+    };
+
+    folders = await api.retrieve(options);
+
+    console.log('Folders',folders);
 
     return res.status(200).send({'message':'OK'});
 
