@@ -8,8 +8,6 @@ var cookieParser    = require('cookie-parser');
 
 app.use(express.static(path.join(__dirname, 'Public')));
 app.set('port', process.env.PORT || 4000);
-app.use(express.json());
-app.use(express.urlencoded({extended:true}));
 app.use(bodyParser.json());
 app.use(bodyParser.raw({type: 'application/jwt'}));
 app.use(bodyParser.urlencoded({extended: true}));
@@ -23,9 +21,6 @@ app.use('/login', tokenFromJWT, function(req, res){
 
 // Simple custom middleware
 function tokenFromJWT (req,res,next){
-    let jwtToken;
-    let jwtData;
-
     console.log('Body',req.body);
     next();
 }
