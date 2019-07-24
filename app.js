@@ -46,7 +46,7 @@ function tokenFromJWT (req,res,next){
                 console.log('jwtData',jwtData);
 
                 let fetchData = async() => {
-                    let accessToken = await getToken(APIKeys.clientId,APIKeys.clientSecret,jwtData.request.rest.refreshToken,'offline');
+                    let accessToken = await getToken(jwdData.request.rest.authEndpoint, APIKeys.clientId,APIKeys.clientSecret,jwtData.request.rest.refreshToken,'offline');
 
                     if (accessToken){
                         return res.status(200).send({'accessToken':accessToken});
@@ -66,7 +66,7 @@ function tokenFromJWT (req,res,next){
     next();
 }
 
-function getToken(clientId,clientSecret,refreshToken,accessType){
+function getToken(endpoint,clientId,clientSecret,refreshToken,accessType){
     // Return new promise
     return new Promise(function(resolve, reject) {
         var payload =   {
@@ -78,7 +78,7 @@ function getToken(clientId,clientSecret,refreshToken,accessType){
         console.log('payload',payload);
 
         var restoptions = {
-            "url":        "https://auth.exacttargetapis.com/v1/requestToken",
+            "url":        endpoint,
             "method":     "POST",
             "headers":    {
                 "content-type":"application/json"
