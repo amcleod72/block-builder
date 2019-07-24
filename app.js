@@ -78,7 +78,7 @@ app.use('/login', function(req, res){
 
 app.get('/roots', function(req, res){
     var cookies = new Cookies(req, res, { keys: APIKeys.appSignature });
-    var token = cookies.get('token');
+    var token = cookies.get('sfmc_token');
 
     console.log('CookieToken',token);
 
