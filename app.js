@@ -26,9 +26,6 @@ app.use(bodyParser.raw({type: 'application/jwt'}));
 app.use(bodyParser.urlencoded({extended: true}));
 
 app.post('/login', function(req, res){
-    console.log('Login hit');
-    console.log('Body',req.body);
-
     let jwtToken;
     let jwtData;
 
@@ -80,11 +77,13 @@ app.post('/login', function(req, res){
     }
 });
 
-app.get('/roots', function(req, res){
+app.get('/roots', async function(req, res){
     var cookies = new Cookies(req, res, { keys: APIKeys.appSignature });
     var token = cookies.get('sfmc_token');
 
     console.log('CookieToken',token);
+
+    //fields = await api.retrieve(options);
 
     return res.status(200).send({'message':'OK'});
 
