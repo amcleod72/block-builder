@@ -58,7 +58,7 @@ app.use('/login', function(req, res){
                         response.data.authEndpoint = jwtData.request.rest.authEndpoint;
 
                         cookies.set('sfmc_token',JSON.stringify(response.data));
-                        res.status(200).send('<script>window.parent.tokenCallback(' + JSON.stringify(response.data) + ');</script>');
+                        res.status(200).send('<script>window.parent.onRender();</script>');
                     })
                     .catch(function (error) {
                         console.log(error);

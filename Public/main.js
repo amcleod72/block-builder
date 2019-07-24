@@ -1,8 +1,30 @@
 let accessToken;
 
-function tokenCallback(token) {
-    accessToken = token;
-    console.log("token",accessToken);
+function onRender() {
+    let promise = Promise.all([$.getRoots()]);
+    //let promise = Promise.all([getSchema()]);
+    promise.then(function(data) {
+        console.log('Success','Have Roots');
+    }).catch(function(error) {
+        console.log('Error',error);
+    });
+}
+
+$.getRoots = function(){
+    var endpoint = window.location.protocol + "//" + window.location.hostname + ":" + window.location.port + "/roots";
+
+    return new Promise(function(resolve, reject) {
+        $.ajax({
+            type: "GET",
+            url: endpoint,
+            success: function(resp) {
+                console.log("Roots",resp)
+            },
+            error: function(response) {
+                reject(response);
+            }
+        });
+    });
 }
 
 $('document').ready(function() {
