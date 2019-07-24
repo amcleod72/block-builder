@@ -76,7 +76,7 @@ app.use('/login', function(req, res){
     }
 });
 
-app.post('/roots', function(req, res){
+app.get('/roots', function(req, res){
     var cookies = new Cookies(req, res, { keys: APIKeys.appSignature });
     var token = cookies.get('token');
 
