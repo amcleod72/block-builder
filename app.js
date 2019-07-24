@@ -90,7 +90,7 @@ app.get('/roots', async function(req, res){
         "Token":token.accessToken,
         "Endpoint":token.soapEndpoint,
         "Filter":{
-            "Property":"ParentId",
+            "Property":"ParentFolder.ID",
             "SimpleOperator":"equals",
             "Value":"0"
         }
