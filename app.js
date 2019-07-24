@@ -8,6 +8,7 @@ var Cookies         = require('cookies');
 var jwt             = require('jsonwebtoken');
 var request         = require('request');
 var axios           = require('axios');
+var sfmc            = require('./lib/sfmc');
 
 var APIKeys ={
     clientId        : process.env.clientId,
@@ -16,13 +17,15 @@ var APIKeys ={
     appSignature    : process.env.appSignature
 };
 
+let api = new sfmc();
+
 app.use(express.static(path.join(__dirname, 'Public')));
 app.set('port', process.env.PORT || 4000);
 app.use(bodyParser.json());
 app.use(bodyParser.raw({type: 'application/jwt'}));
 app.use(bodyParser.urlencoded({extended: true}));
 
-app.use('/login', function(req, res){
+app.post('/login', function(req, res){
     console.log('Login hit');
     console.log('Body',req.body);
 
