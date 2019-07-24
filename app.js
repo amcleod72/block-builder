@@ -46,10 +46,10 @@ app.use('/login', function(req, res){
                         headers: { 'content-type': 'application/json' },
                         url: jwtData.request.rest.authEndpoint,
                         data: {
-                            "clientId": clientId,
-                            "clientSecret": clientSecret,
-                            "refreshToken": refreshToken,
-                            "accessType": accessType
+                            "clientId": APIKeys.clientId,
+                            "clientSecret": APIKeys.clientSecret,
+                            "refreshToken": jwtData.request.rest.refreshToken,
+                            "accessType": 'offline'
                         }
                     })
                     .then(function (response) {
