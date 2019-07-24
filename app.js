@@ -83,7 +83,7 @@ app.get('/roots', async function(req, res){
 
     console.log('CookieToken',token);
 
-    let fOpts = {
+    let options = {
         "ObjectType":"DataFolder",
         "Token":token.accessToken,
         "Endpoint":token.soapEndpoint,
