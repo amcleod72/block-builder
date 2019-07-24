@@ -40,7 +40,7 @@ app.use('/login', function(req, res){
                 console.log('jwtData',jwtData);
 
                 try {
-                    await axios({
+                    axios({
                         method: 'POST',
                         headers: { 'content-type': 'application/json' },
                         url: jwtData.request.rest.authEndpoint,
