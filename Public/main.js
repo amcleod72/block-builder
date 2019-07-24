@@ -1,5 +1,8 @@
+let accessToken;
+
 function tokenCallback(token) {
-    ((console&&console.log)||alert)("token = " + JSON.stringify(token));
+    accessToken = token;
+    console.log("token",accessToken);
 }
 
 $('document').ready(function() {

@@ -4,7 +4,7 @@ var path            = require('path');
 var http            = require('http');
 var app             = express();
 var bodyParser      = require('body-parser');
-var cookieParser    = require('cookie-parser');
+var Cookies         = require('cookies');
 var jwt             = require('jsonwebtoken');
 var request         = require('request');
 var axios           = require('axios');
@@ -53,17 +53,18 @@ app.use('/login', function(req, res){
                         }
                     })
                     .then(function (response) {
-                        console.log('Response',response);
+                        var cookies = new Cookies(req, res, { keys: APIKeys.appSignature });
+
                         response.data.apiEndpointBase = jwtData.request.rest.apiEndpointBase;
                         response.data.authEndpoint = jwtData.request.rest.authEndpoint;
 
+                        cookies.set('sfmc_token',JSON.stringify(response.data));
                         res.status(200).send('<script>window.parent.tokenCallback(' + JSON.stringify(response.data) + ');</script>');
-                        //res.status(200).send('<script>console.log("Parent",window.parent);</script>');
                     })
                     .catch(function (error) {
                         console.log(error);
                         res.status(401).send({'message':'Not Authorized'});
-                    });;
+                    });
                 } catch (error) {
                     res.status(500).send({'message':'Internal Server Error'});
                     console.log(error);
@@ -76,9 +77,20 @@ app.use('/login', function(req, res){
     }
 });
 
+app.post('/roots', function(req, res){
+    var cookies = new Cookies(req, res, { keys: APIKeys.appSignature });
+    var token = cookies.get('token');
+
+    console.log('CookieToken',token);
+
+    return res.status(200).send({'message':'OK'});
+
+});
+
 function getToken(endpoint,clientId,clientSecret,refreshToken,accessType){
     // Return new promise
     return new Promise(function(resolve, reject) {
+
         var payload =   {
             "clientId": clientId,
             "clientSecret": clientSecret,
