@@ -17,7 +17,7 @@ app.use(cookieParser());
 
 app.use('/login', tokenFromJWT, function(req, res){
     console.log('Login hit');
-    res.send( 200, 'OK' );
+    return res.status(200).send();
     //res.render('index',{data:req.session.jwt.request.user});
 });
 
@@ -27,6 +27,7 @@ function tokenFromJWT (req,res,next){
     let jwtData;
 
     console.log('Body',req.body);
+    next();
 }
 
 http.createServer(app).listen(app.get('port'), function(){
