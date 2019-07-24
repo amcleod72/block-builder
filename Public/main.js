@@ -31,6 +31,10 @@ $('document').ready(function() {
         fillSettings();
     });
 
+    sdk.triggerAuth('8d023663-4221-4b41-b849-68bedb9b2be3',function(data) {
+        console.log('AuthData',data);
+    });
+
     $('#chkContact').change(function() {
         $("#opportunityToggleContainer").toggle();
     });
