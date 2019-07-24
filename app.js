@@ -21,7 +21,6 @@ app.set('port', process.env.PORT || 4000);
 app.use(bodyParser.json());
 app.use(bodyParser.raw({type: 'application/jwt'}));
 app.use(bodyParser.urlencoded({extended: true}));
-app.use(cookieParser());
 
 app.use('/login', function(req, res){
     console.log('Login hit');
