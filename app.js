@@ -49,6 +49,7 @@ function tokenFromJWT (req,res,next){
                     let accessToken = await getToken(jwtData.request.rest.authEndpoint, APIKeys.clientId,APIKeys.clientSecret,jwtData.request.rest.refreshToken,'offline');
 
                     if (accessToken){
+                        console.log('accessToken',accessToken);
                         return res.status(200).send({'accessToken':accessToken});
                         next();
                     } else {
