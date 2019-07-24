@@ -98,7 +98,7 @@ app.get('/roots', async function(req, res){
 
     console.log('Options',options);
 
-    folders = await api.retrieve(options);
+    let folders = await api.retrieve(options);
 
     console.log('Folders',folders);
 
