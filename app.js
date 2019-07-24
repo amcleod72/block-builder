@@ -59,7 +59,7 @@ app.post('/login', function(req, res){
 
                         response.data.apiEndpointBase = jwtData.request.rest.apiEndpointBase;
                         response.data.authEndpoint = jwtData.request.rest.authEndpoint;
-                        response.data.soapEndpoint = jwtData.request.rest.authEndpoint.replace('rest','soap');
+                        response.data.soapEndpoint = response.data.apiEndpointBase.replace('rest','soap');
 
                         cookies.set('sfmc_token',JSON.stringify(response.data));
                         res.status(200).send('<script>window.parent.onRender();</script>');
