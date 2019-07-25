@@ -1,6 +1,7 @@
 let accessToken, roots;
 
 function onRender() {
+    console.log('Cookie',getCookie('sfmc_roots'));
     roots = JSON.parse(getCookie('sfmc_roots'))
 
     if (!roots){
