@@ -77,13 +77,9 @@ app.post('/login', function(req, res){
     }
 });
 
-app.get('/roots', async function(req, res){
+app.get('/folders/:ParentID', async function(req, res){
     var cookies = new Cookies(req, res, { keys: APIKeys.appSignature });
     var token = JSON.parse(cookies.get('sfmc_token'));
-
-    console.log('CookieToken',token);
-    console.log('SoapEndpoint',token.soapEndpoint);
-    console.log('accessToken',token.accessToken);
 
     let options = {
         "ObjectType":"DataFolder",
@@ -92,14 +88,12 @@ app.get('/roots', async function(req, res){
         "Filter":{
             "Property":"ParentFolder.ID",
             "SimpleOperator":"equals",
-            "Value":"0"
+            "Value":req.params['ParentID']
         }
     };
 
     let folders = await api.retrieve(options);
     let response = [];
-
-    console.log('Folders',folders.length);
 
     folders.forEach(function (folder) {
         response.push(

@@ -11,7 +11,7 @@ function onRender() {
 }
 
 $.getRoots = function(){
-    var endpoint = window.location.protocol + "//" + window.location.hostname + ":" + window.location.port + "/roots";
+    var endpoint = window.location.protocol + "//" + window.location.hostname + ":" + window.location.port + "/folders/0";
 
     return new Promise(function(resolve, reject) {
         $.ajax({
