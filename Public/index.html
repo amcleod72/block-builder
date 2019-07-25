@@ -6,7 +6,7 @@
     <link href="https://s3-ap-southeast-2.amazonaws.com/lightening/assets/styles/salesforce-lightning-design-system.css" rel="stylesheet" type="text/css">
     <style>
         html {
-                background: #f4f6f9;
+                background: #fff;
             }
 
             #footer {
@@ -28,6 +28,22 @@
 </head>
 
 <body>
+    <!-- Modal Backdrop Start -->
+    <div id="modal-backdrop" class="slds-backdrop slds-backdrop_open" hidden></div>
+    <!-- Modal Backdrop End -->
+
+    <!-- Modal Alert Start -->
+    <div id="toast-container" style="margin: auto; width: 50%;" hidden></div>
+    <!-- Modal Alert End -->
+
+    <!-- Spinner Start -->
+    <div id="spinner" role="status" class="slds-spinner slds-spinner_medium slds-spinner_brand">
+        <span class="slds-assistive-text">Loading</span>
+        <div class="slds-spinner__dot-a"></div>
+        <div class="slds-spinner__dot-b"></div>
+    </div>
+    <!-- Spinner End -->
+
     <div class="slds-card__header slds-grid">
         <header class="slds-media slds-media_center slds-has-flexi-truncate">
             <div class="slds-media__figure">
@@ -48,40 +64,110 @@
     </div>
 
     <div id="workspace" class="slds-card__body slds-card__body_inner">
-        <div class="slds-form-element">
-            <label class="slds-checkbox_toggle slds-grid">
-                <input type="checkbox" id="chkContact" name="chkContact" value="on" />
-                <span id="checkbox-toggle-contact" class="slds-checkbox_faux_container" aria-live="assertive">
-                    <span class="slds-checkbox_faux"></span>
-                    <span class="slds-checkbox_on">On</span>
-                    <span class="slds-checkbox_off">Off</span>
-                </span>
-                <span class="slds-form-element__label slds-m-bottom_none">Add to Lead/Contact</span>
-            </label>
-        </div>
-        <div id="opportunityToggleContainer" class="slds-form-element">
-            <label class="slds-checkbox_toggle slds-grid">
 
-                <input type="checkbox" id="chkOpportunity" name="chkOpportunity" value="on" />
-                <span id="checkbox-toggle-oppty" class="slds-checkbox_faux_container" aria-live="assertive">
-                    <span class="slds-checkbox_faux"></span>
-                    <span class="slds-checkbox_on">On</span>
-                    <span class="slds-checkbox_off">Off</span>
-                </span>
-                <span class="slds-form-element__label slds-m-bottom_none">Add to Opportunity</span>
-            </label>
-        </div>
-        <div class="idContainer">
-            <div class="slds-form-element">
-                <label class="slds-form-element__label" for="crm-id-field">Opportunity ID Field</label>
-                <div class="slds-form-element__control">
-                    <input type="text" id="crm-id-field" class="slds-input" placeholder="field containing ID to associate email with" />
-                </div>
-            </div>
-        </div>
-        <footer id="footer" class="slds-card__footer idContainer">This block requires you to provide the name of the data extension field in which you have stored the ID of the object to which the email task should be associated (typically an Opportunity or Case
-            ID).</footer>
     </div>
+
+    <section id="campaign-form" role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" hidden>
+        <div class="slds-modal__container">
+            <header class="slds-modal__header"><button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse close-form" title="Close"><svg class="slds-button__icon slds-button__icon_large" aria-hidden="true">
+                        <use xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
+                    </svg><span class="slds-assistive-text">Close</span></button>
+                <h2 id="form-title" class="slds-text-heading_medium slds-hyphenate">Select Template</h2>
+            </header>
+
+            <div class="slds-grid slds-gutters slds-modal__content">
+                <div class="slds-tree_container">
+<h4 class="slds-tree__group-header" id="treeheading">Tree Group Header</h4>
+<ul aria-labelledby="treeheading" class="slds-tree" role="tree">
+<li aria-level="1" role="treeitem">
+<div class="slds-tree__item">
+<button class="slds-button slds-button_icon slds-m-right_x-small slds-is-disabled" aria-hidden="true" tabindex="-1" title="Expand Tree Item">
+<svg class="slds-button__icon slds-button__icon_small" aria-hidden="true">
+<use xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#chevronright"></use>
+</svg>
+<span class="slds-assistive-text">Expand Tree Item</span>
+</button>
+<span class="slds-has-flexi-truncate">
+<span class="slds-tree__item-label slds-truncate" title="Tree Item">Tree Item</span>
+</span>
+</div>
+</li>
+<li aria-expanded="true" aria-label="Tree Branch" aria-level="1" role="treeitem">
+<div class="slds-tree__item">
+<button class="slds-button slds-button_icon slds-m-right_x-small" aria-hidden="true" tabindex="-1" title="Expand Tree Branch">
+<svg class="slds-button__icon slds-button__icon_small" aria-hidden="true">
+<use xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#chevronright"></use>
+</svg>
+<span class="slds-assistive-text">Expand Tree Branch</span>
+</button>
+<span class="slds-has-flexi-truncate">
+<span class="slds-tree__item-label slds-truncate" title="Tree Branch">Tree Branch</span>
+</span>
+</div>
+<ul role="group">
+<li aria-level="2" aria-selected="true" role="treeitem" tabindex="0">
+<div class="slds-tree__item">
+<button class="slds-button slds-button_icon slds-m-right_x-small slds-is-disabled" aria-hidden="true" tabindex="-1" title="Expand Tree Item">
+<svg class="slds-button__icon slds-button__icon_small" aria-hidden="true">
+<use xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#chevronright"></use>
+</svg>
+<span class="slds-assistive-text">Expand Tree Item</span>
+</button>
+<span class="slds-has-flexi-truncate">
+<span class="slds-tree__item-label slds-truncate" title="Tree Item">Tree Item</span>
+</span>
+</div>
+</li>
+</ul>
+</li>
+<li aria-expanded="false" aria-label="Tree Branch" aria-level="1" role="treeitem">
+<div class="slds-tree__item">
+<button class="slds-button slds-button_icon slds-m-right_x-small" aria-hidden="true" tabindex="-1" title="Expand Tree Branch">
+<svg class="slds-button__icon slds-button__icon_small" aria-hidden="true">
+<use xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#chevronright"></use>
+</svg>
+<span class="slds-assistive-text">Expand Tree Branch</span>
+</button>
+<span class="slds-has-flexi-truncate">
+<span class="slds-tree__item-label slds-truncate" title="Tree Branch">Tree Branch</span>
+</span>
+</div>
+<ul role="group">
+<li aria-level="2" role="treeitem">
+<div class="slds-tree__item">
+<button class="slds-button slds-button_icon slds-m-right_x-small slds-is-disabled" aria-hidden="true" tabindex="-1" title="Expand Tree Item">
+<svg class="slds-button__icon slds-button__icon_small" aria-hidden="true">
+<use xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#chevronright"></use>
+</svg>
+<span class="slds-assistive-text">Expand Tree Item</span>
+</button>
+<span class="slds-has-flexi-truncate">
+<span class="slds-tree__item-label slds-truncate" title="Tree Item">Tree Item</span>
+</span>
+</div>
+</li>
+</ul>
+</li>
+<li aria-level="1" role="treeitem">
+<div class="slds-tree__item">
+<button class="slds-button slds-button_icon slds-m-right_x-small slds-is-disabled" aria-hidden="true" tabindex="-1" title="Expand Tree Item with a Really Really Long Name That Should Truncate">
+<svg class="slds-button__icon slds-button__icon_small" aria-hidden="true">
+<use xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#chevronright"></use>
+</svg>
+<span class="slds-assistive-text">Expand Tree Item with a Really Really Long Name That Should Truncate</span>
+</button>
+<span class="slds-has-flexi-truncate">
+<span class="slds-tree__item-label slds-truncate" title="Tree Item with a Really Really Long Name That Should Truncate">Tree Item with a Really Really Long Name That Should Truncate</span>
+</span>
+</div>
+</li>
+</ul>
+</div>
+
+            </div>
+            <footer class="slds-modal__footer"><button class="slds-button slds-button_neutral close-form">Cancel</button><button class="slds-button slds-button_brand">Save</button></footer>
+        </div>
+    </section>
 
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
