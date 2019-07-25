@@ -102,6 +102,7 @@ app.get('/roots', async function(req, res){
     console.log('Folders',folders.length);
 
     for (var folder in folders) {
+        console.log('Folder',folder);
         response.push(
             {
                 "Id":folder.ID,
@@ -110,6 +111,8 @@ app.get('/roots', async function(req, res){
             }
         );
     }
+
+    console.log('Response',response);
 
     cookies.set('sfmc_roots',JSON.stringify(response));
 
