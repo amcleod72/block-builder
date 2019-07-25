@@ -25,6 +25,9 @@ $.getRoots = function(){
                 reject(response);
             }
         });
+    })
+    .then(function (response) {
+        alert('Done!')
     });
 }
 
