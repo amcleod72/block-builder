@@ -137,7 +137,7 @@ $('document').ready(function() {
          expire.setTime(today.getTime() + 3600000 * 24 * nDays);
          document.cookie = cookieName + "=" + escape(cookieValue) + "; expires=" +
          expire.toGMTString() + "; path=/";
-    },
+    }
 
     function getCookie(cookiename) {
         var value = "; " + document.cookie;
