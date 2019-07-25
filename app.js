@@ -105,7 +105,7 @@ app.get('/roots', async function(req, res){
         response.push(
             {
                 "Id":folder.ID,
-                "Name":folder.name,
+                "Name":folder.Name,
                 "ContantType":folder.ContentType
             }
         );
