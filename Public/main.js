@@ -2,7 +2,7 @@ let accessToken;
 
 function onRender() {
     let promise = Promise.all([$.getRoots()]);
-    //let promise = Promise.all([getSchema()]);
+
     promise.then(function(data) {
         console.log('Success','Have Roots');
     }).catch(function(error) {
@@ -20,14 +20,12 @@ $.getRoots = function(){
             success: function(resp) {
                 console.log("Roots",resp)
                 setCookie('sfmc_roots',JSON.stringify(resp),365);
+                resolve(resp);
             },
             error: function(response) {
                 reject(response);
             }
         });
-    })
-    .then(function (response) {
-        alert('Done!')
     });
 }
 
