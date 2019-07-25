@@ -19,7 +19,7 @@ $.getRoots = function(){
             url: endpoint,
             success: function(resp) {
                 console.log("Roots",resp)
-                setCookie('sfmc_routs',JSON.stringify(resp),365);
+                setCookie('sfmc_roots',JSON.stringify(resp),365);
             },
             error: function(response) {
                 reject(response);
