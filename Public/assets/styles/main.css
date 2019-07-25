@@ -1,0 +1,40 @@
+#message-search-container {
+    margin-right: .25rem;
+}
+
+.slds-modal__container {
+    width: 90%;
+    max-width: 90%;
+}
+
+.form-col {
+    margin:15px;
+    overflow:auto;
+}
+
+.slds-text-title {
+    padding-bottom: 20px;
+}
+
+.slds-form-element {
+    margin-bottom: 15px;
+}
+
+.container{
+    min-height:140px;
+}
+
+.environment {
+    min-height:195px;
+}
+
+article.journey{
+    background:#fff;
+}
+
+.card-spinner {
+    margin: auto;
+    width: 30px;
+    height: 30px;
+    position: inherit;
+}
