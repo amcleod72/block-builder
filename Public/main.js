@@ -90,15 +90,6 @@ $('document').ready(function() {
 
     sdk.triggerAuth('8d023663-4221-4b41-b849-68bedb9b2be3');
 
-    $('#chkContact').change(function() {
-        $("#opportunityToggleContainer").toggle();
-    });
-
-    $('#chkOpportunity').change(function() {
-        $(".idContainer").toggle();
-    });
-
-
     function debounce(func, wait, immediate) {
         var timeout;
         return function() {
@@ -116,7 +107,7 @@ $('document').ready(function() {
     }
 
     function fillSettings() {
-        document.getElementById('crm-id-field').value = crmIdField;
+        //document.getElementById('crm-id-field').value = crmIdField;
     }
 
     function showMessage(type){
@@ -128,9 +119,9 @@ $('document').ready(function() {
     }
 
     function updateMe() {
-        chkContact = $("#chkContact").prop('checked');
-        chkOpportunity = $("#chkOpportunity").prop('checked');
-        crmIdField = $('#crm-id-field').val();
+        //chkContact = $("#chkContact").prop('checked');
+        //chkOpportunity = $("#chkOpportunity").prop('checked');
+        //crmIdField = $('#crm-id-field').val();
 
         if(!chkContact){
             sdk.setContent("");
