@@ -96,11 +96,22 @@ app.get('/roots', async function(req, res){
         }
     };
 
-    console.log('Options',options);
-
     let folders = await api.retrieve(options);
+    let response = [];
 
     console.log('Folders',folders);
+
+    for (var folder in folders) {
+        response.push(
+            {
+                "Id":folder.ID,
+                "Name":folder.name,
+                "ContantType":folder.ContentType
+            }
+        );
+    }
+
+    cookies.set('sfmc_roots',JSON.stringify(response));
 
     return res.status(200).send({'message':'OK'});
 
