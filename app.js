@@ -105,11 +105,7 @@ app.get('/folders/:ParentID', async function(req, res){
         );
     });
 
-    console.log('Response',response);
-
-    cookies.set('sfmc_roots',JSON.stringify(response));
-
-    return res.status(200).send({'message':'OK'});
+    return res.status(200).send(response);
 
 });
 
