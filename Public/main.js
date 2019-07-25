@@ -19,13 +19,28 @@ $.getRoots = function(){
             url: endpoint,
             success: function(resp) {
                 console.log("Roots",resp)
-                $.setCookie('sfmc_routs',resp,365);
+                setCookie('sfmc_routs',resp,365);
             },
             error: function(response) {
                 reject(response);
             }
         });
     });
+}
+
+function setCookie(cookieName, cookieValue, nDays) {
+     var today = new Date();
+     var expire = new Date();
+     if (nDays == null || nDays == 0) nDays = 1;
+     expire.setTime(today.getTime() + 3600000 * 24 * nDays);
+     document.cookie = cookieName + "=" + escape(cookieValue) + "; expires=" +
+     expire.toGMTString() + "; path=/";
+}
+
+function getCookie(cookiename) {
+    var value = "; " + document.cookie;
+    var parts = value.split("; " + cookiename + "=");
+    if (parts.length == 2) return parts.pop().split(";").shift();
 }
 
 $('document').ready(function() {
@@ -129,21 +144,4 @@ $('document').ready(function() {
     document.getElementById('workspace').addEventListener("input", function() {
         debounce(updateMe, 500)();
     });
-
-    function setCookie(cookieName, cookieValue, nDays) {
-         var today = new Date();
-         var expire = new Date();
-         if (nDays == null || nDays == 0) nDays = 1;
-         expire.setTime(today.getTime() + 3600000 * 24 * nDays);
-         document.cookie = cookieName + "=" + escape(cookieValue) + "; expires=" +
-         expire.toGMTString() + "; path=/";
-    }
-
-    function getCookie(cookiename) {
-        var value = "; " + document.cookie;
-        var parts = value.split("; " + cookiename + "=");
-        if (parts.length == 2) return parts.pop().split(";").shift();
-    }
-
-
 });
