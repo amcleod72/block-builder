@@ -2,16 +2,18 @@ let accessToken, roots;
 
 function onRender() {
     console.log('Cookie',getCookie('sfmc_roots'));
-    //roots = JSON.parse(getCookie('sfmc_roots'))
+    roots = JSON.parse(getCookie('sfmc_roots'))
 
     if (!roots){
         let promise = Promise.all([$.getRoots()]);
 
         promise.then(function(data) {
-            console.log('Success','Have Roots');
+            console.log('Roots','Refreshed');
         }).catch(function(error) {
             console.log('Error',error);
         });
+    } else {
+        console.log('Roots','Cached');
     }
 }
 
