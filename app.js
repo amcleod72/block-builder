@@ -101,8 +101,7 @@ app.get('/roots', async function(req, res){
 
     console.log('Folders',folders.length);
 
-    for (var folder in folders) {
-        console.log('Folder',folder);
+    folders.forEach(function (folder) {
         response.push(
             {
                 "Id":folder.ID,
@@ -110,7 +109,7 @@ app.get('/roots', async function(req, res){
                 "ContantType":folder.ContentType
             }
         );
-    }
+    });
 
     console.log('Response',response);
 
