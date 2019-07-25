@@ -2,7 +2,7 @@ let accessToken, roots;
 
 function onRender() {
     console.log('Cookie',getCookie('sfmc_roots'));
-    roots = JSON.parse(getCookie('sfmc_roots'))
+    //roots = JSON.parse(getCookie('sfmc_roots'))
 
     if (!roots){
         let promise = Promise.all([$.getRoots()]);
@@ -46,7 +46,11 @@ function setCookie(cookieName, cookieValue, nDays) {
 function getCookie(cookiename) {
     var value = "; " + document.cookie;
     var parts = value.split("; " + cookiename + "=");
-    if (parts.length == 2) return parts.pop().split(";").shift();
+    if (parts.length == 2) {
+        return parts.pop().split(";").shift();
+    } else {
+        return null;
+    }
 }
 
 $('document').ready(function() {
