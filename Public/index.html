@@ -391,7 +391,7 @@
                             <div class="asset-info-name slds-truncate"><span class="asset-info-name-content">UnderlayFleeceElectricBlankets_RepeatBanner.jpg</span></div>
                             <div class="asset-info-buttons">
                                 <div>
-                                    <button class="slds-button slds-button_icon" title="Replace templated content block">
+                                    <button class="slds-button slds-button_icon select content-block" title="Replace templated content block">
                                       <svg class="slds-button__icon slds-button__icon_small" aria-hidden="true">
                                         <use xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#replace"></use>
                                       </svg>
@@ -419,7 +419,7 @@
                             </div>
                             <div class="nocontent-right">
                                 <div class="slds-text-heading_small">Select Template Block</div>
-                                <button class="slds-button slds-button_brand" style="width:80px;">Browse...</button>
+                                <button class="slds-button slds-button_brand select content-block" style="width:80px;">Browse...</button>
                                 <div class="nocontent-label">No content is currently selected.</div>
                             </div>
                         </div>
@@ -438,7 +438,7 @@
                                 <div class="asset-info-name slds-truncate"><span class="asset-info-name-content">Products</span></div>
                                 <div class="asset-info-buttons">
                                     <div>
-                                        <button class="slds-button slds-button_icon" title="Select a different Data Extension">
+                                        <button class="slds-button slds-button_icon select data-extension" title="Select a different Data Extension">
                                           <svg class="slds-button__icon slds-button__icon_small" aria-hidden="true">
                                             <use xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#replace"></use>
                                           </svg>
@@ -467,7 +467,7 @@
                             </div>
                             <div class="nocontent-right">
                                 <div class="slds-text-heading_small">Select Data Extension</div>
-                                <button class="slds-button slds-button_brand" style="width:80px;">Browse...</button>
+                                <button class="slds-button slds-button_brand select data-extension" style="width:80px;">Browse...</button>
                                 <div class="nocontent-label">No Data Extension is currently selected to merge content with.</div>
                             </div>
                         </div>
@@ -548,8 +548,114 @@
         </div>
     </section>
 
+    <!-- Templates -->
+    <script id="toastTemplate" type="text/html">
+        <div id="toast-message" class="slds-region_narrow slds-is-relative">
+            <div class="slds-notify_container slds-is-absolute">
+                <div class="slds-notify slds-notify_toast slds-theme_{{type}}" role="alert">
+                    <span class="slds-assistive-text">{{type}}</span>
+                    <span class="slds-icon_container slds-icon-utility-{{type}} slds-m-right_small slds-no-flex slds-align-top">
+                        <svg class="slds-icon slds-icon_small" aria-hidden="true">
+                            <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#{{type}}"></use>
+                        </svg>
+                    </span>
+                    <div class="slds-notify__content">
+                        <h2 class="slds-text-heading_small">{{message}}</h2>
+                        <p>{{description}}</p>
+                    </div>
+                    <button class="close-toast slds-button slds-button_icon slds-notify__close slds-button_icon-inverse" title="Close">
+                        <svg class="slds-button__icon slds-button__icon_large" aria-hidden="true">
+                            <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
+                        </svg>
+                        <span class="slds-assistive-text">Close</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </script>
+
+    <script id="inputTextTemplate" type="text/html">
+
+        {{#if Hidden}}
+        <input id="form-{{Name}}" class="slds-input" type="hidden"/>
+        {{else}}
+        <div class="slds-form-element">
+            <label class="slds-form-element__label" for="form-{{Name}}">
+                {{#if IsRequired}}
+                    <abbr class="slds-required" title="required">* </abbr>
+                {{/if}}
+                {{Label}}</label>
+            <div class="slds-form-element__control">
+                {{#if ReadOnly}}
+                    <input id="form-{{Name}}" readonly="" class="slds-input" type="text"/>
+                {{else}}
+                    <input id="form-{{Name}}" class="slds-input" type="text"/>
+                {{/if}}
+            </div>
+        </div>
+        {{/if}}
+
+
+    </script>
+
+    <script id="inputTextAreaTemplate" type="text/html">
+        <div class="slds-form-element">
+            <label class="slds-form-element__label" for="form-{{Name}}">
+                {{#if IsRequired}}
+                    <abbr class="slds-required" title="required">* </abbr>
+                {{/if}}
+                {{Label}}</label>
+            <div class="slds-form-element__control">
+                {{#if ReadOnly}}
+                    <textarea id="form-{{Name}}" readonly="" class="slds-textarea" rows="10"></textarea>
+                {{else}}
+                    <textarea id="form-{{Name}}" class="slds-textarea" rows="10"></textarea>
+                {{/if}}
+
+            </div>
+        </div>
+    </script>
+
+    <script id="inputSelectTemplate" type="text/html">
+        <div class="slds-form-element">
+            <label class="slds-form-element__label" for="form-{{Name}}">{{Label}}</label>
+            <div class="slds-form-element__control">
+                <div class="slds-select_container">
+                    <select id="form-{{Name}}" class="slds-select">
+                        {{#each Allowedvalues as |value key|}}
+                            {{#each this as |childValue childKey|}}
+                                    <option value="{{childKey}}">{{childValue}}</option>
+                            {{/each}}
+                        {{/each}}
+                    </select>
+                </div>
+            </div>
+        </div>
+    </script>
+
+    <script id="inputCheckTemplate" type="text/html">
+        <div class="slds-checkbox_add-button">
+            <input class="slds-assistive-text" type="checkbox" id="form-{{Name}}" value="true" />
+            <label for="form-{{Name}}" class="slds-checkbox_faux">
+                <span class="slds-assistive-text">{{Label}}</span>
+            </label>
+        </div>
+    </script>
+
+    <script id="inputDateTemplate" type="text/html">
+        <div class="slds-form-element">
+                <label class="slds-form-element__label" for="form-{{Name}}">{{Label}}</label>
+                <div class="slds-form-element__control slds-input-has-icon slds-input-has-icon--right">
+                    <svg aria-hidden="true" class="slds-input__icon slds-icon-text-default">
+                        <use xlink:href="assets/icons/utility-sprite/svg/symbols.svg#event"></use>
+                    </svg>
+                    <input id="form-{{Name}}" class="slds-input date-input" type="text" placeholder="Pick a Date" label="{{Label}}" />
+                </div>
+            </div>
+    </script>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.1.0/handlebars.min.js"></script>
     <script src="blocksdk.js"></script>
     <script src="main.js"></script>
 </body>

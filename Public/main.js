@@ -57,6 +57,33 @@ function getCookie(cookiename) {
 
 $('document').ready(function() {
     var sdk = new window.sfdc.BlockSDK();
+    const toastTemplate = $('#toastTemplate').html();
+
+    // types ["info","success","warning","error"]
+    function showToast(type, message, description) {
+        let options = {"type":type,"message":message,"description":description};
+        $("#spinner").fadeOut(200);
+        var render = Handlebars.compile(toastTemplate);
+        $("#toast-container").html(render(options));
+        $("#toast-container").fadeIn(200);
+    }
+
+    $(document).on("click", ".close-toast", function(e) {
+        $("#toast-container").hide();
+    });
+
+    $(document).on("click", ".select", function(e) {
+        showSelect();
+    });
+
+    async function showSelect(){
+        // Clear down the form
+        // To do
+        $("#modal-backdrop").show();
+        $('#item-select').show();
+    }
+
+
     var crmIdField,chkContact,chkOpportunity;
 
     let modelAmp = `<!--%%[
