@@ -27,6 +27,7 @@ $.getRoots = function(){
             success: function(resp) {
                 console.log("Roots",resp)
                 setCookie('sfmc_roots',JSON.stringify(resp),365);
+                console.log('Cookie Roots',getCookie('sfmc_roots'));
                 resolve(resp);
             },
             error: function(response) {
