@@ -4,7 +4,7 @@ function onRender() {
     console.log('Cookie',getCookie('sfmc_roots'));
     roots = JSON.parse(decodeURI(getCookie('sfmc_roots')))
 
-    if (!roots){
+    //if (!roots){
         let promise = Promise.all([$.getRoots()]);
 
         promise.then(function(data) {
@@ -12,9 +12,9 @@ function onRender() {
         }).catch(function(error) {
             console.log('Error',error);
         });
-    } else {
-        console.log('Roots','Cached');
-    }
+    //} else {
+    //    console.log('Roots','Cached');
+    //}
 }
 
 $.getRoots = function(){
@@ -73,7 +73,8 @@ $('document').ready(function() {
     });
 
     $(document).on("click", ".select", function(e) {
-        showSelect();
+        let dataType = ($(e.target).hasClass('data-extension')) ? 'data-extension' : 'asset';
+        showSelect(dataType);
     });
 
     $(document).on("click", ".close-select", function(e) {
@@ -85,9 +86,14 @@ $('document').ready(function() {
         $('#item-select').hide();
     };
 
-    async function showSelect(){
+    async function showSelect(dataType){
         // Clear down the form
         // To do
+        let deRoots = [''];
+        let assetRoots = [];
+        let objectRoots = [];
+
+
         $("#modal-backdrop").show();
         $('#item-select').show();
     }

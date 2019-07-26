@@ -107,7 +107,7 @@ app.get('/folders/:ParentID', async function(req, res){
             {
                 "Id":folder.ID,
                 "Name":folder.Name,
-                "ContantType":folder.ContentType
+                "ContentType":folder.ContentType
             }
         );
     });
