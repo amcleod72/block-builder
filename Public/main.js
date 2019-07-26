@@ -76,6 +76,15 @@ $('document').ready(function() {
         showSelect();
     });
 
+    $(document).on("click", ".close-select", function(e) {
+        closeSelect();
+    });
+
+    function closeSelect(){
+        $('#modal-backdrop').hide();
+        $('#item-select').hide();
+    };
+
     async function showSelect(){
         // Clear down the form
         // To do
