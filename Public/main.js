@@ -4,6 +4,12 @@ function onRender() {
     console.log('Cookie',getCookie('sfmc_roots'));
     roots = JSON.parse(decodeURI(getCookie('sfmc_roots')))
 
+    $('#myTree').tree({
+      dataSource: getTreeData,
+      multiSelect: false,
+      folderSelect: false
+    });
+
     //if (!roots){
         let promise = Promise.all([$.getRoots()]);
 
@@ -191,3 +197,21 @@ $('document').ready(function() {
         debounce(updateMe, 500)();
     });
 });
+
+
+function treeData(openedParentData, callback) {
+  childNodesArray = [
+    { "name": "Ascending and Descending", "type": "folder" },
+    { "name": "Sky and Water I", "type": "item" },
+    { "name": "Drawing Hands", "type": "folder" },
+    { "name": "waterfall", "type": "item" },
+    { "name": "Belvedere", "type": "folder" },
+    { "name": "Relativity", "type": "item" },
+    { "name": "House of Stairs", "type": "folder" },
+    { "name": "Convex and Concave", "type": "item" }
+  ];
+
+  callback({
+    data: childNodesArray
+  });
+}
