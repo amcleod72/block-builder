@@ -145,6 +145,7 @@ $('document').ready(function() {
     getTreeData = function (openedParentData, callback) {
         let childNodesArray = [];
         if (!openedParentData.id){
+            // Initialization of tree. Load relevant roots.
             for (var r = 0; r < roots; r++) {
                 childNodesArray.push(
                     {
@@ -155,11 +156,17 @@ $('document').ready(function() {
                     }
                 )
             }
+            childNodesArray = [
+                { "name": "Ascending and Descending", "type": "folder", "id":12345},
+                { "name": "Sky and Water I", "type": "item", "id":654321 }
+            ];
+            console.log(JSON.stringify(openedParentData));
         } else {
             childNodesArray = [
                 { "name": "Ascending and Descending", "type": "folder", "id":12345},
                 { "name": "Sky and Water I", "type": "item", "id":654321 }
             ];
+            console.log(JSON.stringify(openedParentData));
         }
 
         console.log('opened',openedParentData);
