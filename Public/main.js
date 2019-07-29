@@ -1,62 +1,5 @@
 let accessToken, roots;
 
-function onRender() {
-    console.log('Cookie',getCookie('sfmc_roots'));
-    roots = JSON.parse(decodeURI(getCookie('sfmc_roots')))
-
-    //if (!roots){
-        let promise = Promise.all([$.getRoots()]);
-
-        promise.then(function(data) {
-            roots = data;
-            console.log('Roots',roots);
-        }).catch(function(error) {
-            console.log('Error',error);
-        });
-    //} else {
-    //    console.log('Roots','Cached');
-    //}
-}
-
-$.getRoots = function(){
-    var endpoint = window.location.protocol + "//" + window.location.hostname + ":" + window.location.port + "/folders/0";
-
-    return new Promise(function(resolve, reject) {
-        $.ajax({
-            type: "GET",
-            url: endpoint,
-            success: function(resp) {
-                console.log("Roots",resp)
-                setCookie('sfmc_roots',JSON.stringify(resp),365);
-                console.log('Cookie Roots',getCookie('sfmc_roots'));
-                resolve(resp);
-            },
-            error: function(response) {
-                reject(response);
-            }
-        });
-    });
-}
-
-function setCookie(cookieName, cookieValue, nDays) {
-     var today = new Date();
-     var expire = new Date();
-     if (nDays == null || nDays == 0) nDays = 1;
-     expire.setTime(today.getTime() + 3600000 * 24 * nDays);
-     document.cookie = cookieName + "=" + encodeURI(cookieValue) + "; expires=" +
-     expire.toGMTString() + "; path=/";
-}
-
-function getCookie(cookiename) {
-    var value = "; " + document.cookie;
-    var parts = value.split("; " + cookiename + "=");
-    if (parts.length == 2) {
-        return parts.pop().split(";").shift();
-    } else {
-        return null;
-    }
-}
-
 $('document').ready(function() {
     var sdk = new window.sfdc.BlockSDK();
     const toastTemplate = $('#toastTemplate').html();
@@ -195,25 +138,82 @@ $('document').ready(function() {
           folderSelect: false
         });
 
+        for (var r = 0; r < roots; r++) {
+
+        }
+
 
         $("#modal-backdrop").show();
         $('#item-select').show();
     }
 
     getTreeData = function (openedParentData, callback) {
+
+        console.log('opened',openedParentData);
       childNodesArray = [
-        { "name": "Ascending and Descending", "type": "folder" },
-        { "name": "Sky and Water I", "type": "item" },
-        { "name": "Drawing Hands", "type": "folder" },
-        { "name": "waterfall", "type": "item" },
-        { "name": "Belvedere", "type": "folder" },
-        { "name": "Relativity", "type": "item" },
-        { "name": "House of Stairs", "type": "folder" },
-        { "name": "Convex and Concave", "type": "item" }
+        { "name": "Ascending and Descending", "type": "folder", "id":12345},
+        { "name": "Sky and Water I", "type": "item", "id":654321 }
       ];
+
+      childNodesArray = roots;
 
       callback({
         data: childNodesArray
       });
     }
 });
+
+function onRender() {
+    console.log('Cookie',getCookie('sfmc_roots'));
+    roots = JSON.parse(decodeURI(getCookie('sfmc_roots')))
+
+    //if (!roots){
+        let promise = Promise.all([$.getRoots()]);
+
+        promise.then(function(data) {
+            roots = data;
+            console.log('Roots',roots);
+        }).catch(function(error) {
+            console.log('Error',error);
+        });
+    //} else {
+    //    console.log('Roots','Cached');
+    //}
+}
+
+$.getRoots = function(){
+    var endpoint = window.location.protocol + "//" + window.location.hostname + ":" + window.location.port + "/folders/0";
+
+    return new Promise(function(resolve, reject) {
+        $.ajax({
+            type: "GET",
+            url: endpoint,
+            success: function(resp) {
+                setCookie('sfmc_roots',JSON.stringify(resp),365);
+                resolve(resp);
+            },
+            error: function(response) {
+                reject(response);
+            }
+        });
+    });
+}
+
+function setCookie(cookieName, cookieValue, nDays) {
+     var today = new Date();
+     var expire = new Date();
+     if (nDays == null || nDays == 0) nDays = 1;
+     expire.setTime(today.getTime() + 3600000 * 24 * nDays);
+     document.cookie = cookieName + "=" + encodeURI(cookieValue) + "; expires=" +
+     expire.toGMTString() + "; path=/";
+}
+
+function getCookie(cookiename) {
+    var value = "; " + document.cookie;
+    var parts = value.split("; " + cookiename + "=");
+    if (parts.length == 2) {
+        return parts.pop().split(";").shift();
+    } else {
+        return null;
+    }
+}
