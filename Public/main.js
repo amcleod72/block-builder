@@ -159,11 +159,6 @@ $('document').ready(function() {
             }
 
             console.log("InitializeArray",JSON.stringify(childNodesArray));
-
-            childNodesArray = [
-                { "name": "Ascending and Descending", "type": "folder", "id":12345},
-                { "name": "Sky and Water I", "type": "item", "id":654321 }
-            ];
             console.log("Initialize",JSON.stringify(openedParentData));
         } else {
             childNodesArray = [
@@ -187,7 +182,7 @@ function onRender() {
         let promise = Promise.all([$.getRoots()]);
 
         promise.then(function(data) {
-            roots = data;
+            roots = data[0];
             console.log('Roots',roots);
         }).catch(function(error) {
             console.log('Error',error);
