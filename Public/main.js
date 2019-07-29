@@ -156,6 +156,7 @@ $('document').ready(function() {
                         "datatype":roots[r].DataType
                     }
                 );
+                console.log('Adding',roots[r]);
             }
 
             console.log("InitializeArray",JSON.stringify(childNodesArray));
