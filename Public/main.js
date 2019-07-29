@@ -38,41 +38,6 @@ $.getRoots = function(){
     });
 }
 
-$.showSelect = async function (dataType){
-    // Clear down the form
-    // To do
-    let deRoots = [''];
-    let assetRoots = [];
-    let objectRoots = [];
-
-    $('#myTree').tree({
-      dataSource: getTreeData,
-      multiSelect: false,
-      folderSelect: false
-    });
-
-
-    $("#modal-backdrop").show();
-    $('#item-select').show();
-}
-
-$.getTreeData = function (openedParentData, callback) {
-  childNodesArray = [
-    { "name": "Ascending and Descending", "type": "folder" },
-    { "name": "Sky and Water I", "type": "item" },
-    { "name": "Drawing Hands", "type": "folder" },
-    { "name": "waterfall", "type": "item" },
-    { "name": "Belvedere", "type": "folder" },
-    { "name": "Relativity", "type": "item" },
-    { "name": "House of Stairs", "type": "folder" },
-    { "name": "Convex and Concave", "type": "item" }
-  ];
-
-  callback({
-    data: childNodesArray
-  });
-}
-
 function setCookie(cookieName, cookieValue, nDays) {
      var today = new Date();
      var expire = new Date();
@@ -216,4 +181,39 @@ $('document').ready(function() {
     document.getElementById('workspace').addEventListener("input", function() {
         debounce(updateMe, 500)();
     });
+
+    showSelect = async function (dataType){
+        // Clear down the form
+        // To do
+        let deRoots = [''];
+        let assetRoots = [];
+        let objectRoots = [];
+
+        $('#myTree').tree({
+          dataSource: getTreeData,
+          multiSelect: false,
+          folderSelect: false
+        });
+
+
+        $("#modal-backdrop").show();
+        $('#item-select').show();
+    }
+
+    getTreeData = function (openedParentData, callback) {
+      childNodesArray = [
+        { "name": "Ascending and Descending", "type": "folder" },
+        { "name": "Sky and Water I", "type": "item" },
+        { "name": "Drawing Hands", "type": "folder" },
+        { "name": "waterfall", "type": "item" },
+        { "name": "Belvedere", "type": "folder" },
+        { "name": "Relativity", "type": "item" },
+        { "name": "House of Stairs", "type": "folder" },
+        { "name": "Convex and Concave", "type": "item" }
+      ];
+
+      callback({
+        data: childNodesArray
+      });
+    }
 });
