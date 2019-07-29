@@ -128,10 +128,6 @@ $('document').ready(function() {
     showSelect = async function (contentType){
         // Clear down the form
         // To do
-
-
-
-
         var treeTemplate = $('#treeTemplate').html();
         var render = Handlebars.compile(treeTemplate);
 
