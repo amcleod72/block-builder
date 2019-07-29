@@ -146,7 +146,7 @@ $('document').ready(function() {
         let childNodesArray = [];
         if (!openedParentData.id){
             // Initialization of tree. Load relevant roots.
-            console.log("RootsInGetTree",JSON.stringify(roots));
+            console.log("RootsInGetTree",roots);
             for (var r = 0; r < roots; r++) {
                 childNodesArray.push(
                     {
@@ -156,7 +156,7 @@ $('document').ready(function() {
                         "datatype":roots[r].DataType
                     }
                 );
-                console.log('Adding',roots[r]);
+                console.log('Adding',roots[r].Name);
             }
 
             console.log("InitializeArray",JSON.stringify(childNodesArray));
