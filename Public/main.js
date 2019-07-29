@@ -129,7 +129,7 @@ $('document').ready(function() {
         // Clear down the form
         // To do
         let deRoots = [''];
-        let assetRoots = [];
+        let assetRoots = ['Content Builder','Shared Content'];
         let objectRoots = [];
 
         $('#myTree').tree({
@@ -153,7 +153,7 @@ $('document').ready(function() {
                         "name":roots[r].Name,
                         "type":"folder",
                         "id":roots[r].Id,
-                        "datatype":roots[r].DataType
+                        "contenttype":roots[r].ContentType
                     }
                 );
                 console.log('Adding',roots[r].Name);
