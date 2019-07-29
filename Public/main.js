@@ -138,28 +138,30 @@ $('document').ready(function() {
           folderSelect: false
         });
 
-        for (var r = 0; r < roots; r++) {
-
-        }
-
-
         $("#modal-backdrop").show();
         $('#item-select').show();
     }
 
     getTreeData = function (openedParentData, callback) {
+        let childNodesArray = [];
+        if (openedParentData === {}){
+            for (var r = 0; r < roots; r++) {
+                childNodesArray.push(
+                    {
+                        "name":roots[r].Name,
+                        "type":"folder",
+                        "id":roots[r].Id,
+                        "datatype":roots[r].DataType
+                    }
+                )
+            }
+        } else {
+
+        }
 
         console.log('opened',openedParentData);
-      childNodesArray = [
-        { "name": "Ascending and Descending", "type": "folder", "id":12345},
-        { "name": "Sky and Water I", "type": "item", "id":654321 }
-      ];
 
-      childNodesArray = roots;
-
-      callback({
-        data: childNodesArray
-      });
+        callback({data: childNodesArray});
     }
 });
 
