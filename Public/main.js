@@ -4,17 +4,12 @@ function onRender() {
     console.log('Cookie',getCookie('sfmc_roots'));
     roots = JSON.parse(decodeURI(getCookie('sfmc_roots')))
 
-    $('#myTree').tree({
-      dataSource: getTreeData,
-      multiSelect: false,
-      folderSelect: false
-    });
-
     //if (!roots){
         let promise = Promise.all([$.getRoots()]);
 
         promise.then(function(data) {
-            console.log('Roots','Refreshed');
+            roots = data;
+            console.log('Roots',roots);
         }).catch(function(error) {
             console.log('Error',error);
         });
