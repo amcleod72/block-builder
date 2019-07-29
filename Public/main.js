@@ -146,6 +146,7 @@ $('document').ready(function() {
         let childNodesArray = [];
         if (!openedParentData.id){
             // Initialization of tree. Load relevant roots.
+            console.log("RootsInGetTree",JSON.stringify(roots));
             for (var r = 0; r < roots; r++) {
                 childNodesArray.push(
                     {
