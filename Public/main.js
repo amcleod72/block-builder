@@ -28,7 +28,7 @@ $('document').ready(function() {
 
     function closeSelect(){
         $('#modal-backdrop').hide();
-        $('#item-select').hide();
+        $('#tree-container').hide();
     };
 
 
@@ -125,29 +125,47 @@ $('document').ready(function() {
         debounce(updateMe, 500)();
     });
 
-    showSelect = async function (dataType){
+    showSelect = async function (contentType){
         // Clear down the form
         // To do
-        let deRoots = [''];
-        let assetRoots = ['Content Builder','Shared Content'];
-        let objectRoots = [];
 
-        $('#myTree').tree({
+
+
+
+        var treeTemplate = $('#treeTemplate').html();
+        var render = Handlebars.compile(treeTemplate);
+
+        let options = {
+            "contenttype":contentType
+        };
+
+        $("#tree-container").html(render(options));
+
+        $('#' + contentType).tree({
           dataSource: getTreeData,
           multiSelect: false,
           folderSelect: false
         });
 
         $("#modal-backdrop").show();
-        $('#item-select').show();
+        $('#tree-container').show();
     }
 
     getTreeData = function (openedParentData, callback) {
         let childNodesArray = [];
+
+
         if (!openedParentData.id){
             // Initialization of tree. Load relevant roots.
+            let types = {
+                "asset":['asset','asset-shared'],
+                "data-extension":['dataextension','salesforcedataextension']
+            }
+
+            //let thisType = $()
             console.log("RootsInGetTree",roots);
             for (var r=0;r<roots.length;r++) {
+
                 childNodesArray.push(
                     {
                         "name":roots[r].Name,
