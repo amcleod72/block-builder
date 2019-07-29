@@ -144,7 +144,7 @@ $('document').ready(function() {
 
     getTreeData = function (openedParentData, callback) {
         let childNodesArray = [];
-        if (openedParentData.id){
+        if (!openedParentData.id){
             for (var r = 0; r < roots; r++) {
                 childNodesArray.push(
                     {
