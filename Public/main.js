@@ -154,19 +154,22 @@ $('document').ready(function() {
                         "id":roots[r].Id,
                         "datatype":roots[r].DataType
                     }
-                )
+                );
             }
+
+            console.log("InitializeArray",JSON.stringify(childNodesArray));
+
             childNodesArray = [
                 { "name": "Ascending and Descending", "type": "folder", "id":12345},
                 { "name": "Sky and Water I", "type": "item", "id":654321 }
             ];
-            console.log(JSON.stringify(openedParentData));
+            console.log("Initialize",JSON.stringify(openedParentData));
         } else {
             childNodesArray = [
                 { "name": "Ascending and Descending", "type": "folder", "id":12345},
                 { "name": "Sky and Water I", "type": "item", "id":654321 }
             ];
-            console.log(JSON.stringify(openedParentData));
+            console.log("Expand",JSON.stringify(openedParentData));
         }
 
         console.log('opened',openedParentData);
