@@ -20,7 +20,7 @@ var APIKeys ={
 let api = new sfmc();
 
 app.use(express.static(path.join(__dirname, 'Public')));
-app.set('port', process.env.PORT || 4000);
+app.set('port', process.env.PORT);
 app.use(bodyParser.json());
 app.use(bodyParser.raw({type: 'application/jwt'}));
 app.use(bodyParser.urlencoded({extended: true}));
