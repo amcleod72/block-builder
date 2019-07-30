@@ -87,6 +87,8 @@ app.post('/login', function(req, res){
 app.get('/folders/:SelectorType/:ParentID', async function(req, res){
     var cookies = new Cookies(req, res, { keys: APIKeys.appSignature });
     var token = JSON.parse(cookies.get('sfmc_token'));
+    let response = [];
+
 
     if (req.params['SelectorType'] == 'all'){
 
@@ -96,7 +98,7 @@ app.get('/folders/:SelectorType/:ParentID', async function(req, res){
 
     }
 
-    let options = {
+    let fOpts = {
         "ObjectType":"DataFolder",
         "Token":token.accessToken,
         "Endpoint":token.soapEndpoint,
@@ -107,23 +109,85 @@ app.get('/folders/:SelectorType/:ParentID', async function(req, res){
         }
     };
 
-    let folders = await api.retrieve(options);
-    let response = [];
+    let fTask = getFolders(fOpts);
 
-    folders.forEach(function (folder) {
-        response.push(
-            {
-                "Id":folder.ID,
-                "Name":folder.Name,
-                "ContentType":folder.ContentType,
-                "Type":"folder"
-            }
-        );
+    fTask.then(function(folders) {
+        folders.forEach(function (folder) {
+            response.push(
+                {
+                    "Id":folder.ID,
+                    "Name":folder.Name,
+                    "ContentType":folder.ContentType,
+                    "Type":"folder"
+                }
+            );
+        });
     });
 
-    return res.status(200).send(response);
+    let iOpts = {
+        "ObjectType":"DataFolder",
+        "Token":token.accessToken,
+        "Endpoint":token.soapEndpoint,
+        "Filter":{
+            "Property":"ParentFolder.ID",
+            "SimpleOperator":"equals",
+            "Value":req.params['ParentID']
+        }
+    };
 
+    let iTask = getItems(iOpts);
+
+    iTask.then(function(items) {
+        /*
+        folders.forEach(function (folder) {
+            response.push(
+                {
+                    "Id":folder.ID,
+                    "Name":folder.Name,
+                    "ContentType":folder.ContentType,
+                    "Type":"folder"
+                }
+            );
+        });
+        */
+        console.log('iTask','Completed');
+    });
+
+    let promise = Promise.all([fTask,iTask]);
+
+    promise.then(function(data) {
+        return res.status(200).send(response);
+    });
 });
+
+async function getFolders(options){
+    var folders;
+
+    return new Promise(async function(resolve, reject) {
+        try {
+            folders = await api.retrieve(options);
+            resolve(folders);
+        } catch (e){
+            reject(e);
+        }
+    });
+}
+
+async function getItems(options){
+    var items;
+
+    return new Promise(async function(resolve, reject) {
+        resolve({});
+        /*
+        try {
+            folders = await api.retrieve(options);
+            resolve(folders);
+        } catch (e){
+            reject(e);
+        }
+        */
+    });
+}
 
 function getToken(endpoint,clientId,clientSecret,refreshToken,accessType){
     // Return new promise
