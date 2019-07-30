@@ -159,7 +159,8 @@ $('document').ready(function() {
                 "data-extension":['dataextension','salesforcedataextension']
             }
 
-            console.log("Expand",openedParentData);
+            console.log("openedParentData",openedParentData);
+            console.log("openedParentData.options",openedParentData.options);
             console.log("Expand",$(openedParentData));
 
             let objClicked = openedParentData['options'];
