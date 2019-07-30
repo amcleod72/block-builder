@@ -166,7 +166,7 @@ async function getItems(options){
     var items;
 
     return new Promise(async function(resolve, reject) {
-        if (options.ObjectType == 'data-extension'){
+        if (options.ObjectType == 'dataextension'){
             options.ObjectType = 'DataExtension'
             try {
                 items = await api.retrieve(options);
