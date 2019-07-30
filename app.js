@@ -174,7 +174,7 @@ async function getItems(options){
             } catch (e){
                 reject(e);
             }
-        } else if options.SelectorType == 'asset'){
+        } else if (options.SelectorType) == 'asset'){
             resolve([]);
         } else {
             resolve([]);
