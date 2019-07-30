@@ -160,7 +160,7 @@ $('document').ready(function() {
             }
 
             console.log("Expand",openedParentData);
-            console.log("Expand",openedParentData["fu.tree"]);
+            console.log("Expand",$(openedParentData));
 
             let objClicked = openedParentData['options'];
             console.log('DataType',objClicked);
