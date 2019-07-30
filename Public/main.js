@@ -175,7 +175,7 @@ $('document').ready(function() {
             }
             callback({data: childNodesArray});
         } else {
-            var endpoint = window.location.protocol + "//" + window.location.hostname + ":" + window.location.port + "/" + selectorType + "/folders/" + openedParentData.id;
+            var endpoint = window.location.protocol + "//" + window.location.hostname + ":" + window.location.port + "/folders/" + selectorType + "/" + openedParentData.id;
 
             $.ajax({
                 type: "GET",
@@ -222,7 +222,7 @@ function onRender() {
 }
 
 $.getRoots = function(){
-    var endpoint = window.location.protocol + "//" + window.location.hostname + ":" + window.location.port + "/all/folders/0";
+    var endpoint = window.location.protocol + "//" + window.location.hostname + ":" + window.location.port + "/folders/all/0";
 
     return new Promise(function(resolve, reject) {
         $.ajax({
