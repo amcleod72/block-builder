@@ -18,7 +18,7 @@ $('document').ready(function() {
     });
 
     $(document).on("click", ".select", function(e) {
-        let dataType = ($(e.target).hasClass('data-extension')) ? 'dataxtension' : 'asset';
+        let dataType = ($(e.target).hasClass('data-extension')) ? 'dataextension' : 'asset';
         showSelect(dataType);
     });
 
@@ -132,7 +132,9 @@ $('document').ready(function() {
         var render = Handlebars.compile(treeTemplate);
 
         let options = {
-            "selectorType":selectorType
+            "selectorType":selectorType,
+            "itemStyle":(selectorType == 'dataextension') ? 'glyphicon-list-alt' : 'glyphicon-file',
+            "title": (selectorType == 'dataextension') ? 'Data Extension' : 'Asset'
         };
 
         $("#tree-container").html(render(options));
@@ -156,7 +158,7 @@ $('document').ready(function() {
             // Initialization of tree. Load relevant roots.
             let types = {
                 "asset":['asset','asset-shared'],
-                "data-extension":['dataextension','salesforcedataextension']
+                "dataextension":['dataextension','salesforcedataextension']
             }
 
             let typesToShow = types[selectorType];
