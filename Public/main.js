@@ -197,10 +197,6 @@ $('document').ready(function() {
                     console.log(resp);
                 }
             });
-            childNodesArray = [
-                { "name": "Ascending and Descending", "type": "folder", "id":12345},
-                { "name": "Sky and Water I", "type": "item", "id":654321 }
-            ];
         }
         callback({data: childNodesArray});
     }
