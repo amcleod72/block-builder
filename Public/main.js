@@ -18,7 +18,7 @@ $('document').ready(function() {
     });
 
     $(document).on("click", ".select", function(e) {
-        let dataType = ($(e.target).hasClass('data-extension')) ? 'dataextension' : 'asset';
+        let dataType = ($(e.target).hasClass('data-extension')) ? 'dataxtension' : 'asset';
         showSelect(dataType);
     });
 
@@ -156,7 +156,7 @@ $('document').ready(function() {
             // Initialization of tree. Load relevant roots.
             let types = {
                 "asset":['asset','asset-shared'],
-                "dataextension":['dataextension','salesforcedataextension']
+                "data-extension":['dataextension','salesforcedataextension']
             }
 
             let typesToShow = types[selectorType];
