@@ -84,9 +84,17 @@ app.post('/login', function(req, res){
     }
 });
 
-app.get('/folders/:ParentID', async function(req, res){
+app.get('/folders/:SelectorType/:ParentID', async function(req, res){
     var cookies = new Cookies(req, res, { keys: APIKeys.appSignature });
     var token = JSON.parse(cookies.get('sfmc_token'));
+
+    if (req.params['SelectorType'] == 'all'){
+
+    } else if (req.params['SelectorType'] == 'data-extension'){
+
+    } else if (req.params['SelectorType'] == 'asset'){
+
+    }
 
     let options = {
         "ObjectType":"DataFolder",

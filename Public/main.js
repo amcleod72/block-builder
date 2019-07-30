@@ -125,14 +125,14 @@ $('document').ready(function() {
         debounce(updateMe, 500)();
     });
 
-    showSelect = async function (contentType){
+    showSelect = async function (selectorType){
         // Clear down the form
         // To do
         var treeTemplate = $('#treeTemplate').html();
         var render = Handlebars.compile(treeTemplate);
 
         let options = {
-            "contenttype":contentType
+            "selectorType":selectorType
         };
 
         $("#tree-container").html(render(options));
@@ -141,7 +141,7 @@ $('document').ready(function() {
           dataSource: getTreeData,
           multiSelect: false,
           folderSelect: false,
-          contenttype: contentType
+          contenttype: selectorType
         });
 
         $("#modal-backdrop").show();
@@ -150,6 +150,7 @@ $('document').ready(function() {
 
     getTreeData = function (openedParentData, callback) {
         let childNodesArray = [];
+        let selectorType = $('#asset-selector').attr('selector-type');
 
         if (!openedParentData.id){
             // Initialization of tree. Load relevant roots.
@@ -158,7 +159,6 @@ $('document').ready(function() {
                 "data-extension":['dataextension','salesforcedataextension']
             }
 
-            let selectorType = $('#asset-selector').attr('content-type');
             let typesToShow = types[selectorType];
 
             for (var r=0;r<roots.length;r++) {
@@ -175,7 +175,7 @@ $('document').ready(function() {
             }
             callback({data: childNodesArray});
         } else {
-            var endpoint = window.location.protocol + "//" + window.location.hostname + ":" + window.location.port + "/folders/" + openedParentData.id;
+            var endpoint = window.location.protocol + "//" + window.location.hostname + ":" + window.location.port + "/" + selectorType + "/folders/" + openedParentData.id;
 
             $.ajax({
                 type: "GET",
@@ -222,7 +222,7 @@ function onRender() {
 }
 
 $.getRoots = function(){
-    var endpoint = window.location.protocol + "//" + window.location.hostname + ":" + window.location.port + "/folders/0";
+    var endpoint = window.location.protocol + "//" + window.location.hostname + ":" + window.location.port + "/all/folders/0";
 
     return new Promise(function(resolve, reject) {
         $.ajax({
