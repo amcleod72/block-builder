@@ -165,7 +165,7 @@ $('document').ready(function() {
             //let thisType = $()
             //console.log("RootsInGetTree",roots);
             for (var r=0;r<roots.length;r++) {
-                if(typesToShow.indexOf(roots[r].ContentType)){
+                if(typesToShow.indexOf(roots[r].ContentType) !== -1){
                     childNodesArray.push(
                         {
                             "name":roots[r].Name,
