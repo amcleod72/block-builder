@@ -132,9 +132,7 @@ $('document').ready(function() {
         var render = Handlebars.compile(treeTemplate);
 
         let options = {
-            "selectorType":selectorType,
-            "itemStyle":(selectorType == 'dataextension') ? 'glyphicon-list-alt' : 'glyphicon-file',
-            "title": (selectorType == 'dataextension') ? 'Data Extension' : 'Asset'
+            "selectorType":selectorType
         };
 
         $("#tree-container").html(render(options));
