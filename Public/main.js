@@ -164,7 +164,7 @@ $('document').ready(function() {
             //let thisType = $()
             console.log("RootsInGetTree",roots);
             for (var r=0;r<roots.length;r++) {
-
+ 
                 childNodesArray.push(
                     {
                         "name":roots[r].Name,
