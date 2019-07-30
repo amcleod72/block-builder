@@ -185,7 +185,7 @@ $('document').ready(function() {
                 { "name": "Ascending and Descending", "type": "folder", "id":12345},
                 { "name": "Sky and Water I", "type": "item", "id":654321 }
             ];
-            //console.log("Expand",JSON.stringify(openedParentData));
+            console.log("Expand",openedParentData);
         }
 
         //console.log('opened',openedParentData);
