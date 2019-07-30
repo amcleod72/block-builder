@@ -159,6 +159,8 @@ $('document').ready(function() {
                 "data-extension":['dataextension','salesforcedataextension']
             }
 
+            console.log('DataType':openedParentData["fu.tree"]["options"]);
+
             //let thisType = $()
             console.log("RootsInGetTree",roots);
             for (var r=0;r<roots.length;r++) {
