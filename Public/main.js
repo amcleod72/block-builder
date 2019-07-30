@@ -161,7 +161,7 @@ $('document').ready(function() {
 
             console.log("Expand",openedParentData);
 
-            let objClicked = openedParentData['fu.tree'];
+            let objClicked = openedParentData['options'];
             console.log('DataType',objClicked);
 
             //let thisType = $()
