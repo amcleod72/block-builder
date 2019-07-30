@@ -159,7 +159,10 @@ $('document').ready(function() {
                 "data-extension":['dataextension','salesforcedataextension']
             }
 
-            console.log('DataType',JSON.stringify(openedParentData));
+
+
+            let objClicked = $(openedParentData);
+            console.log('DataType',objClicked));
 
             //let thisType = $()
             console.log("RootsInGetTree",roots);
