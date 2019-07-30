@@ -151,7 +151,6 @@ $('document').ready(function() {
     getTreeData = function (openedParentData, callback) {
         let childNodesArray = [];
 
-
         if (!openedParentData.id){
             // Initialization of tree. Load relevant roots.
             let types = {
@@ -162,8 +161,6 @@ $('document').ready(function() {
             let selectorType = $('#asset-selector').attr('content-type');
             let typesToShow = types[selectorType];
 
-            //let thisType = $()
-            //console.log("RootsInGetTree",roots);
             for (var r=0;r<roots.length;r++) {
                 if(typesToShow.indexOf(roots[r].ContentType) !== -1){
                     childNodesArray.push(
@@ -175,31 +172,33 @@ $('document').ready(function() {
                         }
                     );
                 }
-
-                //console.log('Adding',roots[r].Name);
             }
-
-            //console.log("InitializeArray",JSON.stringify(childNodesArray));
-            //console.log("Initialize",JSON.stringify(openedParentData));
         } else {
+            var endpoint = window.location.protocol + "//" + window.location.hostname + ":" + window.location.port + "/folders/" + openedParentData.id;
+
+            $.ajax({
+                type: "GET",
+                url: endpoint,
+                success: function(resp) {
+                    console.log(resp);
+                },
+                error: function(resp) {
+                    console.log(resp);
+                }
+            });
             childNodesArray = [
                 { "name": "Ascending and Descending", "type": "folder", "id":12345},
                 { "name": "Sky and Water I", "type": "item", "id":654321 }
             ];
-            console.log("Expand",openedParentData.id);
         }
-
-        //console.log('opened',openedParentData);
-
         callback({data: childNodesArray});
     }
 });
 
 function onRender() {
-    console.log('Cookie',getCookie('sfmc_roots'));
     roots = JSON.parse(decodeURI(getCookie('sfmc_roots')))
 
-    //if (!roots){
+    if (!roots){
         let promise = Promise.all([$.getRoots()]);
 
         promise.then(function(data) {
@@ -208,9 +207,9 @@ function onRender() {
         }).catch(function(error) {
             console.log('Error',error);
         });
-    //} else {
-    //    console.log('Roots','Cached');
-    //}
+    } else {
+        console.log('Roots','Cached');
+    }
 }
 
 $.getRoots = function(){
