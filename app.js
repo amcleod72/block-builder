@@ -132,7 +132,7 @@ app.get('/folders/:SelectorType/:ParentID', async function(req, res){
         items.forEach(function (item) {
             response.push(
                 {
-                    "Id":item.ID,
+                    "Id":item.Id,
                     "Name":item.Name,
                     "ContentType":item.ContentType,
                     "Type":item.Type
