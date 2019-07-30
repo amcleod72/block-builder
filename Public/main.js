@@ -140,7 +140,8 @@ $('document').ready(function() {
         $('#' + contentType).tree({
           dataSource: getTreeData,
           multiSelect: false,
-          folderSelect: false
+          folderSelect: false,
+          contenttype: contentType
         });
 
         $("#modal-backdrop").show();
