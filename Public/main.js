@@ -161,11 +161,11 @@ $('document').ready(function() {
 
 
 
-            let objClicked = $(openedParentData).attr('fu.tree');
+            let objClicked = openedParentData['fu.tree'];
             console.log('DataType',objClicked);
 
             //let thisType = $()
-            console.log("RootsInGetTree",roots);
+            //console.log("RootsInGetTree",roots);
             for (var r=0;r<roots.length;r++) {
                 childNodesArray.push(
                     {
@@ -175,20 +175,20 @@ $('document').ready(function() {
                         "contenttype":roots[r].ContentType
                     }
                 );
-                console.log('Adding',roots[r].Name);
+                //console.log('Adding',roots[r].Name);
             }
 
-            console.log("InitializeArray",JSON.stringify(childNodesArray));
-            console.log("Initialize",JSON.stringify(openedParentData));
+            //console.log("InitializeArray",JSON.stringify(childNodesArray));
+            //console.log("Initialize",JSON.stringify(openedParentData));
         } else {
             childNodesArray = [
                 { "name": "Ascending and Descending", "type": "folder", "id":12345},
                 { "name": "Sky and Water I", "type": "item", "id":654321 }
             ];
-            console.log("Expand",JSON.stringify(openedParentData));
+            //console.log("Expand",JSON.stringify(openedParentData));
         }
 
-        console.log('opened',openedParentData);
+        //console.log('opened',openedParentData);
 
         callback({data: childNodesArray});
     }
