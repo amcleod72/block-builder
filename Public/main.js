@@ -173,6 +173,7 @@ $('document').ready(function() {
                     );
                 }
             }
+            callback({data: childNodesArray});
         } else {
             var endpoint = window.location.protocol + "//" + window.location.hostname + ":" + window.location.port + "/folders/" + openedParentData.id;
 
