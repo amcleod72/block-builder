@@ -161,7 +161,7 @@ $('document').ready(function() {
 
 
 
-            let objClicked = $(openedParentData);
+            let objClicked = $(openedParentData).attr('fu.tree');
             console.log('DataType',objClicked);
 
             //let thisType = $()
