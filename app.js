@@ -89,15 +89,6 @@ app.get('/folders/:SelectorType/:ParentID', async function(req, res){
     var token = JSON.parse(cookies.get('sfmc_token'));
     let response = [];
 
-
-    if (req.params['SelectorType'] == 'all'){
-
-    } else if (req.params['SelectorType'] == 'data-extension'){
-
-    } else if (req.params['SelectorType'] == 'asset'){
-
-    }
-
     let fOpts = {
         "ObjectType":"DataFolder",
         "Token":token.accessToken,
@@ -125,11 +116,11 @@ app.get('/folders/:SelectorType/:ParentID', async function(req, res){
     });
 
     let iOpts = {
-        "ObjectType":"DataFolder",
+        "ObjectType":req.params['SelectorType'],
         "Token":token.accessToken,
         "Endpoint":token.soapEndpoint,
         "Filter":{
-            "Property":"ParentFolder.ID",
+            "Property":"CategoryID",
             "SimpleOperator":"equals",
             "Value":req.params['ParentID']
         }
@@ -138,18 +129,16 @@ app.get('/folders/:SelectorType/:ParentID', async function(req, res){
     let iTask = getItems(iOpts);
 
     iTask.then(function(items) {
-        /*
-        folders.forEach(function (folder) {
+        items.forEach(function (item) {
             response.push(
                 {
-                    "Id":folder.ID,
-                    "Name":folder.Name,
-                    "ContentType":folder.ContentType,
-                    "Type":"folder"
+                    "Id":item.ID,
+                    "Name":item.Name,
+                    "ContentType":item.ContentType,
+                    "Type":"item"
                 }
             );
         });
-        */
         console.log('iTask','Completed');
     });
 
@@ -177,15 +166,19 @@ async function getItems(options){
     var items;
 
     return new Promise(async function(resolve, reject) {
-        resolve({});
-        /*
-        try {
-            folders = await api.retrieve(options);
-            resolve(folders);
-        } catch (e){
-            reject(e);
+        if (options.ObjectType == 'data-extension'){
+            options.ObjectType = 'DataExtension'
+            try {
+                items = await api.retrieve(options);
+                resolve(items);
+            } catch (e){
+                reject(e);
+            }
+        } else if options.SelectorType == 'asset'){
+            resolve([]);
+        } else {
+            resolve([]);
         }
-        */
     });
 }
 
