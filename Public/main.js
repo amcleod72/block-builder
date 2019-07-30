@@ -159,21 +159,23 @@ $('document').ready(function() {
                 "data-extension":['dataextension','salesforcedataextension']
             }
 
-
-            let contentType = $('#asset-selector').attr('content-type');
-            console.log('DataType',contentType);
+            let selectorType = $('#asset-selector').attr('content-type');
+            let typesToShow = types[selectorType];
 
             //let thisType = $()
             //console.log("RootsInGetTree",roots);
             for (var r=0;r<roots.length;r++) {
-                childNodesArray.push(
-                    {
-                        "name":roots[r].Name,
-                        "type":"folder",
-                        "id":roots[r].Id,
-                        "contenttype":roots[r].ContentType
-                    }
-                );
+                if(typesToShow.indexOf(roots[r].ContentType)){
+                    childNodesArray.push(
+                        {
+                            "name":roots[r].Name,
+                            "type":"folder",
+                            "id":roots[r].Id,
+                            "contenttype":roots[r].ContentType
+                        }
+                    );
+                }
+
                 //console.log('Adding',roots[r].Name);
             }
 
