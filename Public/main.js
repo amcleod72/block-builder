@@ -191,14 +191,15 @@ $('document').ready(function() {
                             }
                         );
                     }
-
+                    callback({data: childNodesArray});
                 },
                 error: function(resp) {
                     console.log(resp);
+                    callback({data: childNodesArray});
                 }
             });
         }
-        callback({data: childNodesArray});
+
     }
 });
 
