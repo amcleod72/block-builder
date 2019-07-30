@@ -166,7 +166,7 @@ $('document').ready(function() {
                     childNodesArray.push(
                         {
                             "name":roots[r].Name,
-                            "type":"folder",
+                            "type":roots[r].Type,
                             "id":roots[r].Id,
                             "contenttype":roots[r].ContentType
                         }
@@ -181,6 +181,17 @@ $('document').ready(function() {
                 url: endpoint,
                 success: function(resp) {
                     console.log(resp);
+                    for (var r=0;r<resp.length;r++) {
+                        childNodesArray.push(
+                            {
+                                "name":resp[r].Name,
+                                "type":resp[r].Type,
+                                "id":resp[r].Id,
+                                "contenttype":resp[r].ContentType
+                            }
+                        );
+                    }
+
                 },
                 error: function(resp) {
                     console.log(resp);
@@ -198,7 +209,7 @@ $('document').ready(function() {
 function onRender() {
     roots = JSON.parse(decodeURI(getCookie('sfmc_roots')))
 
-    if (!roots){
+    //if (!roots){
         let promise = Promise.all([$.getRoots()]);
 
         promise.then(function(data) {
@@ -207,9 +218,9 @@ function onRender() {
         }).catch(function(error) {
             console.log('Error',error);
         });
-    } else {
-        console.log('Roots','Cached');
-    }
+    //} else {
+    //    console.log('Roots','Cached');
+    //}
 }
 
 $.getRoots = function(){
