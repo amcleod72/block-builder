@@ -162,7 +162,7 @@ $('document').ready(function() {
 
 
             let objClicked = $(openedParentData);
-            console.log('DataType',objClicked));
+            console.log('DataType',objClicked);
 
             //let thisType = $()
             console.log("RootsInGetTree",roots);
