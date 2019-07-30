@@ -137,7 +137,7 @@ $('document').ready(function() {
 
         $("#tree-container").html(render(options));
 
-        $('#' + contentType).tree({
+        $('#asset-selector').tree({
           dataSource: getTreeData,
           multiSelect: false,
           folderSelect: false,
@@ -159,12 +159,9 @@ $('document').ready(function() {
                 "data-extension":['dataextension','salesforcedataextension']
             }
 
-            console.log("openedParentData",openedParentData);
-            console.log("openedParentData.options",openedParentData.options);
-            console.log("Expand",$(openedParentData));
 
-            let objClicked = openedParentData['options'];
-            console.log('DataType',objClicked);
+            let contentType = $('#asset-selector').attr('content-type');
+            console.log('DataType',contentType);
 
             //let thisType = $()
             //console.log("RootsInGetTree",roots);
@@ -187,7 +184,7 @@ $('document').ready(function() {
                 { "name": "Ascending and Descending", "type": "folder", "id":12345},
                 { "name": "Sky and Water I", "type": "item", "id":654321 }
             ];
-            console.log("Expand",openedParentData);
+            console.log("Expand",openedParentData.id);
         }
 
         //console.log('opened',openedParentData);
