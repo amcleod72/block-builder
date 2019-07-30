@@ -135,7 +135,7 @@ app.get('/folders/:SelectorType/:ParentID', async function(req, res){
                     "Id":item.ID,
                     "Name":item.Name,
                     "ContentType":item.ContentType,
-                    "Type":"item"
+                    "Type":item.Type
                 }
             );
         });
@@ -170,6 +170,11 @@ async function getItems(options){
             options.ObjectType = 'DataExtension'
             try {
                 items = await api.retrieve(options);
+                items.forEach(function (item) {
+                    item.Id = item.ObjectID,
+                    item.ContentType = 'DataExtension';
+                    item.Type = 'item';
+                });
                 resolve(items);
             } catch (e){
                 reject(e);
