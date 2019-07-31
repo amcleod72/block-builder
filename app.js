@@ -92,8 +92,7 @@ app.get('/folders/:SelectorType/:ParentID', async function(req, res){
 
     let fOpts = {
         "ObjectType":"DataFolder",
-        "Token":token.accessToken,
-        "Endpoint":token.soapEndpoint,
+        "Token":token,
         "Filter":{
             "Property":"ParentFolder.ID",
             "SimpleOperator":"equals",
