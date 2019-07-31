@@ -44,7 +44,7 @@ app.post('/login', function(req, res){
                 console.log("JWT Error: " + JSON.stringify(err));
                 return res.status(401).send();
             } else {
-                console.log('jwtData',jwtData);
+                //console.log('jwtData',jwtData);
 
                 try {
                     axios({
@@ -88,7 +88,7 @@ app.get('/folders/:SelectorType/:ParentID', async function(req, res){
     var cookies = new Cookies(req, res, { keys: APIKeys.appSignature });
     var token = JSON.parse(cookies.get('sfmc_token'));
     let response = [];
-    console.log('Token',token);
+    //console.log('Token',token);
 
     let fOpts = {
         "ObjectType":"DataFolder",
@@ -124,6 +124,8 @@ app.get('/folders/:SelectorType/:ParentID', async function(req, res){
             "Value":req.params['ParentID']
         }
     };
+
+    console.log('iOpts',iOpts)
 
     let iTask = getItems(iOpts);
 
@@ -170,7 +172,7 @@ async function getItems(options){
             options.ObjectType = 'DataExtension'
             try {
                 items = await api.retrieve(options);
-                console.log("items",items.lenght);
+                //console.log("items",items.lenght);
                 for (var i=0;i<items.length;i++) {
                     if (items[i].Name.substr(0,1) == '_'){
                         items.splice(i, 1);
@@ -194,7 +196,7 @@ async function getItems(options){
                 };
                 options.path = 'asset/v1/content/assets';
                 items = await api.restRequest(options);
-                console.log(items)
+                //console.log(items)
                 items.sort((a, b) => (a.name > b.name) ? 1 : -1);
                 resolve(items);
             } catch (e){
@@ -204,18 +206,6 @@ async function getItems(options){
             resolve([]);
         }
     });
-}
-
-function compareName( a, b ) {
-    console.log('a',a);
-    console.log('b',b);
-  if ( a.Name < b.Name ){
-    return -1;
-  }
-  if ( a.Name > b.Name ){
-    return 1;
-  }
-  return 0;
 }
 
 function getToken(endpoint,clientId,clientSecret,refreshToken,accessType){
@@ -228,7 +218,7 @@ function getToken(endpoint,clientId,clientSecret,refreshToken,accessType){
             "refreshToken": refreshToken,
             "accessType": accessType
         };
-        console.log('payload',payload);
+        //console.log('payload',payload);
 
         var restoptions = {
             "url":        endpoint,
