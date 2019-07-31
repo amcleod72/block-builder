@@ -165,7 +165,7 @@ async function getFolders(options){
 }
 
 async function getItems(options){
-    var items;
+    var items = [];
 
     return new Promise(async function(resolve, reject) {
         if (options.ObjectType == 'dataextension'){
