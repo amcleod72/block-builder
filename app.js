@@ -195,9 +195,23 @@ async function getItems(options){
                     "$filter":"category.id eq " + options.Filter.Value
                 };
                 options.path = 'asset/v1/content/assets';
-                items = await api.restRequest(options);
+                let resp = await api.restRequest(options);
                 //console.log(items)
-                items.sort((a, b) => (a.name > b.name) ? 1 : -1);
+                if (resp.items){
+                    for (var i=0;i<resp.items.length;i++) {
+                        items.push(
+                            {
+                                "Id":resp.items[i].id,
+                                "ContentType": resp.items[i].assetType.name;,
+                                "Type":"item",
+                                "Name":resp.items[i].id
+                            }
+                        );
+                    }
+                    items = items.sort((a, b) => (a.Name > b.Name) ? 1 : -1);
+                } else {
+                    items = [];
+                }
                 resolve(items);
             } catch (e){
                 reject(e);
