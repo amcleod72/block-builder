@@ -117,8 +117,7 @@ app.get('/folders/:SelectorType/:ParentID', async function(req, res){
 
     let iOpts = {
         "ObjectType":req.params['SelectorType'],
-        "Token":token.accessToken,
-        "Endpoint":token.soapEndpoint,
+        "token":token,
         "Filter":{
             "Property":"CategoryID",
             "SimpleOperator":"equals",
@@ -165,6 +164,8 @@ async function getFolders(options){
 
 async function getItems(options){
     var items;
+    var cookies = new Cookies(req, res, { keys: APIKeys.appSignature });
+    var token = JSON.parse(cookies.get('sfmc_token'));
 
     return new Promise(async function(resolve, reject) {
         if (options.ObjectType == 'dataextension'){
@@ -186,6 +187,20 @@ async function getItems(options){
                 reject(e);
             }
         } else if (options.SelectorType == 'asset'){
+            try {
+                options.parameters = {
+                    "$page":1,
+                    "$pagesize":1000,
+                    "$filter":"category.id eq " + options.Filter.Value;
+                };
+                options.path = 'asset/v1/content/assets';
+                items = await api.restRequest(options);
+                console.log(items)
+                items.sort((a, b) => (a.name > b.name) ? 1 : -1);
+                resolve(items);
+            } catch (e){
+                reject(e);
+            }
             resolve([]);
         } else {
             resolve([]);
