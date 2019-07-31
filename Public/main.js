@@ -238,6 +238,7 @@ function onRender() {
         promise.then(function(data) {
             roots = data[0];
             console.log('Roots',roots);
+            $('#workspace').show();
             $('#spinner').hide();
             $('#modal-backdrop').hide();
         }).catch(function(error) {
