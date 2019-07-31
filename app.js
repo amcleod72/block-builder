@@ -88,6 +88,7 @@ app.get('/folders/:SelectorType/:ParentID', async function(req, res){
     var cookies = new Cookies(req, res, { keys: APIKeys.appSignature });
     var token = JSON.parse(cookies.get('sfmc_token'));
     let response = [];
+    console.log('Token',token);
 
     let fOpts = {
         "ObjectType":"DataFolder",
