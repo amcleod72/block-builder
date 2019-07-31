@@ -155,7 +155,8 @@ async function getFolders(options){
     return new Promise(async function(resolve, reject) {
         try {
             folders = await api.retrieve(options);
-            //folders.sort(compareName());
+            console.log("Folders",folders);
+            folders.sort(compareName());
             resolve(folders);
         } catch (e){
             reject(e);
