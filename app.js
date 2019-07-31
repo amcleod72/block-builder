@@ -117,7 +117,7 @@ app.get('/folders/:SelectorType/:ParentID', async function(req, res){
 
     let iOpts = {
         "ObjectType":req.params['SelectorType'],
-        "token":token,
+        "Token":token,
         "Filter":{
             "Property":"CategoryID",
             "SimpleOperator":"equals",
