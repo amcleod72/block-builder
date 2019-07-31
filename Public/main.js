@@ -145,6 +145,10 @@ $('document').ready(function() {
           contenttype: selectorType
       });
 
+        $('#myTree').on('selected.fu.tree', function (event, data) {
+         console.log("Tree Selection",data)
+        })
+
         $("#modal-backdrop").show();
         $('#tree-container').show();
     }
