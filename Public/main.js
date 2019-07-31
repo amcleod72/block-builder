@@ -32,8 +32,8 @@ $('document').ready(function() {
     };
 
     $(document).on("selected.fu.tree", function(event, data) {
-        console.log('Dialog',$(event.target).closest('.slds-modal__container'));
         if(data.target){
+            $('#btn-tree-save').prop('disabled', false);
             console.log("Selected Data",data.target);
         }
     });
