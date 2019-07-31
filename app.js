@@ -204,7 +204,7 @@ async function getItems(options){
                                 "Id":resp.items[i].id,
                                 "ContentType": resp.items[i].assetType.name,
                                 "Type":"item",
-                                "Name":resp.items[i].id
+                                "Name":resp.items[i].name
                             }
                         );
                     }
