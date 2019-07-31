@@ -11,6 +11,26 @@
             background: #fff;
         }
 
+        #spinner {
+            z-index: 999;
+        }
+        #tree-container {
+            z-index: 998;
+        }
+
+        #modal-backdrop {
+            z-index: 997;
+        }
+
+        .backdrop-light {
+            background: rgba(255, 255, 255, 0.8);
+        }
+
+        .backdrop-dark {
+            background: rgba(126, 140, 153, 0.8);
+        }
+
+
         #footer {
             text-align: center;
         }
@@ -476,7 +496,7 @@
 
 <body class="fuelux">
     <!-- Modal Backdrop Start -->
-    <div id="modal-backdrop" class="slds-backdrop slds-backdrop_open" hidden></div>
+    <div id="modal-backdrop" class="slds-backdrop slds-backdrop_open backdrop-light"></div>
     <!-- Modal Backdrop End -->
 
     <!-- Modal Alert Start -->
@@ -484,7 +504,7 @@
     <!-- Modal Alert End -->
 
     <!-- Spinner Start -->
-    <div id="spinner" role="status" class="slds-spinner slds-spinner_medium slds-spinner_brand" hidden>
+    <div id="spinner" role="status" class="slds-spinner slds-spinner_medium slds-spinner_brand">
         <span class="slds-assistive-text">Loading</span>
         <div class="slds-spinner__dot-a"></div>
         <div class="slds-spinner__dot-b"></div>

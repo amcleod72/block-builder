@@ -46,7 +46,16 @@ $('document').ready(function() {
         $('#btn-tree-save').prop('disabled', true);
     });
 
-
+    function showBackdrop(darkLight){
+        if (darkLight == 'dark'){
+            $('#modal-backdrop').removeClass('backdrop-light');
+            $('#modal-backdrop').addClass('backdrop-dark');
+        } else {
+            $('#modal-backdrop').removeClass('backdrop-dark');
+            $('#modal-backdrop').addClass('backdrop-light');
+        }
+        $('#modal-backdrop').show();
+    }
 
 
     var crmIdField,chkContact,chkOpportunity;
@@ -160,7 +169,7 @@ $('document').ready(function() {
           contenttype: selectorType
       });
 
-        $("#modal-backdrop").show();
+        showBackdrop('dark');
         $('#tree-container').show();
     }
 
@@ -229,6 +238,8 @@ function onRender() {
         promise.then(function(data) {
             roots = data[0];
             console.log('Roots',roots);
+            $('#spinner').hide();
+            $('#modal-backdrop').hide();
         }).catch(function(error) {
             console.log('Error',error);
         });
