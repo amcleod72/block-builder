@@ -170,11 +170,16 @@ async function getItems(options){
             options.ObjectType = 'DataExtension'
             try {
                 items = await api.retrieve(options);
-                items.forEach(function (item) {
-                    item.Id = item.ObjectID,
-                    item.ContentType = 'DataExtension';
-                    item.Type = 'item';
-                });
+                for (var i=0;i<items.length;i++) {
+                    if (items[i].Name.substr(0,1) == '_'){
+                        items.splice(i, 1);
+                    } else {
+                        items[i].Id = items[i].ObjectID,
+                        items[i].ContentType = 'DataExtension';
+                        items[i].Type = 'item';
+                    }
+                }
+
                 resolve(items);
             } catch (e){
                 reject(e);

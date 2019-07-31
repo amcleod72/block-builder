@@ -1,4 +1,4 @@
-let accessToken, roots;
+let accessToken, roots, selectedAsset, selectedDE;
 
 $('document').ready(function() {
     var sdk = new window.sfdc.BlockSDK();
@@ -133,7 +133,6 @@ $('document').ready(function() {
 
         let options = {
             "selectorType":selectorType,
-            "itemStyle":(selectorType == 'dataextension') ? 'glyphicon-list-alt' : 'glyphicon-file',
             "title": (selectorType == 'dataextension') ? 'Data Extension' : 'Asset'
         };
 
@@ -144,7 +143,7 @@ $('document').ready(function() {
           multiSelect: false,
           folderSelect: false,
           contenttype: selectorType
-        });
+      });
 
         $("#modal-backdrop").show();
         $('#tree-container').show();
