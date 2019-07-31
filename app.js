@@ -164,14 +164,13 @@ async function getFolders(options){
 
 async function getItems(options){
     var items;
-    var cookies = new Cookies(req, res, { keys: APIKeys.appSignature });
-    var token = JSON.parse(cookies.get('sfmc_token'));
 
     return new Promise(async function(resolve, reject) {
         if (options.ObjectType == 'dataextension'){
             options.ObjectType = 'DataExtension'
             try {
                 items = await api.retrieve(options);
+                console.log("items",items.lenght);
                 for (var i=0;i<items.length;i++) {
                     if (items[i].Name.substr(0,1) == '_'){
                         items.splice(i, 1);
@@ -201,7 +200,6 @@ async function getItems(options){
             } catch (e){
                 reject(e);
             }
-            resolve([]);
         } else {
             resolve([]);
         }
