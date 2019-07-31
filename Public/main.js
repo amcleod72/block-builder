@@ -33,6 +33,9 @@ $('document').ready(function() {
 
     $(document).on("selected.fu.tree", function(event, data) {
         console.log("Tree Selection",data);
+        if(data.selected && data.selected.length > 0){
+            console.log("Selected Data",data.selected[0]);
+        }
     });
 
 
