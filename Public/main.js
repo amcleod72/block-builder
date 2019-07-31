@@ -32,10 +32,18 @@ $('document').ready(function() {
     };
 
     $(document).on("selected.fu.tree", function(event, data) {
+        console.log('Target',$(event.target));
+        console.log('Dialog',$(event.target).closest('.slds-modal__container'));
+        console.log('SelectorType',$(event.target).attr("selector-type"));
+
         if(data.target){
             $('#btn-tree-save').prop('disabled', false);
             console.log("Selected Data",data.target);
         }
+    });
+
+    $(document).on("deselected.fu.tree", function(event, data) {
+        $('#btn-tree-save').prop('disabled', true);
     });
 
 
