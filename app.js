@@ -202,7 +202,7 @@ async function getItems(options){
                         items.push(
                             {
                                 "Id":resp.items[i].id,
-                                "ContentType": resp.items[i].assetType.name;,
+                                "ContentType": resp.items[i].assetType.name,
                                 "Type":"item",
                                 "Name":resp.items[i].id
                             }
