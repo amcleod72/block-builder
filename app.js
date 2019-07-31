@@ -155,6 +155,7 @@ async function getFolders(options){
     return new Promise(async function(resolve, reject) {
         try {
             folders = await api.retrieve(options);
+            folders.sort(compareName());
             resolve(folders);
         } catch (e){
             reject(e);
@@ -179,7 +180,7 @@ async function getItems(options){
                         items[i].Type = 'item';
                     }
                 }
-
+                items.sort(compareName());
                 resolve(items);
             } catch (e){
                 reject(e);
@@ -190,6 +191,16 @@ async function getItems(options){
             resolve([]);
         }
     });
+}
+
+function compareName( a, b ) {
+  if ( a.Name < b.Name ){
+    return -1;
+  }
+  if ( a.Name > b.Name ){
+    return 1;
+  }
+  return 0;
 }
 
 function getToken(endpoint,clientId,clientSecret,refreshToken,accessType){
