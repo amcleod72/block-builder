@@ -156,7 +156,7 @@ async function getFolders(options){
         try {
             folders = await api.retrieve(options);
             console.log("Folders",folders);
-            folders.sort(compareName());
+            folders.sort((a, b) => (a.Name > b.Name) ? 1 : -1);
             resolve(folders);
         } catch (e){
             reject(e);
