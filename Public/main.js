@@ -31,6 +31,10 @@ $('document').ready(function() {
         $('#tree-container').hide();
     };
 
+    $(document).on("selected.fu.tree", function(event, data) {
+        console.log("Tree Selection",data);
+    });
+
 
 
 
@@ -144,10 +148,6 @@ $('document').ready(function() {
           folderSelect: false,
           contenttype: selectorType
       });
-
-        $('#myTree').on('selected.fu.tree', function (event, data) {
-         console.log("Tree Selection",data)
-        })
 
         $("#modal-backdrop").show();
         $('#tree-container').show();
