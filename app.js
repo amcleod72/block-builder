@@ -155,7 +155,7 @@ async function getFolders(options){
     return new Promise(async function(resolve, reject) {
         try {
             folders = await api.retrieve(options);
-            folders.sort(compareName());
+            //folders.sort(compareName());
             resolve(folders);
         } catch (e){
             reject(e);
@@ -180,7 +180,7 @@ async function getItems(options){
                         items[i].Type = 'item';
                     }
                 }
-                items.sort(compareName());
+                //items.sort(compareName());
                 resolve(items);
             } catch (e){
                 reject(e);
