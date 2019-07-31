@@ -191,7 +191,7 @@ async function getItems(options){
                 options.parameters = {
                     "$page":1,
                     "$pagesize":1000,
-                    "$filter":"category.id eq " + options.Filter.Value;
+                    "$filter":"category.id eq " + options.Filter.Value
                 };
                 options.path = 'asset/v1/content/assets';
                 items = await api.restRequest(options);
