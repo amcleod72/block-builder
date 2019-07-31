@@ -195,6 +195,8 @@ async function getItems(options){
 }
 
 function compareName( a, b ) {
+    console.log('a',a);
+    console.log('b',b);
   if ( a.Name < b.Name ){
     return -1;
   }
