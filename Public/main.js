@@ -31,9 +31,9 @@ $('document').ready(function() {
         let selectorType = $("#asset-selector").attr("selector-type");
         let selectedId = $('#asset-selector').tree('selectedItems')[0].id || null;
         setCookie('sfmc_' + selectorType,selectedId,365);
-        selectedAssets[selectorType]['id'] = selectedId;
+        selectedAssets[selectorType] = {"id":selectedId,"definition":null};
         try {
-            selectedAssets[selectorType]['id'][definition] = await getAssetDef(selectorType,selectedId)
+            selectedAssets[selectorType]["definition"] = await getAssetDef(selectorType,selectedId)
         } catch (e){
             showToast('error','Marketing Cloud','An error was encountered getting the definition of ' + $('#asset-selector').tree('selectedItems')[0].name);
             console.log(e);
