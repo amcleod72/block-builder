@@ -157,7 +157,7 @@ app.get('/def/:selectorType/:id', async function(req, res){
     //console.log('Token',token);
 
     let selectorType = req.params['selectorType'];
-    let id = req.params['selectorType'];
+    let id = req.params['id'];
 
     if (selectorType == 'asset'){
         options = {
