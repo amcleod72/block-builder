@@ -1,4 +1,5 @@
-let accessToken, roots, selectedAssetID, selectedDEID, selectedAsset, selectedDE;
+let accessToken, roots;
+let selectedAssets = {};
 
 $('document').ready(function() {
     var sdk = new window.sfdc.BlockSDK();
@@ -28,20 +29,10 @@ $('document').ready(function() {
 
     $(document).on("click", "#btn-tree-save", async function(e) {
         let selectorType = $("#asset-selector").attr("selector-type");
-        let selectedId = $('#asset-selector').tree('selectedItems');
-
-        console.log("selectedId",selectedId);
-
-
-        /*
-        setCookie('sfmc_' + selectorType,selectedAssetID,365);
-
-
-        if(selectedAssetID){
-            selectedAsset = await getAssetDef(selectorType, selectedAssetID)
-        }
-        console.log("selectedAsset",selectedAsset);
-        */
+        let selectedId = $('#asset-selector').tree('selectedItems')[0].id || null;
+        setCookie('sfmc_' + selectorType,selectedId,365);
+        selectedAssets[selectorType] = selectedId;
+        console.log("selectedAssets",selectedAssets);
         closeSelect();
     });
 
@@ -56,35 +47,13 @@ $('document').ready(function() {
 
     $(document).on("selected.fu.tree", function(event, data) {
         let selectorType = $("#asset-selector").attr("selector-type");
-
         if(data.target){
             $('#btn-tree-save').prop('disabled', false);
-            if (selectorType == 'asset'){
-                selectedAssetID = data.target.id;
-                setCookie('sfmc_selectedAssetID',selectedAssetID,365);
-                console.log("selectedAssetID",selectedAssetID);
-            } else if (selectorType == 'dataextension'){
-                selectedDEID = data.target.id;
-                setCookie('sfmc_selectedDEID',selectedDEID,365);
-                console.log("selectedDEID",selectedDEID);
-            }
         }
     });
 
     $(document).on("deselected.fu.tree", function(event, data) {
         $('#btn-tree-save').prop('disabled', true);
-        let selectorType = $(event.target).attr("selector-type");
-
-        if(data.target){
-            if (selectorType == 'asset'){
-                selectedAssetID = null;
-                console.log("selectedAssetID",selectedAssetID);
-            } else if (selectorType == 'dataextension'){
-                selectedDEID = null;
-                console.log("selectedDEID",selectedDEID);
-            }
-
-        }
     });
 
 
