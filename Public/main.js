@@ -31,13 +31,32 @@ $('document').ready(function() {
         let selectorType = $("#asset-selector").attr("selector-type");
         let selectedId = $('#asset-selector').tree('selectedItems')[0].id || null;
         setCookie('sfmc_' + selectorType,selectedId,365);
-        selectedAssets[selectorType] = selectedId;
+        selectedAssets[selectorType]['id'] = selectedId;
+        try {
+            selectedAssets[selectorType]['id'][definition] = await getAssetDef(selectorType,selectedId)
+        } catch (e){
+            showToast('error','Marketing Cloud','An error was encountered getting the definition of ' + $('#asset-selector').tree('selectedItems')[0].name);
+            console.log(e);
+        }
         console.log("selectedAssets",selectedAssets);
         closeSelect();
     });
 
     function getAssetDef(selectorType,id){
-        return 'foo';
+        var endpoint = window.location.protocol + "//" + window.location.hostname + ":" + window.location.port + "/" + selectorType + "/" + id;
+
+        return new Promise(function(resolve, reject) {
+            $.ajax({
+                type: "GET",
+                url: endpoint,
+                success: function(resp) {
+                    resolve(resp);
+                },
+                error: function(response) {
+                    reject(response);
+                }
+            });
+        });
     }
 
     function closeSelect(){
