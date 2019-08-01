@@ -32,18 +32,36 @@ $('document').ready(function() {
     };
 
     $(document).on("selected.fu.tree", function(event, data) {
-        console.log('Target',$(event.target));
-        console.log('Dialog',$(event.target).closest('.slds-modal__container'));
-        console.log('SelectorType',$(event.target).attr("selector-type"));
+        let selectorType = $(event.target).attr("selector-type");
 
         if(data.target){
             $('#btn-tree-save').prop('disabled', false);
-            console.log("Selected Data",data.target);
+            if (selectorType == 'asset'){
+                selectedAsset = data.target.id;
+                setCookie('sfmc_selectedAsset',selectedAsset,365);
+                console.log("selectedAsset",selectedAsset);
+            } else if (selectorType == 'dataextension'){
+                selectedDE = data.target.id;
+                setCookie('sfmc_selectedDE',selectedDE,365);
+                console.log("selectedDE",selectedDE);
+            }
         }
     });
 
     $(document).on("deselected.fu.tree", function(event, data) {
         $('#btn-tree-save').prop('disabled', true);
+        let selectorType = $(event.target).attr("selector-type");
+
+        if(data.target){
+            if (selectorType == 'asset'){
+                selectedAsset = null;
+                console.log("selectedAsset",selectedAsset);
+            } else if (selectorType == 'dataextension'){
+                selectedDE = null;
+                console.log("selectedDE",selectedDE);
+            }
+
+        }
     });
 
     function showBackdrop(darkLight){
