@@ -28,7 +28,7 @@ $('document').ready(function() {
 
     $(document).on("click", "#btn-tree-save", async function(e) {
         let selectorType = $("#asset-selector").attr("selector-type");
-        let selectedId = $('#').tree('selectedItems');
+        let selectedId = $('#asset-selector').tree('selectedItems');
 
         console.log("selectedId",selectedId);
 
