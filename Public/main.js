@@ -1,4 +1,4 @@
-let accessToken, roots, selectedAsset, selectedDE;
+let accessToken, roots, selectedAssetID, selectedDEID, selectedAsset, selectedDE;
 
 $('document').ready(function() {
     var sdk = new window.sfdc.BlockSDK();
@@ -26,24 +26,54 @@ $('document').ready(function() {
         closeSelect();
     });
 
+    $(document).on("click", "#btn-tree-save", async function(e) {
+        let selectorType = $("#asset-selector").attr("selector-type");
+
+        if (selectorType == 'asset'){
+            setCookie('sfmc_selectedAssetID',selectedAssetID,365);
+            if(selectedAssetID){
+                selectedAsset = await getAssetDef(selectedAssetID)
+            }
+            console.log("selectedAsset",selectedAsset);
+        } else if (selectorType == 'dataextension'){
+            setCookie('sfmc_selectedDEID',selectedDEID,365);
+            if(selectedDEID){
+                selectedDE = await getDEDef(selectedDEID)
+            }
+            console.log("selectedDE",selectedDE);
+        }
+
+        closeSelect();
+    });
+
+    function getAssetDef(id){
+        return 'foo';
+    }
+
+    function getDEDef(id){
+        return 'bar';
+    }
+
+
+
     function closeSelect(){
         $('#modal-backdrop').hide();
         $('#tree-container').hide();
     };
 
     $(document).on("selected.fu.tree", function(event, data) {
-        let selectorType = $(event.target).attr("selector-type");
+        let selectorType = $("#asset-selector").attr("selector-type");
 
         if(data.target){
             $('#btn-tree-save').prop('disabled', false);
             if (selectorType == 'asset'){
-                selectedAsset = data.target.id;
-                setCookie('sfmc_selectedAsset',selectedAsset,365);
-                console.log("selectedAsset",selectedAsset);
+                selectedAssetID = data.target.id;
+                setCookie('sfmc_selectedAssetID',selectedAssetID,365);
+                console.log("selectedAssetID",selectedAssetID);
             } else if (selectorType == 'dataextension'){
-                selectedDE = data.target.id;
-                setCookie('sfmc_selectedDE',selectedDE,365);
-                console.log("selectedDE",selectedDE);
+                selectedDEID = data.target.id;
+                setCookie('sfmc_selectedDEID',selectedDEID,365);
+                console.log("selectedDEID",selectedDEID);
             }
         }
     });
@@ -54,15 +84,17 @@ $('document').ready(function() {
 
         if(data.target){
             if (selectorType == 'asset'){
-                selectedAsset = null;
-                console.log("selectedAsset",selectedAsset);
+                selectedAssetID = null;
+                console.log("selectedAssetID",selectedAssetID);
             } else if (selectorType == 'dataextension'){
-                selectedDE = null;
-                console.log("selectedDE",selectedDE);
+                selectedDEID = null;
+                console.log("selectedDEID",selectedDEID);
             }
 
         }
     });
+
+
 
     function showBackdrop(darkLight){
         if (darkLight == 'dark'){
