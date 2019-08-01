@@ -28,33 +28,26 @@ $('document').ready(function() {
 
     $(document).on("click", "#btn-tree-save", async function(e) {
         let selectorType = $("#asset-selector").attr("selector-type");
+        let selectedId = $('#').tree('selectedItems');
 
-        if (selectorType == 'asset'){
-            setCookie('sfmc_selectedAssetID',selectedAssetID,365);
-            if(selectedAssetID){
-                selectedAsset = await getAssetDef(selectedAssetID)
-            }
-            console.log("selectedAsset",selectedAsset);
-        } else if (selectorType == 'dataextension'){
-            setCookie('sfmc_selectedDEID',selectedDEID,365);
-            if(selectedDEID){
-                selectedDE = await getDEDef(selectedDEID)
-            }
-            console.log("selectedDE",selectedDE);
+        console.log("selectedId",selectedId);
+
+
+        /*
+        setCookie('sfmc_' + selectorType,selectedAssetID,365);
+
+
+        if(selectedAssetID){
+            selectedAsset = await getAssetDef(selectorType, selectedAssetID)
         }
-
+        console.log("selectedAsset",selectedAsset);
+        */
         closeSelect();
     });
 
-    function getAssetDef(id){
+    function getAssetDef(selectorType,id){
         return 'foo';
     }
-
-    function getDEDef(id){
-        return 'bar';
-    }
-
-
 
     function closeSelect(){
         $('#modal-backdrop').hide();
