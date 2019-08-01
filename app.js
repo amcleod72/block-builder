@@ -173,7 +173,7 @@ app.get('/def/:selectorType/:id', async function(req, res){
         } else {
             return res.status(500).send();
         }
-    } else if {
+    } else if (selectorType == 'dataextension'){
         return res.status(200).send({});
     } else {
         return res.status(400).send('Unsupported Object Type');
