@@ -45,7 +45,6 @@ app.post('/login', function(req, res){
                 return res.status(401).send();
             } else {
                 //console.log('jwtData',jwtData);
-
                 try {
                     axios({
                         method: 'POST',
@@ -84,11 +83,101 @@ app.post('/login', function(req, res){
     }
 });
 
-app.get('/folders/:SelectorType/:ParentID', async function(req, res){
+app.get('/folders/:selectorType/:ParentID', async function(req, res){
     var cookies = new Cookies(req, res, { keys: APIKeys.appSignature });
     var token = JSON.parse(cookies.get('sfmc_token'));
     let response = [];
     //console.log('Token',token);
+
+    let fOpts = {
+        "ObjectType":"DataFolder",
+        "Token":token,
+        "Filter":{
+            "Property":"ParentFolder.ID",
+            "SimpleOperator":"equals",
+            "Value":req.params['ParentID']
+        }
+    };
+
+    let fTask = getFolders(fOpts);
+
+    fTask.then(function(folders) {
+        folders.forEach(function (folder) {
+            response.push(
+                {
+                    "Id":folder.ID,
+                    "Name":folder.Name,
+                    "ContentType":folder.ContentType,
+                    "Type":"folder"
+                }
+            );
+        });
+    });
+
+    let iOpts = {
+        "ObjectType":req.params['selectorType'],
+        "Token":token,
+        "Filter":{
+            "Property":"CategoryID",
+            "SimpleOperator":"equals",
+            "Value":req.params['ParentID']
+        }
+    };
+
+    console.log('iOpts',iOpts)
+
+    let iTask = getItems(iOpts);
+
+    iTask.then(function(items) {
+        items.forEach(function (item) {
+            response.push(
+                {
+                    "Id":item.Id,
+                    "Name":item.Name,
+                    "ContentType":item.ContentType,
+                    "Type":item.Type
+                }
+            );
+        });
+        console.log('iTask','Completed');
+    });
+
+    let promise = Promise.all([fTask,iTask]);
+
+    promise.then(function(data) {
+        return res.status(200).send(response);
+    });
+});
+
+app.get('/def/:selectorType/:id', async function(req, res){
+    var cookies = new Cookies(req, res, { keys: APIKeys.appSignature });
+    var token = JSON.parse(cookies.get('sfmc_token'));
+    let response = [];
+    let options = {};
+    //console.log('Token',token);
+
+    let selectorType = req.params['selectorType'];
+    let id = req.params['selectorType'];
+
+    if (selectorType == 'asset'){
+        options = {
+            "path":"asset/v1/content/assets/" + id,
+            "method":"GET",
+            "Token":token
+        };
+
+        let resp = await api.restRequest(options);
+            console.log('asset',resp);
+        if (resp){
+            return res.status(200).send(resp);
+        } else {
+            return res.status(500).send();
+        }
+    } else if {
+        return res.status(200).send({});
+    } else {
+        return res.status(400).send('Unsupported Object Type');
+    }
 
     let fOpts = {
         "ObjectType":"DataFolder",
@@ -149,6 +238,41 @@ app.get('/folders/:SelectorType/:ParentID', async function(req, res){
         return res.status(200).send(response);
     });
 });
+
+async function getAsset(options){
+    var items = [];
+
+    return new Promise(async function(resolve, reject) {
+        try {
+            options.parameters = {
+                "$page":1,
+                "$pagesize":1000,
+                "$filter":"category.id eq " + options.Filter.Value
+            };
+            options.path = 'asset/v1/content/assets';
+            let resp = await api.restRequest(options);
+            //console.log(items)
+            if (resp.items){
+                for (var i=0;i<resp.items.length;i++) {
+                    items.push(
+                        {
+                            "Id":resp.items[i].id,
+                            "ContentType": resp.items[i].assetType.name,
+                            "Type":"item",
+                            "Name":resp.items[i].name
+                        }
+                    );
+                }
+                items = items.sort((a, b) => (a.Name > b.Name) ? 1 : -1);
+            } else {
+                items = [];
+            }
+            resolve(items);
+        } catch (e){
+            reject(e);
+        }
+    });
+}
 
 async function getFolders(options){
     var folders;

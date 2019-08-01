@@ -43,7 +43,7 @@ $('document').ready(function() {
     });
 
     function getAssetDef(selectorType,id){
-        var endpoint = window.location.protocol + "//" + window.location.hostname + ":" + window.location.port + "/" + selectorType + "/" + id;
+        var endpoint = window.location.protocol + "//" + window.location.hostname + ":" + window.location.port + "/def/" + selectorType + "/" + id;
 
         return new Promise(function(resolve, reject) {
             $.ajax({
