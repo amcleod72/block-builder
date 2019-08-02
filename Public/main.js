@@ -35,13 +35,37 @@ $('document').ready(function() {
         closeSelect();
     });
 
-    $(document).on("keypress", ".primary-key", function(e) {
+    $(document).on("keypress", ".primary-key", async function(e) {
         var keycode = (e.keyCode ? e.keyCode : e.which);
         if(keycode == '13' && $(e.target).hasClass('primary-key')){
-            alert('You pressed a "enter" key in textbox');
+            alert($(e.target).val());
+            try {
+                selectedAssets['record'] = await getRecord(selectedAssets.dataextension.definition.CustomerKey,$(e.target).val())
+            } catch (e){
+                console.log(e);
+            }
         }
         e.stopPropagation();
     });
+
+    function getRecord(dataExtension,primaryKey){
+        var endpoint = window.location.protocol + "//" + window.location.hostname + ":" + window.location.port;
+        endpoint += "/data/" + selectedAssets.dataextension.definition.CustomerKey;
+        endpoint += "/" + primaryKey;
+
+        return new Promise(function(resolve, reject) {
+            $.ajax({
+                type: "GET",
+                url: endpoint,
+                success: function(resp) {
+                    resolve(resp);
+                },
+                error: function(response) {
+                    reject(response);
+                }
+            });
+        });
+    }
 
     $(document).on("click", "#btn-tree-save", async function(e) {
         $('#spinner').show();
