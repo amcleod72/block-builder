@@ -39,10 +39,11 @@ $('document').ready(function() {
             closeSelect();
             validate();
         } catch (e){
-            $('#spinner').hide();
-            $('#modal-backdrop').hide();
             showToast('error','Marketing Cloud','An error was encountered getting the definition of ' + $('#asset-selector').tree('selectedItems')[0].name);
             console.log(e);
+        } finally {
+            $('#spinner').hide();
+            $('#modal-backdrop').hide();
         }
         console.log("selectedAssets",selectedAssets);
 
