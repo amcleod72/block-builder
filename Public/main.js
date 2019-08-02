@@ -28,19 +28,40 @@ $('document').ready(function() {
     });
 
     $(document).on("click", "#btn-tree-save", async function(e) {
+        showBackdrop('light');
+        $('#spinner').show();
         let selectorType = $("#asset-selector").attr("selector-type");
         let selectedId = $('#asset-selector').tree('selectedItems')[0].id || null;
-        setCookie('sfmc_' + selectorType,selectedId,365);
         selectedAssets[selectorType] = {"id":selectedId,"definition":null};
         try {
             selectedAssets[selectorType]["definition"] = await getAssetDef(selectorType,selectedId)
+            setCookie('sfmc_' + selectorType,selectedId,365);
+            closeSelect();
+            validate();
         } catch (e){
+            $('#spinner').hide();
+            $('#modal-backdrop').hide();
             showToast('error','Marketing Cloud','An error was encountered getting the definition of ' + $('#asset-selector').tree('selectedItems')[0].name);
             console.log(e);
         }
         console.log("selectedAssets",selectedAssets);
-        closeSelect();
+
     });
+
+    function validate(){
+        if(selectedAssets && selectedAssets.dataextension && selectedAssets.dataextension.definition){
+            $('#selected-dataextension-container .asset-info-name-content').html(selectedAssets.dataextension.definition.Name);
+            $('#unselected-dataextension-container').show();
+            $('#selected-dataextension-container').show();
+        }
+
+        if(selectedAssets && selectedAssets.asset && selectedAssets.asset.definition){
+            $('#selected-asset-container .asset-info-name-content').html(selectedAssets.asset.definition.name);
+            $('#unselected-asset-container').show();
+            $('#selected-asset-container').show();
+
+        }
+    }
 
     function getAssetDef(selectorType,id){
         var endpoint = window.location.protocol + "//" + window.location.hostname + ":" + window.location.port + "/def/" + selectorType + "/" + id;
@@ -75,8 +96,6 @@ $('document').ready(function() {
         $('#btn-tree-save').prop('disabled', true);
     });
 
-
-
     function showBackdrop(darkLight){
         if (darkLight == 'dark'){
             $('#modal-backdrop').removeClass('backdrop-light');
@@ -87,7 +106,6 @@ $('document').ready(function() {
         }
         $('#modal-backdrop').show();
     }
-
 
     var crmIdField,chkContact,chkOpportunity;
 
@@ -144,9 +162,9 @@ $('document').ready(function() {
 
     function showMessage(type){
         if (type === 'error'){
-            sdk.setSuperContent('<div style="font-family: Helvetica, Sans-Serif; font-size: 20px; line-height: 50px; text-align: center; height: 50px; text-align: center; background-color: red; color:white; min-width:100%;">Log to Sales Cloud - Please Configure</div>');
+            sdk.setSuperContent('<div style="font-family: Helvetica, Sans-Serif; font-size: 20px; line-height: 50px; text-align: center; height: 50px; text-align: center; background-color: red; color:white; min-width:100%;">No Content - Please Configure</div>');
         } else {
-            sdk.setSuperContent('<div style="font-family: Helvetica, Sans-Serif; font-size: 20px; line-height: 50px; text-align: center; height: 50px; text-align: center; background-color: green; color:white; min-width:100%;">Log to Sales Cloud - Configured</div>');
+            sdk.setSuperContent('<div style="font-family: Helvetica, Sans-Serif; font-size: 20px; line-height: 50px; text-align: center; height: 50px; text-align: center; background-color: green; color:white; min-width:100%;">Content - Configured</div>');
         }
     }
 
