@@ -224,65 +224,6 @@ app.get('/def/:selectorType/:id', async function(req, res){
     } else {
         return res.status(400).send('Unsupported Object Type');
     }
-
-    let fOpts = {
-        "ObjectType":"DataFolder",
-        "Token":token,
-        "Filter":{
-            "Property":"ParentFolder.ID",
-            "SimpleOperator":"equals",
-            "Value":req.params['ParentID']
-        }
-    };
-
-    let fTask = getFolders(fOpts);
-
-    fTask.then(function(folders) {
-        folders.forEach(function (folder) {
-            response.push(
-                {
-                    "Id":folder.ID,
-                    "Name":folder.Name,
-                    "ContentType":folder.ContentType,
-                    "Type":"folder"
-                }
-            );
-        });
-    });
-
-    let iOpts = {
-        "ObjectType":req.params['SelectorType'],
-        "Token":token,
-        "Filter":{
-            "Property":"CategoryID",
-            "SimpleOperator":"equals",
-            "Value":req.params['ParentID']
-        }
-    };
-
-    console.log('iOpts',iOpts)
-
-    let iTask = getItems(iOpts);
-
-    iTask.then(function(items) {
-        items.forEach(function (item) {
-            response.push(
-                {
-                    "Id":item.Id,
-                    "Name":item.Name,
-                    "ContentType":item.ContentType,
-                    "Type":item.Type
-                }
-            );
-        });
-        console.log('iTask','Completed');
-    });
-
-    let promise = Promise.all([fTask,iTask]);
-
-    promise.then(function(data) {
-        return res.status(200).send(response);
-    });
 });
 
 function soapRetrieve(options){
