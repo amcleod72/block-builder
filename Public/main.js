@@ -142,6 +142,8 @@ $('document').ready(function() {
 
     sdk.getData(function(data) {
         console.log('getData',data);
+        selectedAssets = data;
+        validate();
         crmIdField = data.crmIdField;
         chkContact = data.chkContact;
         chkOpportunity = data.chkOpportunity;
