@@ -215,6 +215,9 @@ $('document').ready(function() {
         console.log('getData',data);
         selectedAssets = data;
         validate();
+        if(selectedAssets && selectedAssets.dataextension && selectedAssets.dataextension.definition){
+            buildForm();
+        }
         crmIdField = data.crmIdField;
         chkContact = data.chkContact;
         chkOpportunity = data.chkOpportunity;
