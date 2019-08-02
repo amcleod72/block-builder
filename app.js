@@ -174,7 +174,9 @@ app.get('/def/:selectorType/:id', async function(req, res){
             return res.status(500).send();
         }
     } else if (selectorType == 'dataextension'){
-        options = {
+        let response = {};
+
+        let deOpts = {
             "ObjectType":"DataExtension",
             "Token":token,
             "Filter":{
@@ -183,12 +185,40 @@ app.get('/def/:selectorType/:id', async function(req, res){
                 "Value":id
             }
         };
-        try {
-            let resp = await api.retrieve(options);
-            return res.status(200).send(resp);
-        } catch (e){
+
+        let fieldOpts = {
+            "ObjectType":"DataExtensionField",
+            "Token":token,
+            "Filter":{
+                "Property":"DataExtension.CustomerKey",
+                "SimpleOperator":"equals",
+                "Value":id
+            }
+        };
+
+        let deTask = getItems(deOpts);
+        let fieldTask = getFields(fieldOpts);
+
+        fieldTask.then(function(fields) {
+            response['fields'] = fields;
+        });
+
+        deTask.then(function(DEs) {
+            if (DEs.length == 1){
+                response['fields'] = DEs[0];
+            }
+        });
+
+        let promise = Promise.all([fieldTask,deTask]);
+
+        promise.then(function(data) {
+            return res.status(200).send(response);
+        });
+
+        promise.catch(function(err) {
             return res.status(500).send('Internal Server Error');
-        }
+        });
+
     } else {
         return res.status(400).send('Unsupported Object Type');
     }
@@ -252,6 +282,19 @@ app.get('/def/:selectorType/:id', async function(req, res){
         return res.status(200).send(response);
     });
 });
+
+function getFields(options){
+    var items = [];
+
+    return new Promise(async function(resolve, reject) {
+        try {
+            items = await api.retrieve(options);
+            resolve(items);
+        } catch (e){
+            reject(e);
+        }
+    });
+}
 
 async function getAsset(options){
     var items = [];
