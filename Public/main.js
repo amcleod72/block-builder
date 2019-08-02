@@ -19,7 +19,7 @@ $('document').ready(function() {
     });
 
     $(document).on("click", ".select", function(e) {
-        let dataType = ($(e.target).hasClass('data-extension')) ? 'dataextension' : 'asset';
+        let dataType = ($(e.target).hasClass('dataextension')) ? 'dataextension' : 'asset';
         showSelect(dataType);
     });
 
