@@ -693,6 +693,18 @@
         </div>
     </script>
 
+    <script id="inputPrimaryKeyTemplate" type="text/html">
+        <div class="slds-form-element">
+            <label class="slds-form-element__label" for="form-{{Name}}">{{Name}}</label>
+            <div class="slds-form-element__control slds-input-has-icon slds-input-has-icon_left">
+                <svg class="slds-icon slds-input__icon slds-input__icon_left slds-icon-text-default" aria-hidden="true">
+                    <use xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#search"></use>
+                </svg>
+                <input type="text" id="form-{{Name}}" placeholder="Search for a record to merge" class="slds-input primary-key" />
+            </div>
+        </div>
+    </script>
+
     <script id="inputTextTemplate" type="text/html">
 
         {{#if Hidden}}

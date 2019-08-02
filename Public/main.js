@@ -31,8 +31,16 @@ $('document').ready(function() {
         validate();
     });
 
-    $(document).on("click", ".close-select", function(e) {
+    $(document).on("keypress", ".close-select", function(e) {
         closeSelect();
+    });
+
+    $(document).on("click", ".primary-key", function(e) {
+        var keycode = (event.keyCode ? event.keyCode : event.which);
+        if(keycode == '13' && $(e.target).hasClass('primary-key')){
+            alert('You pressed a "enter" key in textbox');
+        }
+        event.stopPropagation();
     });
 
     $(document).on("click", "#btn-tree-save", async function(e) {
@@ -65,6 +73,7 @@ $('document').ready(function() {
             $('#unselected-dataextension-container').hide();
             $('#selected-dataextension-container').show();
         } else {
+            $('#form-field-container').empty();
             $('#selected-dataextension-container').hide();
             $('#unselected-dataextension-container').show();
         }
@@ -95,8 +104,9 @@ $('document').ready(function() {
                 let field = schema.fields[i];
                 //console.log(field.Name);
                 //console.log(schema.Fields[i]);
-
-                if (field.FieldType.toLowerCase() === 'text'){
+                if (field.IsPrimaryKey.toLowerCase() === 'true'){
+                    template = $('#inputPrimaryKeyTemplate').html();
+                } else if (field.FieldType.toLowerCase() === 'text'){
                     if (!field.MaxLength || field.MaxLength > 500){
                         template = $('#inputTextAreaTemplate').html();
                     } else {
