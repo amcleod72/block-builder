@@ -246,7 +246,7 @@ app.get('/data/:deName/:primaryKeyField/:primaryKey', async function(req, res){
         "Filter":{
             "Property":primaryKeyField,
             "SimpleOperator":"equals",
-            "Value":primary
+            "Value":primaryKey
         }
     };
 
