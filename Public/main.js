@@ -89,12 +89,14 @@ $('document').ready(function() {
                 //console.log(field.Name);
                 //console.log(schema.Fields[i]);
 
-                if (field.FieldType.toLowerCase() === 'text' || field.FieldType.toLowerCase() === 'number'){
+                if (field.FieldType.toLowerCase() === 'text'){
                     if (!field.MaxLength || field.MaxLength > 500){
                         template = $('#inputTextAreaTemplate').html();
                     } else {
                         template = $('#inputTextTemplate').html();
                     }
+                } else if (field.FieldType.toLowerCase() === 'number'){
+                    template = $('#inputTextTemplate').html();
                 } else if (field.FieldType.toLowerCase() === 'date'){
                     template = $('#inputDateTemplate').html();
                 } else if (field.FieldType.toLowerCase() === 'boolean'){
