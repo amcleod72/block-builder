@@ -28,7 +28,6 @@ $('document').ready(function() {
     });
 
     $(document).on("click", "#btn-tree-save", async function(e) {
-        showBackdrop('light');
         $('#spinner').show();
         let selectorType = $("#asset-selector").attr("selector-type");
         let selectedId = $('#asset-selector').tree('selectedItems')[0].id || null;
