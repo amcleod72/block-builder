@@ -494,7 +494,7 @@
 }
 
 .slds-checkbox_toggle{
-    padding-top: 25px;
+    padding-top: 20px;
 }
 
     </style>
@@ -756,12 +756,12 @@
         <div class="slds-form-element">
           <label class="slds-checkbox_toggle slds-grid">
             <span class="slds-form-element__label slds-m-bottom_none">{{Name}}</span>
+            <input type="checkbox" id="form-{{Name}}" name="form-{{Name}}" value="true" aria-describedby="{{Name}}" checked="" />
             <span id="span-{{Name}}" class="slds-checkbox_faux_container" aria-live="assertive">
               <span class="slds-checkbox_faux"></span>
               <span class="slds-checkbox_on">True</span>
               <span class="slds-checkbox_off">False</span>
             </span>
-            <input type="checkbox" id="form-{{Name}}" name="form-{{Name}}" value="true" aria-describedby="{{Name}}" checked="" />
           </label>
         </div>
     </script>
