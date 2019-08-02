@@ -233,7 +233,7 @@ app.get('/data/:deName/:primaryKeyField/:primaryKey', async function(req, res){
     let options = {};
     //console.log('Token',token);
 
-    let deKey = req.params['deName'];
+    let deName = req.params['deName'];
     let primaryKey = req.params['primaryKey'];
     let primaryKeyField = req.params['primaryKeyField'];
 
