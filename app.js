@@ -152,7 +152,7 @@ app.get('/folders/:selectorType/:ParentID', async function(req, res){
 app.get('/def/:selectorType/:id', async function(req, res){
     var cookies = new Cookies(req, res, { keys: APIKeys.appSignature });
     var token = JSON.parse(cookies.get('sfmc_token'));
-    let response = [];
+    let response = {};
     let options = {};
     //console.log('Token',token);
 
@@ -174,7 +174,8 @@ app.get('/def/:selectorType/:id', async function(req, res){
             return res.status(500).send();
         }
     } else if (selectorType == 'dataextension'){
-        let response = {};
+        let fields = [];
+        let dataExtension = {};
 
         let deOpts = {
             "ObjectType":"DataExtension",
@@ -196,23 +197,24 @@ app.get('/def/:selectorType/:id', async function(req, res){
             }
         };
 
-        let deTask = getItems(deOpts);
-        let fieldTask = getFields(fieldOpts);
+        let deTask = soapRetrieve(deOpts);
+        let fieldTask = soapRetrieve(fieldOpts);
 
-        fieldTask.then(function(fields) {
-            response['fields'] = fields;
+        fieldTask.then(function(items) {
+            fields = items;
         });
 
-        deTask.then(function(DEs) {
-            if (DEs.length == 1){
-                response['fields'] = DEs[0];
+        deTask.then(function(items) {
+            if (items.length == 1){
+                dataExtension = items[0];
             }
         });
 
         let promise = Promise.all([fieldTask,deTask]);
 
         promise.then(function(data) {
-            return res.status(200).send(response);
+            dataExtension['fields'] = fields;
+            return res.status(200).send(dataExtension);
         });
 
         promise.catch(function(err) {
@@ -283,7 +285,7 @@ app.get('/def/:selectorType/:id', async function(req, res){
     });
 });
 
-function getFields(options){
+function soapRetrieve(options){
     var items = [];
 
     return new Promise(async function(resolve, reject) {
