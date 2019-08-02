@@ -45,6 +45,9 @@ $('document').ready(function() {
             setCookie('sfmc_' + selectorType,selectedId,365);
             closeSelect();
             validate();
+            if(selectorType == 'dataextension'){
+                buildForm();
+            }
         } catch (e){
             showToast('error','Marketing Cloud','An error was encountered getting the definition of ' + $('#asset-selector').tree('selectedItems')[0].name);
             console.log(e);
@@ -75,7 +78,6 @@ $('document').ready(function() {
             $('#unselected-asset-container').show();
         }
 
-        buildForm();
         sdk.setData(selectedAssets);
     }
 
@@ -84,6 +86,9 @@ $('document').ready(function() {
             $("#form-field-container").empty();
             let schema = selectedAssets.dataextension.definition;
             let formRender, template;
+
+            // Sort the fields - Primary Keys First, then by name
+            schema.fields.sort(compareFields());
 
             for (i = 0; i < schema.fields.length; i++) {
 
@@ -133,6 +138,13 @@ $('document').ready(function() {
                 }
             });
         }
+    }
+
+    function compareFields( a, b ) {
+        if (a.IsPrimaryKey == 'true' && b.IsPrimaryKey == 'false') return 1;
+        if (a.Name > b.Name) return 1;
+        if (a.Name < b.Name) return =1;
+        return 0;
     }
 
     function getAssetDef(selectorType,id){
