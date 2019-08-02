@@ -88,7 +88,7 @@ $('document').ready(function() {
             let formRender, template;
 
             // Sort the fields - Primary Keys First, then by name
-            schema.fields.sort(compareFields());
+            schema.fields.sort(compareFields);
 
             for (i = 0; i < schema.fields.length; i++) {
 
@@ -140,7 +140,7 @@ $('document').ready(function() {
         }
     }
 
-    function compareFields( a, b ) {
+    function compareFields(a,b) {
         if (a.IsPrimaryKey == 'true' && b.IsPrimaryKey == 'false') return 1;
         if (a.Name > b.Name) return 1;
         if (a.Name < b.Name) return -1;
