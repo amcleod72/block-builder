@@ -174,7 +174,21 @@ app.get('/def/:selectorType/:id', async function(req, res){
             return res.status(500).send();
         }
     } else if (selectorType == 'dataextension'){
-        return res.status(200).send({});
+        options = {
+            "ObjectType":"DataExtension",
+            "Token":token,
+            "Filter":{
+                "Property":"CustomerKey",
+                "SimpleOperator":"equals",
+                "Value":id
+            }
+        };
+        try {
+            let resp = await api.retrieve(options);
+            return res.status(200).send(resp);
+        } catch (e){
+            return res.status(500).send('Internal Server Error');
+        }
     } else {
         return res.status(400).send('Unsupported Object Type');
     }
@@ -301,7 +315,7 @@ async function getItems(options){
                     if (items[i].Name.substr(0,1) == '_'){
                         items.splice(i, 1);
                     } else {
-                        items[i].Id = items[i].ObjectID,
+                        items[i].Id = items[i].CustomerKey,
                         items[i].ContentType = 'DataExtension';
                         items[i].Type = 'item';
                     }
