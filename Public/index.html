@@ -489,6 +489,10 @@
     height:50%;
 }
 
+#form-content {
+    padding: 8px 16px;
+}
+
 
 
     </style>
@@ -619,11 +623,9 @@
             <div class="content-header">
                 <span class="">Data</span>
             </div>
-            <div class="slds-grid slds-gutters slds-modal__content">
-                <div class="slds-p-around_medium slds-box form-col" id="form-content">
-                    <div class="slds-text-title">Fields</div>
-                    <div id="form-field-container" class="slds-form--stacked"></div>
-                </div>
+            <div class="slds-p-around_medium slds-box form-col" id="form-content">
+                <div class="slds-text-title">Fields</div>
+                <div id="form-field-container" class="slds-form--stacked"></div>
             </div>
         </div>
 
@@ -750,11 +752,16 @@
     </script>
 
     <script id="inputCheckTemplate" type="text/html">
-        <div class="slds-checkbox_add-button">
-            <input class="slds-assistive-text" type="checkbox" id="form-{{Name}}" value="true" />
-            <label for="form-{{Name}}" class="slds-checkbox_faux">
-                <span class="slds-assistive-text">{{Name}}</span>
-            </label>
+        <div class="slds-form-element">
+          <label class="slds-checkbox_toggle slds-grid">
+            <span class="slds-form-element__label slds-m-bottom_none">{{Name}}</span>
+            <input type="checkbox" id="form-{{Name}}" name="form-{{Name}}" value="true" aria-describedby="{{Name}}" checked="" />
+            <span id="span-{{Name}}" class="slds-checkbox_faux_container" aria-live="assertive">
+              <span class="slds-checkbox_faux"></span>
+              <span class="slds-checkbox_on">True</span>
+              <span class="slds-checkbox_off">False</span>
+            </span>
+          </label>
         </div>
     </script>
 
