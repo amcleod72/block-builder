@@ -51,15 +51,20 @@ $('document').ready(function() {
     function validate(){
         if(selectedAssets && selectedAssets.dataextension && selectedAssets.dataextension.definition){
             $('#selected-dataextension-container .asset-info-name-content').html(selectedAssets.dataextension.definition.Name);
-            $('#unselected-dataextension-container').show();
+            $('#unselected-dataextension-container').hide();
             $('#selected-dataextension-container').show();
+        } else {
+            $('#selected-dataextension-container').hide();
+            $('#unselected-dataextension-container').show();
         }
 
         if(selectedAssets && selectedAssets.asset && selectedAssets.asset.definition){
             $('#selected-asset-container .asset-info-name-content').html(selectedAssets.asset.definition.name);
-            $('#unselected-asset-container').show();
+            $('#unselected-asset-container').hide();
             $('#selected-asset-container').show();
-
+        } else {
+            $('#selected-asset-container').hide();
+            $('#unselected-asset-container').show();
         }
     }
 
