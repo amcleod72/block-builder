@@ -78,9 +78,9 @@ $('document').ready(function() {
     }
 
     function fillTable(){
-        if (selectedAssets && selectedAssets.dataextension && selectedAssets.dataextension.fields){
+        if (selectedAssets && selectedAssets.dataextension && selectedAssets.dataextension.definition && selectedAssets.dataextension.definition.fields){
             $("#form-field-container").empty();
-            let schema = selectedAssets.dataextension;
+            let schema = selectedAssets.dataextension.definition;
             let formRender, template;
 
             for (i = 0; i < schema.fields.length; i++) {
