@@ -141,8 +141,8 @@ $('document').ready(function() {
     }
 
     function compareFields(a,b) {
-        if (a.IsPrimaryKey > b.IsPrimaryKey) return 1;
-        if (a.IsPrimaryKey < b.IsPrimaryKey) return -1;
+        if (a.IsPrimaryKey > b.IsPrimaryKey) return -1;
+        if (a.IsPrimaryKey < b.IsPrimaryKey) return 1;
         if (a.Name > b.Name) return 1;
         if (a.Name < b.Name) return -1;
         return 0;
