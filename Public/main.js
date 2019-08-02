@@ -107,75 +107,8 @@ $('document').ready(function() {
                     formRender = Handlebars.compile(template);
                     $("#form-field-container").append(formRender(field));
                 }
-
-            }
-
-            for (c = 0; c < campaigns.length; c++) {
-                let campaign = campaigns[c];
-                let rowHtml = '';
-                let cellTemplate = $('#campaignRowCellTemplate').html();
-                let cellRender = Handlebars.compile(cellTemplate);
-
-                for (fr = 0; fr < fieldsRendered.length; fr++) {
-                    field = fieldsRendered[fr];
-                    let val;
-                    if(field.Allowedvalues){
-                        for (av = 0; av < field.Allowedvalues.length; av++) {
-                            if(field.Allowedvalues[av][campaign[field.Name]]){
-                                val = field.Allowedvalues[av][campaign[field.Name]];
-                            }
-                        }
-                    } else {
-                        val = campaign[field.Name];
-                    }
-
-                    if (field.Name == 'owner'){
-                        val = getUser(val).name;
-                    }
-
-                    if(fr === 0){
-                        $("#campaign-list tbody").append(rowRender({'id':campaign.id,'val':val}));
-                    } else {
-                        if (!field.Hidden){
-                            rowHtml += cellRender({'id':campaign.id,'val':val});
-                        }
-                    }
-                }
-                $("#row-name-" + campaign.id).after(rowHtml);
-            }
-
-            // Add Action button to the end of each record in the Data List
-            $("#campaign-header-row").append('<th class="" scope="col" style="width: 3.25rem;"><div class="slds-truncate slds-assistive-text" title="Actions">Actions</div></th>');
-
-            // Initialise DateTime Pickers
-            $('.date-input').datepicker({
-                numYearsBefore: 2,
-                numYearsAfter: 2,
-                format: 'DD/MM/YYYY',
-                initDate: moment(),
-                onChange: function(datepicker) {
-                    //console.log('changed', datepicker);
-                },
-                onShow: function(datepicker) {
-                    //console.log('shown', datepicker);
-                },
-                onDismiss: function(datepicker) {
-                    //console.log('dismissed', datepicker);
-                },
-                onSelect: function(datepicker, selectedDate) {
-                    //console.log('selected', datepicker, selectedDate);
-                }
-            });
-
-            // Create environment tiles in modal
-            let envTemplate = $('#envContainerTemplate').html();
-            let envRender = Handlebars.compile(envTemplate);
-
-            for (var env in schema.Environments) {
-                $("#env-container").append(envRender(schema.Environments[env]));
             }
         }
-        $('#spinner').hide();
     }
 
     function getAssetDef(selectorType,id){
