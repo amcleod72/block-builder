@@ -493,7 +493,9 @@
     padding: 8px 16px;
 }
 
-
+.slds-checkbox_toggle{
+    padding-top: 25px;
+}
 
     </style>
 </head>
@@ -523,7 +525,7 @@
             <div>
                 <div class="assets-selector">
                     <div id="selected-asset-container" hidden>
-                        <div  class="nocontent">
+                        <div class="nocontent">
                             <div class="nocontent-left">
                                 <div class="icon-container">
                                     <svg aria-hidden="true" height="60px" width="60px">
@@ -571,7 +573,7 @@
                         </div>
                     </div>
                     <div id="selected-dataextension-container" hidden>
-                        <div  class="nocontent">
+                        <div class="nocontent">
                             <div class="nocontent-left">
                                 <div class="icon-container">
                                     <svg aria-hidden="true" height="60px" width="60px">
@@ -632,7 +634,7 @@
     </div>
 
     <script id="treeTemplate" type="text/html">
-            <div class="slds-modal__container">
+        <div class="slds-modal__container">
                 <header class="slds-modal__header"><button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse close-select" title="Close"><svg class="slds-button__icon slds-button__icon_large" aria-hidden="true">
                             <use xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
                         </svg><span class="slds-assistive-text">Close</span></button>
@@ -751,18 +753,16 @@
     </script>
 
     <script id="inputCheckTemplate" type="text/html">
-        <div dir="rtl">
-            <div class="slds-form-element">
-              <label class="slds-checkbox_toggle slds-grid">
-                <span class="slds-form-element__label slds-m-bottom_none">{{Name}}</span>
-                <input type="checkbox" id="form-{{Name}}" name="form-{{Name}}" value="true" aria-describedby="{{Name}}" checked="" />
-                <span id="span-{{Name}}" class="slds-checkbox_faux_container" aria-live="assertive">
-                  <span class="slds-checkbox_faux"></span>
-                  <span class="slds-checkbox_on">True</span>
-                  <span class="slds-checkbox_off">False</span>
-                </span>
-              </label>
-            </div>
+        <div class="slds-form-element">
+          <label class="slds-checkbox_toggle slds-grid">
+            <span class="slds-form-element__label slds-m-bottom_none">{{Name}}</span>
+            <span id="span-{{Name}}" class="slds-checkbox_faux_container" aria-live="assertive">
+              <span class="slds-checkbox_faux"></span>
+              <span class="slds-checkbox_on">True</span>
+              <span class="slds-checkbox_off">False</span>
+            </span>
+            <input type="checkbox" id="form-{{Name}}" name="form-{{Name}}" value="true" aria-describedby="{{Name}}" checked="" />
+          </label>
         </div>
     </script>
 
