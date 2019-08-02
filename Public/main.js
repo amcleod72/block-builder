@@ -31,16 +31,16 @@ $('document').ready(function() {
         validate();
     });
 
-    $(document).on("keypress", ".close-select", function(e) {
+    $(document).on("click", ".close-select", function(e) {
         closeSelect();
     });
 
-    $(document).on("click", ".primary-key", function(e) {
-        var keycode = (event.keyCode ? event.keyCode : event.which);
+    $(document).on("keypress", ".primary-key", function(e) {
+        var keycode = (e.keyCode ? e.keyCode : e.which);
         if(keycode == '13' && $(e.target).hasClass('primary-key')){
             alert('You pressed a "enter" key in textbox');
         }
-        event.stopPropagation();
+        e.stopPropagation();
     });
 
     $(document).on("click", "#btn-tree-save", async function(e) {
