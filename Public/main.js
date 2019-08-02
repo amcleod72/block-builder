@@ -19,9 +19,14 @@ $('document').ready(function() {
     });
 
     $(document).on("click", ".select", function(e) {
-        console.log('target',$(e.target));
         let dataType = ($(e.target).hasClass('dataextension')) ? 'dataextension' : 'asset';
         showSelect(dataType);
+    });
+
+    $(document).on("click", ".delete", function(e) {
+        let dataType = ($(e.target).hasClass('dataextension')) ? 'dataextension' : 'asset';
+        delete selectedAssets[dataType];
+        validate();
     });
 
     $(document).on("click", ".close-select", function(e) {
