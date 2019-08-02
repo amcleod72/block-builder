@@ -1,6 +1,8 @@
 let accessToken, roots;
 let selectedAssets = {};
 
+$.aljsInit({assetsLocation: '.'});
+
 $('document').ready(function() {
     var sdk = new window.sfdc.BlockSDK();
     const toastTemplate = $('#toastTemplate').html();
@@ -110,6 +112,26 @@ $('document').ready(function() {
                     $("#form-field-container").append(formRender(field));
                 }
             }
+
+            // Initialise DateTime Pickers
+            $('.date-input').datepicker({
+                numYearsBefore: 2,
+                numYearsAfter: 2,
+                format: 'DD/MM/YYYY',
+                initDate: moment(),
+                onChange: function(datepicker) {
+                    //console.log('changed', datepicker);
+                },
+                onShow: function(datepicker) {
+                    //console.log('shown', datepicker);
+                },
+                onDismiss: function(datepicker) {
+                    //console.log('dismissed', datepicker);
+                },
+                onSelect: function(datepicker, selectedDate) {
+                    //console.log('selected', datepicker, selectedDate);
+                }
+            });
         }
     }
 
