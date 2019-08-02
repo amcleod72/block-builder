@@ -72,6 +72,8 @@ $('document').ready(function() {
             $('#selected-asset-container').hide();
             $('#unselected-asset-container').show();
         }
+
+        sdk.setData(selectedAssets);
     }
 
     function getAssetDef(selectorType,id){
@@ -139,6 +141,7 @@ $('document').ready(function() {
     ]%%-->`;
 
     sdk.getData(function(data) {
+        console.log('getData',data);
         crmIdField = data.crmIdField;
         chkContact = data.chkContact;
         chkOpportunity = data.chkOpportunity;
