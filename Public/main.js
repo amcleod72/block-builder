@@ -38,9 +38,8 @@ $('document').ready(function() {
     $(document).on("keypress", ".primary-key", async function(e) {
         var keycode = (e.keyCode ? e.keyCode : e.which);
         if(keycode == '13' && $(e.target).hasClass('primary-key')){
-            alert($(e.target).val());
             try {
-                let deName = selectedAssets.dataextension.definition.Name;
+                let deName = selectedAssets.dataextension.definition.name;
                 let primaryKey = $(e.target).val();
                 let primaryKeyField = $(e.target).attr('id').replace('form-','');
                 selectedAssets['record'] = await getRecord(deName,primaryKeyField,primaryKey)
