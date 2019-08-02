@@ -40,7 +40,10 @@ $('document').ready(function() {
         if(keycode == '13' && $(e.target).hasClass('primary-key')){
             alert($(e.target).val());
             try {
-                selectedAssets['record'] = await getRecord(selectedAssets.dataextension.definition.customerKey,$(e.target).val())
+                let deName = selectedAssets.dataextension.definition.Name;
+                let primaryKey = $(e.target).val();
+                let primaryKeyField = $(e.target).attr('id').replace('form-','');
+                selectedAssets['record'] = await getRecord(deName,primaryKeyField,primaryKey)
             } catch (e){
                 showToast('error','Marketing Cloud','An error was encountered getting data extension record');
             }
@@ -48,9 +51,10 @@ $('document').ready(function() {
         e.stopPropagation();
     });
 
-    function getRecord(dataExtension,primaryKey){
+    function getRecord(deName,primaryKeyField,primaryKey){
         var endpoint = window.location.protocol + "//" + window.location.hostname + ":" + window.location.port;
-        endpoint += "/data/" + dataExtension;
+        endpoint += "/data/" + deName;
+        endpoint += "/" + primaryKeyField;
         endpoint += "/" + primaryKey;
 
         return new Promise(function(resolve, reject) {

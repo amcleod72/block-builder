@@ -226,6 +226,49 @@ app.get('/def/:selectorType/:id', async function(req, res){
     }
 });
 
+app.get('/data/:deName/:primaryKeyField/:primaryKey', async function(req, res){
+    var cookies = new Cookies(req, res, { keys: APIKeys.appSignature });
+    var token = JSON.parse(cookies.get('sfmc_token'));
+    let response = {};
+    let options = {};
+    //console.log('Token',token);
+
+    let deKey = req.params['deName'];
+    let primaryKey = req.params['primaryKey'];
+    let primaryKeyField = req.params['primaryKeyField'];
+
+    let fields = [];
+    let dataExtension = {};
+
+    let deOpts = {
+        "ObjectType":"DataExtensionObject[" + deName + "]",
+        "Token":token,
+        "Filter":{
+            "Property":primaryKeyField,
+            "SimpleOperator":"equals",
+            "Value":primary
+        }
+    };
+
+    let deTask = soapRetrieve(deOpts);
+
+    deTask.then(function(items) {
+        if (items.length == 1){
+            response = items[0];
+        }
+    });
+
+    let promise = Promise.all([deTask]);
+
+    promise.then(function(data) {
+        return res.status(200).send(response);
+    });
+
+    promise.catch(function(err) {
+        return res.status(500).send('Internal Server Error');
+    });
+});
+
 function soapRetrieve(options){
     var items = [];
 
