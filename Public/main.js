@@ -75,11 +75,11 @@ $('document').ready(function() {
             $('#unselected-asset-container').show();
         }
 
-        fillTable();
+        buildForm();
         sdk.setData(selectedAssets);
     }
 
-    function fillTable(){
+    function buildForm(){
         if (selectedAssets && selectedAssets.dataextension && selectedAssets.dataextension.definition && selectedAssets.dataextension.definition.fields){
             $("#form-field-container").empty();
             let schema = selectedAssets.dataextension.definition;
@@ -270,6 +270,7 @@ $('document').ready(function() {
     }
 
     document.getElementById('workspace').addEventListener("input", function() {
+        console.log("updated");
         debounce(updateMe, 500)();
     });
 
