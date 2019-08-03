@@ -57,6 +57,7 @@ $('document').ready(function() {
 
     function getRecord(primaryKeyField,primaryKey){
         var endpoint = window.location.protocol + "//" + window.location.hostname + ":" + window.location.port;
+        endpoint += "/data"
         endpoint += "?" + primaryKeyField;
         endpoint += "=" + primaryKey;
 
