@@ -214,7 +214,6 @@ app.get('/def/:selectorType/:id', async function(req, res){
 
         promise.then(async function(data) {
             dataExtension['fields'] = fields;
-            console.log('DataExtension in Def',dataExtension);
             dataExtension['rows'] = await getDataRow(dataExtension,token,null,1);
             return res.status(200).send(dataExtension);
         });
@@ -244,6 +243,7 @@ app.post('/data', async function(req, res){
 async function getDataRow(de,token,query,batchSize){
     return new Promise(async function(resolve, reject) {
         console.log('dataExtension',de);
+        console.log('DEKey',de.CustomerKey);
 
         try {
             let options = {
