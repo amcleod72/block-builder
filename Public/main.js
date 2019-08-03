@@ -369,18 +369,18 @@ $('document').ready(function() {
 
         if (selectedAssets && selectedAssets.asset && selectedAssets.asset.definition && selectedAssets.asset.definition.content){
             template = selectedAssets.asset.definition.content;
+        } else {
+            showMessage('error');
         }
 
         if (selectedAssets && selectedAssets.row){
             let render = Handlebars.compile(template);
             html = render(payload);
             sdk.setSuperContent(html);
-        } else {
-            showMessage('error');
+            sdk.setContent(html);
         }
 
         sdk.setData(selectedAssets);
-        sdk.setContent(html);
     }
 
     function showMessage(type){
