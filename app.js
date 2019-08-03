@@ -233,7 +233,6 @@ app.post('/data', async function(req, res){
 
     let rows = await getDataRow(req.body,token,req.query,50);
 
-    console.log('Row',rows);
     if (!rows){
         return res.status(500).send();
     } else {
@@ -247,7 +246,7 @@ async function getDataRow(de,token,query,batchSize){
 
         try {
             let options = {
-                "ObjectType":"DataExtensionObject[" + de.customerKey + "]",
+                "ObjectType":"DataExtensionObject[" + de.customerKey || de.CustomerKey + "]",
                 "Token":token,
                 "Properties":[],
                 "retrieveOptions":{
