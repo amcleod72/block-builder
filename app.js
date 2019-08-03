@@ -214,7 +214,7 @@ app.get('/def/:selectorType/:id', async function(req, res){
 
         promise.then(function(data) {
             dataExtension['fields'] = fields;
-            dataExtension.['rows'] = await getDataRow(dataExtension,token,null,1);
+            dataExtension['rows'] = await getDataRow(dataExtension,token,null,1);
             return res.status(200).send(dataExtension);
         });
 
