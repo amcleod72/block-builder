@@ -186,6 +186,7 @@ $('document').ready(function() {
         }
 
         sdk.setData(selectedAssets);
+        updateMe();
     }
 
     function buildForm(){
@@ -341,8 +342,12 @@ $('document').ready(function() {
     }
 
     function updateMe() {
+        let template = '';
+        let payload = {};
+        let html = '';
         let inputs = $('#form-field-container').find("input[type=text], textarea");
         selectedAssets.row = [];
+
         for (var i=0;i<inputs.length;i++) {
             let fieldName = $(inputs[i]).attr('id').replace('form-','');
             let fieldValue = $(inputs[i]).val();
@@ -350,28 +355,21 @@ $('document').ready(function() {
                 "Name":fieldName,
                 "Value":fieldValue
             });
+
+            if(isEmpty(field.Value)){
+                payload[field.Name] = null;
+            } else {
+                payload[field.Name] = field.Value;
+            }
         }
 
         console.log("selectedAssets",selectedAssets);
-
-        let template = '';
-        let payload = {};
-        let html = '';
 
         if (selectedAssets && selectedAssets.asset && selectedAssets.asset.definition && selectedAssets.asset.definition.content){
             template = selectedAssets.asset.definition.content;
         }
 
         if (selectedAssets && selectedAssets.row){
-            for (var r=0;r<selectedAssets.row.length;r++) {
-                let field = selectedAssets.row[r];
-
-                if(isEmpty(field.Value)){
-                    payload[field.Name] = null;
-                } else {
-                    payload[field.Name] = field.Value;
-                }
-            }
             let render = Handlebars.compile(template);
             html = render(payload);
             sdk.setSuperContent(html);
