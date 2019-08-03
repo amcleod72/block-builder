@@ -284,7 +284,7 @@ $('document').ready(function() {
 
     function getAssetDef(selectorType,id){
         $('#spinner').show();
-        selectedAssets[selectorType] = {"id":selectedId,"definition":null};
+        selectedAssets[selectorType] = {"id":id,"definition":null};
         var endpoint = window.location.protocol + "//" + window.location.hostname + ":" + window.location.port + "/def/" + selectorType + "/" + id;
 
         $.ajax({
@@ -292,7 +292,7 @@ $('document').ready(function() {
             url: endpoint,
             success: function(resp) {
                 selectedAssets[selectorType]["definition"] = resp;
-                setCookie('sfmc_' + selectorType,selectedId,365);
+                setCookie('sfmc_' + selectorType,id,365);
                 closeSelect();
                 if(selectorType == 'dataextension'){
                     buildForm();
