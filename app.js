@@ -236,7 +236,7 @@ app.post('/data', async function(req, res){
     let rows = await getDataRow(req.body,token,req.query,50);
 
     console.log('Row',rows);
-    if (!resp){
+    if (!rows){
         return res.status(500).send();
     } else {
         return res.status(200).send(rows);
