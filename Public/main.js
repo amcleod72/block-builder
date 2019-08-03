@@ -1,20 +1,71 @@
 let accessToken, roots;
 let selectedAssets = {};
 
+// onRender - Function called by iFrame to apps login page
+function onRender() {
+    roots = JSON.parse(decodeURI(getCookie('sfmc_roots')))
+
+    if (!roots){
+        let promise = Promise.all([$.getRoots()]);
+
+        promise.then(function(data) {
+            roots = data[0];
+            $('#workspace').show();
+            $('#spinner').hide();
+            $('#modal-backdrop').hide();
+        }).catch(function(error) {
+            console.log('Error',error);
+        });
+    } else {
+        console.log('Roots','Cached');
+    }
+}
+
+$.getRoots = function(){
+    var endpoint = window.location.protocol + "//" + window.location.hostname + ":" + window.location.port + "/folders/all/0";
+
+    return new Promise(function(resolve, reject) {
+        $.ajax({
+            type: "GET",
+            url: endpoint,
+            success: function(resp) {
+                setCookie('sfmc_roots',JSON.stringify(resp),365);
+                resolve(resp);
+            },
+            error: function(response) {
+                reject(response);
+            }
+        });
+    });
+}
+
+// Required to make SLDC Date Pickers functional
 $.aljsInit({assetsLocation: '.'});
 
 $('document').ready(function() {
+    // Instandiate the ContentBuilder SDK
     var sdk = new window.sfdc.BlockSDK();
+
+    // Get Marketing Cloud to request this application's login route
+    sdk.triggerAuth('8d023663-4221-4b41-b849-68bedb9b2be3');
+
+    // Pick up saved data from Marketing Cloud
+    sdk.getData(function(data) {
+        selectedAssets = data;
+        validate();
+        if(selectedAssets && selectedAssets.dataextension && selectedAssets.dataextension.definition){
+            buildForm();
+        }
+        if(selectedAssets && selectedAssets.row){
+            fillForm()
+        }
+    });
+
     const toastTemplate = $('#toastTemplate').html();
 
-    // types ["info","success","warning","error"]
-    function showToast(type, message, description) {
-        let options = {"type":type,"message":message,"description":description};
-        $("#spinner").fadeOut(200);
-        var render = Handlebars.compile(toastTemplate);
-        $("#toast-container").html(render(options));
-        $("#toast-container").fadeIn(200);
-    }
+    document.getElementById('workspace').addEventListener("input", function() {
+        debounce(updateMe, 500)();
+    });
 
     $(document).on("click", ".close-toast", function(e) {
         $("#toast-container").hide();
@@ -57,28 +108,16 @@ $('document').ready(function() {
         e.stopPropagation();
     });
 
-    function getRecord(primaryKeyField,primaryKey){
-        var endpoint = window.location.protocol + "//" + window.location.hostname + ":" + window.location.port;
-        endpoint += "/data"
-        endpoint += "?" + primaryKeyField;
-        endpoint += "=" + primaryKey;
+    $(document).on("selected.fu.tree", function(event, data) {
+        let selectorType = $("#asset-selector").attr("selector-type");
+        if(data.target){
+            $('#btn-tree-save').prop('disabled', false);
+        }
+    });
 
-        return new Promise(function(resolve, reject) {
-            $.ajax({
-                type: "POST",
-                url: endpoint,
-                contentType: "application/json; charset=utf-8",
-                dataType: "json",
-                data: JSON.stringify(selectedAssets.dataextension.definition),
-                success: function(resp) {
-                    resolve(resp);
-                },
-                error: function(response) {
-                    reject(response);
-                }
-            });
-        });
-    }
+    $(document).on("deselected.fu.tree", function(event, data) {
+        $('#btn-tree-save').prop('disabled', true);
+    });
 
     $(document).on("click", "#btn-tree-save", async function(e) {
         $('#spinner').show();
@@ -103,6 +142,29 @@ $('document').ready(function() {
         console.log("selectedAssets",selectedAssets);
 
     });
+
+    function getRecord(primaryKeyField,primaryKey){
+        var endpoint = window.location.protocol + "//" + window.location.hostname + ":" + window.location.port;
+        endpoint += "/data"
+        endpoint += "?" + primaryKeyField;
+        endpoint += "=" + primaryKey;
+
+        return new Promise(function(resolve, reject) {
+            $.ajax({
+                type: "POST",
+                url: endpoint,
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                data: JSON.stringify(selectedAssets.dataextension.definition),
+                success: function(resp) {
+                    resolve(resp);
+                },
+                error: function(response) {
+                    reject(response);
+                }
+            });
+        });
+    }
 
     function validate(){
         if(selectedAssets && selectedAssets.dataextension && selectedAssets.dataextension.definition){
@@ -241,17 +303,6 @@ $('document').ready(function() {
         $('#tree-container').hide();
     };
 
-    $(document).on("selected.fu.tree", function(event, data) {
-        let selectorType = $("#asset-selector").attr("selector-type");
-        if(data.target){
-            $('#btn-tree-save').prop('disabled', false);
-        }
-    });
-
-    $(document).on("deselected.fu.tree", function(event, data) {
-        $('#btn-tree-save').prop('disabled', true);
-    });
-
     function showBackdrop(darkLight){
         if (darkLight == 'dark'){
             $('#modal-backdrop').removeClass('backdrop-light');
@@ -263,44 +314,16 @@ $('document').ready(function() {
         $('#modal-backdrop').show();
     }
 
+    // types ["info","success","warning","error"]
+    function showToast(type, message, description) {
+        let options = {"type":type,"message":message,"description":description};
+        $("#spinner").fadeOut(200);
+        var render = Handlebars.compile(toastTemplate);
+        $("#toast-container").html(render(options));
+        $("#toast-container").fadeIn(200);
+    }
+
     var crmIdField,chkContact,chkOpportunity;
-
-    let modelAmp = `<!--%%[
-    IF _messagecontext == 'SEND' AND IndexOf(list_,'_HTML') > 1 THEN
-        /* Define the field to use to associate the send with a CRM object */
-        SET @WhatId = AttributeValue('%%WhatId%%')
-        /* Scrape VAWP to get HTML for DE Log */
-        SET @HTMLContent = HttpGet(view_email_url)
-
-        IF LENGTH(@HTMLContent) > 32000 THEN
-            SET @header = Concat('<span align="center"><h1><a href="',view_email_url,'" target="_blank">View Entire Message Online</a></h1></span>')
-            SET @HTMLContent = Concat(@header,Substring(@HTMLContent,1,31000))
-        ENDIF
-
-        /* Update Salesforce CRM */
-        SET @SFEmailID = CreateSalesforceObject("EmailMessage",8,"HTMLBODY",@HTMLContent, "SUBJECT",emailname_,"FROMNAME",replyname,"FROMADDRESS",replyemailaddress,"TOADDRESS",emailaddr,"INCOMING",0,"STATUS",3,"RELATEDTOID",@WhatId)
-        SET @RelationID = CreateSalesforceObject("EmailMessageRelation",4,"EmailMessageId",@SFEmailID,"RelationAddress",emailaddr,"RelationId",_subscriberkey,"RelationType","ToAddress")
-    ENDIF
-    ]%%-->`;
-
-    sdk.getData(function(data) {
-        console.log('getData',data);
-        selectedAssets = data;
-        validate();
-        if(selectedAssets && selectedAssets.dataextension && selectedAssets.dataextension.definition){
-            buildForm();
-        }
-        crmIdField = data.crmIdField;
-        chkContact = data.chkContact;
-        chkOpportunity = data.chkOpportunity;
-
-        if(!chkContact){
-            showMessage('error');
-        }
-        fillSettings();
-    });
-
-    sdk.triggerAuth('8d023663-4221-4b41-b849-68bedb9b2be3');
 
     function debounce(func, wait, immediate) {
         var timeout;
@@ -318,8 +341,21 @@ $('document').ready(function() {
         };
     }
 
-    function fillSettings() {
-        //document.getElementById('crm-id-field').value = crmIdField;
+    function updateMe() {
+        let inputs = $('#form-field-container').find("input[type=text], textarea");
+        selectedAssets.row = [];
+        for (var i=0;i<inputs.length;i++) {
+            let fieldName = $(inputs[i]).attr('id').replace('form-','');
+            let fieldValue = $(inputs[i]).val();
+            selectedAssets.push({
+                "Name":fieldName,
+                "Value":fieldValue
+            });
+        }
+
+        sdk.setData(selectedAssets);
+        sdk.setContent('');
+        showMessage('success');
     }
 
     function showMessage(type){
@@ -329,37 +365,6 @@ $('document').ready(function() {
             sdk.setSuperContent('<div style="font-family: Helvetica, Sans-Serif; font-size: 20px; line-height: 50px; text-align: center; height: 50px; text-align: center; background-color: green; color:white; min-width:100%;">Content - Configured</div>');
         }
     }
-
-    function updateMe() {
-        //chkContact = $("#chkContact").prop('checked');
-        //chkOpportunity = $("#chkOpportunity").prop('checked');
-        //crmIdField = $('#crm-id-field').val();
-
-        if(!chkContact){
-            sdk.setContent("");
-            showMessage('error');
-            return;
-        }
-
-        if(chkOpportunity && !crmIdField){
-            sdk.setContent("");
-            showMessage('error');
-            return;
-        }
-
-        // Generate required AMPScript
-        var amp = modelAmp.replace(/%%WhatId%%/img,chkOpportunity ? crmIdField : 'foo');
-        sdk.setContent(amp);
-        showMessage('success');
-        sdk.setData({
-            crmIdField: crmIdField
-        });
-    }
-
-    document.getElementById('workspace').addEventListener("input", function() {
-        console.log("updated");
-        debounce(updateMe, 500)();
-    });
 
     showSelect = async function (selectorType){
         // Clear down the form
@@ -440,44 +445,6 @@ $('document').ready(function() {
 
     }
 });
-
-function onRender() {
-    roots = JSON.parse(decodeURI(getCookie('sfmc_roots')))
-
-    //if (!roots){
-        let promise = Promise.all([$.getRoots()]);
-
-        promise.then(function(data) {
-            roots = data[0];
-            console.log('Roots',roots);
-            $('#workspace').show();
-            $('#spinner').hide();
-            $('#modal-backdrop').hide();
-        }).catch(function(error) {
-            console.log('Error',error);
-        });
-    //} else {
-    //    console.log('Roots','Cached');
-    //}
-}
-
-$.getRoots = function(){
-    var endpoint = window.location.protocol + "//" + window.location.hostname + ":" + window.location.port + "/folders/all/0";
-
-    return new Promise(function(resolve, reject) {
-        $.ajax({
-            type: "GET",
-            url: endpoint,
-            success: function(resp) {
-                setCookie('sfmc_roots',JSON.stringify(resp),365);
-                resolve(resp);
-            },
-            error: function(response) {
-                reject(response);
-            }
-        });
-    });
-}
 
 function setCookie(cookieName, cookieValue, nDays) {
      var today = new Date();
