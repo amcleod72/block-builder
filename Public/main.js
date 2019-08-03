@@ -62,6 +62,7 @@ $('document').ready(function() {
         if(selectedAssets && selectedAssets.row){
             fillForm()
         }
+        updateMe();
     });
 
     const toastTemplate = $('#toastTemplate').html();
@@ -186,7 +187,6 @@ $('document').ready(function() {
         }
 
         sdk.setData(selectedAssets);
-        updateMe();
     }
 
     function buildForm(){
