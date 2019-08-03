@@ -53,7 +53,7 @@ $('document').ready(function() {
                 showToast('error','Marketing Cloud','An error was encountered getting data extension record');
             }
         }
-        $('#spinner').show();
+        $('#spinner').hide();
         e.stopPropagation();
     });
 
