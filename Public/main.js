@@ -251,7 +251,6 @@ $('document').ready(function() {
             });
 
             fillForm();
-            updateMe();
         }
     }
 
@@ -264,6 +263,8 @@ $('document').ready(function() {
                 $('#form-' + field.Name).val(field.Value);
             }
         }
+
+        updateMe();
     }
 
     function isEmpty(obj) {
