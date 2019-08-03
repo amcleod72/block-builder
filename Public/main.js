@@ -352,6 +352,8 @@ $('document').ready(function() {
             });
         }
 
+        console.log("selectedAssets",selectedAssets);
+
         sdk.setData(selectedAssets);
         sdk.setContent('');
         showMessage('success');
