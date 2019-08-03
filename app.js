@@ -231,8 +231,6 @@ app.post('/data', async function(req, res){
     let cookies = new Cookies(req, res, { keys: APIKeys.appSignature });
     let token = JSON.parse(cookies.get('sfmc_token'));
 
-    console.log('postBody',req.body);
-
     let rows = await getDataRow(req.body,token,req.query,50);
 
     console.log('Row',rows);
@@ -249,7 +247,7 @@ async function getDataRow(de,token,query,batchSize){
 
         try {
             let options = {
-                "ObjectType":"DataExtensionObject[" + de.CustomerKey + "]",
+                "ObjectType":"DataExtensionObject[" + de.customerKey + "]",
                 "Token":token,
                 "Properties":[],
                 "retrieveOptions":{
