@@ -243,13 +243,13 @@ app.post('/data', async function(req, res){
     }
 });
 
-async function getDataRow(dataExtension,token,query,batchSize){
+async function getDataRow(de,token,query,batchSize){
     return new Promise(async function(resolve, reject) {
-        console.log('dataExtension',dataExtension.fields);
+        console.log('dataExtension',de.fields);
 
         try {
             let options = {
-                "ObjectType":"DataExtensionObject[" + dataExtension.CustomerKey + "]",
+                "ObjectType":"DataExtensionObject[" + de.CustomerKey + "]",
                 "Token":token,
                 "Properties":[],
                 "retrieveOptions":{
@@ -275,8 +275,8 @@ async function getDataRow(dataExtension,token,query,batchSize){
 
             console.log('options',options);
 
-            for (var i=0;i<dataExtension.fields.length;i++) {
-                options.Properties.push(dataExtension.fields[i].Name);
+            for (var i=0;i<de.fields.length;i++) {
+                options.Properties.push(de.fields[i].Name);
             };
 
             let rows = await soapRetrieve(options);
