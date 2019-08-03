@@ -128,7 +128,7 @@ $('document').ready(function() {
             $("#form-field-container").empty();
             let schema = selectedAssets.dataextension.definition;
             if (schema.rows && schema.rows.length > 0){
-                selectedAssets.['row'] = schema.rows[0].Properties.Property;
+                selectedAssets['row'] = schema.rows[0].Properties.Property;
                 delete selectedAssets.dataextension.definition.rows;
             }
 
