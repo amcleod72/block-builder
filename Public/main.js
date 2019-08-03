@@ -139,7 +139,25 @@ $('document').ready(function() {
     $(document).on("click", "#btn-tree-save", async function(e) {
         let selectorType = $("#asset-selector").attr("selector-type");
         let selectedId = $('#asset-selector').tree('selectedItems')[0].id || null;
-        getAssetDef(selectorType,selectedId);
+        setCookie('sfmc_' + selectorType,selectedId,365);
+
+        $('#spinner').show();
+        try {
+            selectedAssets[selectorType]["definition"] = getAssetDef(selectorType,selectedId);
+            if(selectorType == 'dataextension'){
+                buildForm();
+            }
+        } catch (e){
+            showToast('error','Marketing Cloud','An error was encountered getting the definition of ' + $('#asset-selector').tree('selectedItems')[0].name);
+        } finally {
+            closeSelect();
+            validate();
+            updateMe();
+            $('#spinner').hide();
+            $('#modal-backdrop').hide();
+        }
+
+        console.log("selectedAssets",selectedAssets);
     });
 
     function getRecord(primaryKeyField,primaryKey){
@@ -283,32 +301,19 @@ $('document').ready(function() {
     }
 
     function getAssetDef(selectorType,id){
-        $('#spinner').show();
-        selectedAssets[selectorType] = {"id":id,"definition":null};
         var endpoint = window.location.protocol + "//" + window.location.hostname + ":" + window.location.port + "/def/" + selectorType + "/" + id;
 
-        $.ajax({
-            type: "GET",
-            url: endpoint,
-            success: function(resp) {
-                selectedAssets[selectorType]["definition"] = resp;
-                setCookie('sfmc_' + selectorType,id,365);
-                closeSelect();
-                if(selectorType == 'dataextension'){
-                    buildForm();
+        return new Promise(function(resolve, reject) {
+            $.ajax({
+                type: "GET",
+                url: endpoint,
+                success: function(resp) {
+                    resolve(resp);
+                },
+                error: function(response) {
+                    reject(response);
                 }
-                validate();
-                updateMe();
-                $('#spinner').hide();
-                $('#modal-backdrop').hide();
-                console.log("selectedAssets",selectedAssets);
-            },
-            error: function(resp) {
-                console.log(resp);
-                $('#spinner').hide();
-                $('#modal-backdrop').hide();
-                showToast('error','Marketing Cloud','An error was encountered getting the definition of ' + $('#asset-selector').tree('selectedItems')[0].name);
-            }
+            });
         });
     }
 
