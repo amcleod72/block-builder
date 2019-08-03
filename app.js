@@ -214,6 +214,7 @@ app.get('/def/:selectorType/:id', async function(req, res){
 
         promise.then(function(data) {
             dataExtension['fields'] = fields;
+            dataExtension.['rows'] = await getDataRow(dataExtension,token,null,1);
             return res.status(200).send(dataExtension);
         });
 
@@ -226,57 +227,59 @@ app.get('/def/:selectorType/:id', async function(req, res){
     }
 });
 
-app.get('/data/:deKey/:primaryKeyField/:primaryKey', async function(req, res){
-    var cookies = new Cookies(req, res, { keys: APIKeys.appSignature });
-    var token = JSON.parse(cookies.get('sfmc_token'));
+app.post('/data', async function(req, res){
+    let cookies = new Cookies(req, res, { keys: APIKeys.appSignature });
+    let token = JSON.parse(cookies.get('sfmc_token'));
 
-    let deKey = req.params['deKey'];
-    let primaryKey = req.params['primaryKey'];
-    let primaryKeyField = req.params['primaryKeyField'];
+    let rows = await getDataRow(req.body,token,req.query,50);
 
-    // Get fields to add to the request to get the row -- return all fields
-    let options = {
-        "ObjectType":"DataExtensionField",
-        "Token":token,
-        "Filter":{
-            "Property":"DataExtension.CustomerKey",
-            "SimpleOperator":"equals",
-            "Value":deKey
-        }
-    };
-
-    let resp = await soapRetrieve(options);
-    console.log('Fields',resp);
-    if (!resp){
-        return res.status(500).send();
-    } else if (resp.length == 0) {
-        return res.status(404).send();
-    }
-
-    options = {
-        "ObjectType":"DataExtensionObject[" + deKey + "]",
-        "Token":token,
-        "Filter":{
-            "Property":primaryKeyField,
-            "SimpleOperator":"equals",
-            "Value":primaryKey
-        },
-        "Properties":[]
-    };
-
-    for (var i=0;i<resp.length;i++) {
-        options.Properties.push(resp[i].Name);
-    };
-
-    let row = await soapRetrieve(options);
-
-    console.log('Row',row);
+    console.log('Row',rows);
     if (!resp){
         return res.status(500).send();
     } else {
-        return res.status(200).send(row);
+        return res.status(200).send(rows);
     }
 });
+
+async function getDataRow(dataExtension,token,query,batchSize){
+    return new Promise(async function(resolve, reject) {
+        try {
+            let options = {
+                "ObjectType":"DataExtensionObject[" + dataExtension.CustomerKey + "]",
+                "Token":token,
+                "Properties":[],
+                "retrieveOptions":{
+                    "BatchSize":batchSize
+                }
+            };
+
+            if(query){
+                options['Filter'] = {
+                    "Property":null,
+                    "SimpleOperator":"equals",
+                    "Value":null
+                };
+
+                // TODO: Add support for complex filter parts
+                for (var param in query) {
+                    if (query.hasOwnProperty(param)) {
+                        options.Filter.Property = param;
+                        options.Filter.Value = query[param];
+                    }
+                }
+            }
+
+            for (var i=0;i<dataExtension.fields.length;i++) {
+                options.Properties.push(dataExtension.fields[i].Name);
+            };
+
+            let rows = await soapRetrieve(options);
+            resolve(rows);
+        } catch (e){
+            reject(e);
+        }
+    });
+}
 
 function soapRetrieve(options){
     var items = [];
