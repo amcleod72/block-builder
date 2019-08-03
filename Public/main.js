@@ -354,9 +354,33 @@ $('document').ready(function() {
 
         console.log("selectedAssets",selectedAssets);
 
+        let template = '';
+        let payload = {};
+        let html = '';
+
+        if (selectedAssets && selectedAssets.asset && selectedAssets.asset.definition && selectedAssets.asset.definition.content){
+            template = selectedAssets.asset.definition.content;
+        }
+
+        if (selectedAssets && selectedAssets.row){
+            for (var r=0;r<selectedAssets.row.length;r++) {
+                let field = selectedAssets.row[r];
+
+                if(isEmpty(field.Value)){
+                    payload[field.Name] = null;
+                } else {
+                    payload[field.Name] = field.Value;
+                }
+            }
+            let render = Handlebars.compile(template);
+            html = render(payload);
+            sdk.setSuperContent(html);
+        } else {
+            showMessage('error');
+        }
+
         sdk.setData(selectedAssets);
-        sdk.setContent('');
-        showMessage('success');
+        sdk.setContent(html);
     }
 
     function showMessage(type){
