@@ -41,7 +41,13 @@ $('document').ready(function() {
             try {
                 let primaryKey = $(e.target).val();
                 let primaryKeyField = $(e.target).attr('id').replace('form-','');
-                selectedAssets['record'] = await getRecord(primaryKeyField,primaryKey)
+                let resp = await getRecord(primaryKeyField,primaryKey);
+                $('#form-field-container').find("input[type=text], textarea").val("");
+                if (resp && resp.length > 0){
+                    selectedAssets['row'] = resp[0].Properties.Property || [];
+                    fillForm();
+                }
+                validate();
             } catch (e){
                 showToast('error','Marketing Cloud','An error was encountered getting data extension record');
             }
@@ -79,10 +85,10 @@ $('document').ready(function() {
             selectedAssets[selectorType]["definition"] = await getAssetDef(selectorType,selectedId)
             setCookie('sfmc_' + selectorType,selectedId,365);
             closeSelect();
-            validate();
             if(selectorType == 'dataextension'){
                 buildForm();
             }
+            validate();
         } catch (e){
             showToast('error','Marketing Cloud','An error was encountered getting the definition of ' + $('#asset-selector').tree('selectedItems')[0].name);
             console.log(e);
@@ -121,6 +127,11 @@ $('document').ready(function() {
         if (selectedAssets && selectedAssets.dataextension && selectedAssets.dataextension.definition && selectedAssets.dataextension.definition.fields){
             $("#form-field-container").empty();
             let schema = selectedAssets.dataextension.definition;
+            if (schema.rows && schema.rows.length > 0){
+                selectedAssets.['row'] = schema.rows[0].Properties.Property;
+                delete selectedAssets.dataextension.definition.rows;
+            }
+
             let formRender, template;
 
             // Sort the fields - Primary Keys First, then by name
@@ -129,8 +140,6 @@ $('document').ready(function() {
             for (i = 0; i < schema.fields.length; i++) {
 
                 let field = schema.fields[i];
-                //console.log(field.Name);
-                //console.log(schema.Fields[i]);
                 if (field.IsPrimaryKey.toLowerCase() === 'true'){
                     template = $('#inputPrimaryKeyTemplate').html();
                 } else if (field.FieldType.toLowerCase() === 'text'){
@@ -174,6 +183,15 @@ $('document').ready(function() {
                     //console.log('selected', datepicker, selectedDate);
                 }
             });
+
+            fillForm();
+        }
+    }
+
+    function fillForm(){
+        for (var r=0;r<selectedAssets.row.length;r++) {
+            let field = selectedAssets.row[r];
+            $('#form-' + field.Name).val(field.Value);
         }
     }
 
