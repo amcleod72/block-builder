@@ -232,7 +232,6 @@ app.post('/data', async function(req, res){
     let token = JSON.parse(cookies.get('sfmc_token'));
 
     console.log('postBody',req.body);
-    let dataExtension = JSON.parse(req.body);
 
     let rows = await getDataRow(req.body,token,req.query,50);
 
@@ -246,7 +245,7 @@ app.post('/data', async function(req, res){
 
 async function getDataRow(dataExtension,token,query,batchSize){
     return new Promise(async function(resolve, reject) {
-        console.log('dataExtension',dataExtension);
+        console.log('dataExtension',dataExtension.fields);
 
         try {
             let options = {
