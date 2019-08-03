@@ -53,33 +53,35 @@ $('document').ready(function() {
     sdk.triggerAuth('8d023663-4221-4b41-b849-68bedb9b2be3');
 
     // Pick up saved data from Marketing Cloud
-    sdk.getData(function(data) {
-        selectedAssets = data;
-
-        if(selectedAssets && selectedAssets.dataextension && selectedAssets.dataextension.definition){
+    sdk.getData(async function(data) {
+        selectedAssets = data || {};
+        validate();
+        if(selectedAssets.dataextension && selectedAssets.dataextension.definition){
             buildForm();
         } else {
             let deCookie = getCookie('sfmc_dataextension');
             if (deCookie){
-                getAssetDef('dataextension',deCookie);
+                selectedAssets['dataextension'] = {};
+                selectedAssets['dataextension']["definition"] = await getAssetDef('dataextension',deCookie);
+                buildForm();
             }
         }
 
-        if(selectedAssets && selectedAssets.asset && selectedAssets.asset.definition){
-            buildForm();
-        } else {
+        if(!selectedAssets.asset || !selectedAssets.asset.definition){
             let assetCookie = getCookie('sfmc_asset');
             if (assetCookie){
-                getAssetDef('asset',assetCookie);
+                selectedAssets['asset'] = {};
+                selectedAssets['asset']["definition"] = await getAssetDef('asset',assetCookie)
             }
         }
 
-        if(selectedAssets && selectedAssets.row){
+        if(selectedAssets.row){
             fillForm()
         }
-
         validate();
         updateMe();
+        $('#spinner').hide();
+        $('#modal-backdrop').hide();
     });
 
     const toastTemplate = $('#toastTemplate').html();
@@ -137,27 +139,28 @@ $('document').ready(function() {
     });
 
     $(document).on("click", "#btn-tree-save", async function(e) {
+        $('#spinner').show();
         let selectorType = $("#asset-selector").attr("selector-type");
         let selectedId = $('#asset-selector').tree('selectedItems')[0].id || null;
-        setCookie('sfmc_' + selectorType,selectedId,365);
-
-        $('#spinner').show();
+        selectedAssets[selectorType] = {"id":selectedId,"definition":null};
         try {
-            selectedAssets[selectorType]["definition"] = getAssetDef(selectorType,selectedId);
+            selectedAssets[selectorType]["definition"] = await getAssetDef(selectorType,selectedId)
+            setCookie('sfmc_' + selectorType,selectedId,365);
+            closeSelect();
             if(selectorType == 'dataextension'){
                 buildForm();
             }
-        } catch (e){
-            showToast('error','Marketing Cloud','An error was encountered getting the definition of ' + $('#asset-selector').tree('selectedItems')[0].name);
-        } finally {
-            closeSelect();
             validate();
             updateMe();
+        } catch (e){
+            showToast('error','Marketing Cloud','An error was encountered getting the definition of ' + $('#asset-selector').tree('selectedItems')[0].name);
+            console.log(e);
+        } finally {
             $('#spinner').hide();
             $('#modal-backdrop').hide();
         }
-
         console.log("selectedAssets",selectedAssets);
+
     });
 
     function getRecord(primaryKeyField,primaryKey){
