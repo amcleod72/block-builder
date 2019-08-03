@@ -245,9 +245,11 @@ async function getDataRow(de,token,query,batchSize){
         console.log('dataExtension',de);
         console.log('DEKey',de.CustomerKey);
 
+        let deKey = de.CustomerKey || de.customerKey;
+
         try {
             let options = {
-                "ObjectType":"DataExtensionObject[" + de.CustomerKey + "]",
+                "ObjectType":"DataExtensionObject[" + deKey + "]",
                 "Token":token,
                 "Properties":[],
                 "retrieveOptions":{
