@@ -36,6 +36,7 @@ $('document').ready(function() {
     });
 
     $(document).on("keypress", ".primary-key", async function(e) {
+        $('#spinner').show();
         var keycode = (e.keyCode ? e.keyCode : e.which);
         if(keycode == '13' && $(e.target).hasClass('primary-key')){
             try {
@@ -52,6 +53,7 @@ $('document').ready(function() {
                 showToast('error','Marketing Cloud','An error was encountered getting data extension record');
             }
         }
+        $('#spinner').show();
         e.stopPropagation();
     });
 
