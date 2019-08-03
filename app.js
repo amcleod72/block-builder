@@ -226,47 +226,59 @@ app.get('/def/:selectorType/:id', async function(req, res){
     }
 });
 
-app.get('/data/:deName/:primaryKeyField/:primaryKey', async function(req, res){
+app.get('/data/:deKey/:primaryKeyField/:primaryKey', async function(req, res){
     var cookies = new Cookies(req, res, { keys: APIKeys.appSignature });
     var token = JSON.parse(cookies.get('sfmc_token'));
-    let response = {};
     let options = {};
-    //console.log('Token',token);
 
-    let deName = req.params['deName'];
+    let deKey = req.params['deKey'];
     let primaryKey = req.params['primaryKey'];
     let primaryKeyField = req.params['primaryKeyField'];
 
-    let fields = [];
-    let dataExtension = {};
+    // Get fields to add to the request to get the row -- return all fields
+    let options = {
+        "ObjectType":"DataExtensionField",
+        "Token":token,
+        "Filter":{
+            "Property":"DataExtension.CustomerKey",
+            "SimpleOperator":"equals",
+            "Value":deKey
+        }
+    };
 
-    let deOpts = {
-        "ObjectType":"DataExtensionObject[" + deName + "]",
+    let resp = await api.soapRetrieve(options);
+    console.log('Fields',resp);
+    if (!resp){
+        return res.status(500).send();
+    } else if (resp.length == 0) {
+        return res.status(404).send();
+    }
+
+
+
+    options = {
+        "ObjectType":"DataExtensionObject[" + deKey + "]",
         "Token":token,
         "Filter":{
             "Property":primaryKeyField,
             "SimpleOperator":"equals",
             "Value":primaryKey
-        }
+        },
+        "Properties":[]
     };
 
-    let deTask = soapRetrieve(deOpts);
+    for (var i=0;i<resp.length;i++) {
+        options.Properties.push(resp[i].Name);
+    };
 
-    deTask.then(function(items) {
-        if (items.length == 1){
-            response = items[0];
-        }
-    });
+    let row = await api.soapRetrieve(options);
 
-    let promise = Promise.all([deTask]);
-
-    promise.then(function(data) {
-        return res.status(200).send(response);
-    });
-
-    promise.catch(function(err) {
-        return res.status(500).send('Internal Server Error');
-    });
+    console.log('Row',row);
+    if (!resp){
+        return res.status(500).send();
+    } else {
+        return res.status(200).send(row);
+    }
 });
 
 function soapRetrieve(options){
