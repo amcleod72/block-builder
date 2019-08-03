@@ -18,9 +18,6 @@ function onRender() {
         });
     } else {
         console.log('Roots','Cached');
-        $('#workspace').show();
-        $('#spinner').hide();
-        $('#modal-backdrop').hide();
     }
 }
 
@@ -65,10 +62,6 @@ $('document').ready(function() {
     });
 
     const toastTemplate = $('#toastTemplate').html();
-
-    document.getElementById('workspace').addEventListener("input", function() {
-        debounce(updateMe, 500)();
-    });
 
     $(document).on("click", ".close-toast", function(e) {
         $("#toast-container").hide();
@@ -447,6 +440,10 @@ $('document').ready(function() {
         }
 
     }
+
+    document.getElementById('workspace').addEventListener("input", function() {
+        debounce(updateMe, 500)();
+    });
 });
 
 function setCookie(cookieName, cookieValue, nDays) {
