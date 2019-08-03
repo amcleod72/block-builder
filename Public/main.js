@@ -55,13 +55,30 @@ $('document').ready(function() {
     // Pick up saved data from Marketing Cloud
     sdk.getData(function(data) {
         selectedAssets = data;
-        validate();
+
         if(selectedAssets && selectedAssets.dataextension && selectedAssets.dataextension.definition){
             buildForm();
+        } else {
+            let deCookie = getCookie('sfmc_dataextension');
+            if (deCookie){
+                getAssetDef('dataextension',deCookie);
+            }
         }
+
+        if(selectedAssets && selectedAssets.asset && selectedAssets.asset.definition){
+            buildForm();
+        } else {
+            let assetCookie = getCookie('sfmc_asset');
+            if (assetCookie){
+                getAssetDef('asset',assetCookie);
+            }
+        }
+
         if(selectedAssets && selectedAssets.row){
             fillForm()
         }
+
+        validate();
         updateMe();
     });
 
@@ -120,27 +137,9 @@ $('document').ready(function() {
     });
 
     $(document).on("click", "#btn-tree-save", async function(e) {
-        $('#spinner').show();
         let selectorType = $("#asset-selector").attr("selector-type");
         let selectedId = $('#asset-selector').tree('selectedItems')[0].id || null;
-        selectedAssets[selectorType] = {"id":selectedId,"definition":null};
-        try {
-            selectedAssets[selectorType]["definition"] = await getAssetDef(selectorType,selectedId)
-            setCookie('sfmc_' + selectorType,selectedId,365);
-            closeSelect();
-            if(selectorType == 'dataextension'){
-                buildForm();
-            }
-            validate();
-        } catch (e){
-            showToast('error','Marketing Cloud','An error was encountered getting the definition of ' + $('#asset-selector').tree('selectedItems')[0].name);
-            console.log(e);
-        } finally {
-            $('#spinner').hide();
-            $('#modal-backdrop').hide();
-        }
-        console.log("selectedAssets",selectedAssets);
-
+        getAssetDef(selectorType,selectedId);
     });
 
     function getRecord(primaryKeyField,primaryKey){
@@ -284,19 +283,32 @@ $('document').ready(function() {
     }
 
     function getAssetDef(selectorType,id){
+        $('#spinner').show();
+        selectedAssets[selectorType] = {"id":selectedId,"definition":null};
         var endpoint = window.location.protocol + "//" + window.location.hostname + ":" + window.location.port + "/def/" + selectorType + "/" + id;
 
-        return new Promise(function(resolve, reject) {
-            $.ajax({
-                type: "GET",
-                url: endpoint,
-                success: function(resp) {
-                    resolve(resp);
-                },
-                error: function(response) {
-                    reject(response);
+        $.ajax({
+            type: "GET",
+            url: endpoint,
+            success: function(resp) {
+                selectedAssets[selectorType]["definition"] = resp;
+                setCookie('sfmc_' + selectorType,selectedId,365);
+                closeSelect();
+                if(selectorType == 'dataextension'){
+                    buildForm();
                 }
-            });
+                validate();
+                updateMe();
+                $('#spinner').hide();
+                $('#modal-backdrop').hide();
+                console.log("selectedAssets",selectedAssets);
+            },
+            error: function(resp) {
+                console.log(resp);
+                $('#spinner').hide();
+                $('#modal-backdrop').hide();
+                showToast('error','Marketing Cloud','An error was encountered getting the definition of ' + $('#asset-selector').tree('selectedItems')[0].name);
+            }
         });
     }
 
@@ -324,8 +336,6 @@ $('document').ready(function() {
         $("#toast-container").html(render(options));
         $("#toast-container").fadeIn(200);
     }
-
-    var crmIdField,chkContact,chkOpportunity;
 
     function debounce(func, wait, immediate) {
         var timeout;
