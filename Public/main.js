@@ -208,7 +208,7 @@ $('document').ready(function() {
                 let field = schema.fields[i];
                 if (field.IsPrimaryKey.toLowerCase() === 'true'){
                     template = $('#inputPrimaryKeyTemplate').html();
-                } else if (field.FieldType.toLowerCase() === 'text'){
+                } else if (field.FieldType.toLowerCase() === 'text' || field.FieldType.toLowerCase() === 'decimal'){
                     if (!field.MaxLength || field.MaxLength > 500){
                         template = $('#inputTextAreaTemplate').html();
                     } else {
