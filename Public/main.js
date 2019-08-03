@@ -251,6 +251,7 @@ $('document').ready(function() {
             });
 
             fillForm();
+            updateMe();
         }
     }
 
