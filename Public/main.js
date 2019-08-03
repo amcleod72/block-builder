@@ -343,7 +343,7 @@ $('document').ready(function() {
         for (var i=0;i<inputs.length;i++) {
             let fieldName = $(inputs[i]).attr('id').replace('form-','');
             let fieldValue = $(inputs[i]).val();
-            selectedAssets.push({
+            selectedAssets.row.push({
                 "Name":fieldName,
                 "Value":fieldValue
             });
