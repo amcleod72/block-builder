@@ -229,7 +229,6 @@ app.get('/def/:selectorType/:id', async function(req, res){
 app.get('/data/:deKey/:primaryKeyField/:primaryKey', async function(req, res){
     var cookies = new Cookies(req, res, { keys: APIKeys.appSignature });
     var token = JSON.parse(cookies.get('sfmc_token'));
-    let options = {};
 
     let deKey = req.params['deKey'];
     let primaryKey = req.params['primaryKey'];
