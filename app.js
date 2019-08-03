@@ -124,7 +124,7 @@ app.get('/folders/:selectorType/:ParentID', async function(req, res){
         }
     };
 
-    console.log('iOpts',iOpts)
+    //console.log('iOpts',iOpts)
 
     let iTask = getItems(iOpts);
 
@@ -139,7 +139,7 @@ app.get('/folders/:selectorType/:ParentID', async function(req, res){
                 }
             );
         });
-        console.log('iTask','Completed');
+        //console.log('iTask','Completed');
     });
 
     let promise = Promise.all([fTask,iTask]);
@@ -242,7 +242,7 @@ app.post('/data', async function(req, res){
 
 async function getDataRow(de,token,query,batchSize){
     return new Promise(async function(resolve, reject) {
-        console.log('dataExtension',de.fields);
+        console.log('dataExtension',de);
 
         try {
             let options = {
