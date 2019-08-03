@@ -18,6 +18,9 @@ function onRender() {
         });
     } else {
         console.log('Roots','Cached');
+        $('#workspace').show();
+        $('#spinner').hide();
+        $('#modal-backdrop').hide();
     }
 }
 
