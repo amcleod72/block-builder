@@ -212,7 +212,7 @@ app.get('/def/:selectorType/:id', async function(req, res){
 
         let promise = Promise.all([fieldTask,deTask]);
 
-        promise.then(function(data) {
+        promise.then(async function(data) {
             dataExtension['fields'] = fields;
             dataExtension['rows'] = await getDataRow(dataExtension,token,null,1);
             return res.status(200).send(dataExtension);
