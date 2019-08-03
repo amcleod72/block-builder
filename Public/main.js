@@ -167,7 +167,7 @@ $('document').ready(function() {
 
     function validate(){
         if(selectedAssets && selectedAssets.dataextension && selectedAssets.dataextension.definition){
-            $('#selected-dataextension-container .asset-info-name-content').html(selectedAssets.dataextension.definition.Name);
+            $('#selected-dataextension-container .asset-info-name-content').html(selectedAssets.dataextension.definition.name);
             $('#unselected-dataextension-container').hide();
             $('#selected-dataextension-container').show();
         } else {
