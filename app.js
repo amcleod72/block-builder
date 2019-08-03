@@ -245,15 +245,13 @@ app.get('/data/:deKey/:primaryKeyField/:primaryKey', async function(req, res){
         }
     };
 
-    let resp = await api.soapRetrieve(options);
+    let resp = await soapRetrieve(options);
     console.log('Fields',resp);
     if (!resp){
         return res.status(500).send();
     } else if (resp.length == 0) {
         return res.status(404).send();
     }
-
-
 
     options = {
         "ObjectType":"DataExtensionObject[" + deKey + "]",
@@ -270,7 +268,7 @@ app.get('/data/:deKey/:primaryKeyField/:primaryKey', async function(req, res){
         options.Properties.push(resp[i].Name);
     };
 
-    let row = await api.soapRetrieve(options);
+    let row = await soapRetrieve(options);
 
     console.log('Row',row);
     if (!resp){
