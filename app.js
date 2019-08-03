@@ -273,6 +273,8 @@ async function getDataRow(dataExtension,token,query,batchSize){
                 }
             }
 
+            console.log('options',options);
+
             for (var i=0;i<dataExtension.fields.length;i++) {
                 options.Properties.push(dataExtension.fields[i].Name);
             };
