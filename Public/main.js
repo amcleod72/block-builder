@@ -65,6 +65,8 @@ $('document').ready(function() {
             $.ajax({
                 type: "POST",
                 url: endpoint,
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
                 data: JSON.stringify(selectedAssets.dataextension.definition),
                 success: function(resp) {
                     resolve(resp);
