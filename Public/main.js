@@ -356,10 +356,10 @@ $('document').ready(function() {
                 "Value":fieldValue
             });
 
-            if(isEmpty(field.Value)){
-                payload[field.Name] = null;
+            if(isEmpty(fieldValue)){
+                payload[fieldValue] = null;
             } else {
-                payload[field.Name] = field.Value;
+                payload[fieldValue] = fieldValue;
             }
         }
 
