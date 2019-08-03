@@ -249,7 +249,7 @@ async function getDataRow(dataExtension,token,query,batchSize){
 
         try {
             let options = {
-                "ObjectType":"DataExtensionObject[" + dataExtension.customerKey + "]",
+                "ObjectType":"DataExtensionObject[" + dataExtension.CustomerKey + "]",
                 "Token":token,
                 "Properties":[],
                 "retrieveOptions":{
