@@ -357,9 +357,9 @@ $('document').ready(function() {
             });
 
             if(isEmpty(fieldValue)){
-                payload[fieldValue] = null;
+                payload[fieldName] = null;
             } else {
-                payload[fieldValue] = fieldValue;
+                payload[fieldName] = fieldValue;
             }
         }
 
