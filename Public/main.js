@@ -191,8 +191,20 @@ $('document').ready(function() {
     function fillForm(){
         for (var r=0;r<selectedAssets.row.length;r++) {
             let field = selectedAssets.row[r];
-            $('#form-' + field.Name).val(field.Value);
+            if(!isEmpty(field.Value)){
+                $('#form-' + field.Name).val("");
+            } else {
+                $('#form-' + field.Name).val(field.Value);
+            }
         }
+    }
+
+    function isEmpty(obj) {
+        for(var key in obj) {
+            if(obj.hasOwnProperty(key))
+                return false;
+        }
+        return true;
     }
 
     function compareFields(a,b) {
