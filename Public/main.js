@@ -188,7 +188,7 @@ $('document').ready(function() {
 
     function validate(){
         if(selectedAssets && selectedAssets.dataextension && selectedAssets.dataextension.definition){
-            $('#selected-dataextension-container .asset-info-name-content').html(selectedAssets.dataextension.definition.Name);
+            $('#selected-dataextension-container .asset-info-name-content').html(selectedAssets.dataextension.definition.Name || selectedAssets.dataextension.definition.name);
             $('#unselected-dataextension-container').hide();
             $('#selected-dataextension-container').show();
         } else {
@@ -198,7 +198,7 @@ $('document').ready(function() {
         }
 
         if(selectedAssets && selectedAssets.asset && selectedAssets.asset.definition){
-            $('#selected-asset-container .asset-info-name-content').html(selectedAssets.asset.definition.name);
+            $('#selected-asset-container .asset-info-name-content').html(selectedAssets.asset.definition.Name || selectedAssets.asset.definition.name);
             $('#unselected-asset-container').hide();
             $('#selected-asset-container').show();
         } else {
