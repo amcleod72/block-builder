@@ -14,7 +14,7 @@
     "cookies": "^0.7.3",
     "express": "^4.17.1",
     "glyphicons-only-bootstrap": "^1.0.1",
-    "jsonwebtoken": "^8.5.1",
+    "jsonwebtoken": "^9.0.0",
     "request": "^2.88.0",
     "xml-js": "^1.6.11"
   }
